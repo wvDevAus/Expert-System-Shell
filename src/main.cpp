@@ -1,5 +1,9 @@
 #include <iostream>
 
+#include "nlohmann/json.hpp"
+
 int main() {
-	std::cout << "Hello World\n";
+	nlohmann::json test;
+	test["example"] = "Hello World!";
+    std::cout << test["example"];
 }

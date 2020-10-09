@@ -8,6 +8,10 @@ set(ESS_TARGET_NAME
         ApplicationESS)
 set(ESS_EXECUTABLE_NAME
         ess)
+set(SANITIZER_OS
+        "Darwin,Linux")
+set(SANITIZER_FLAGS
+        "-fsanitize=address,undefined,leak")
 
 # Project declaration
 project(${ESS_PROJECT_NAME}
@@ -28,7 +32,7 @@ endif()
 add_subdirectory(src)
 add_subdirectory(lib)
 
-# App include directories
+# App source code directory
 target_include_directories(${ESS_TARGET_NAME}
     PRIVATE
         src/)
@@ -59,8 +63,9 @@ target_compile_options(${ESS_TARGET_NAME}
 #target_compile_definitions()
 
 # App linking settings
-target_link_options(${ESS_TARGET_NAME} PRIVATE
-    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:${SANITIZER_OS}>>:${SANITIZER_FLAGS})
+target_link_options(${ESS_TARGET_NAME}
+    PRIVATE
+        $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:${SANITIZER_OS}>>:${SANITIZER_FLAGS}>)
 
 # App linking for libraries
 target_link_libraries(${ESS_TARGET_NAME}
