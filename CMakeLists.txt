@@ -2,22 +2,22 @@
 cmake_minimum_required(VERSION 3.15)
 
 # Variable declarations
-set(PROJECT_NAME
+set(ESS_PROJECT_NAME
         ExpertSystemShell)
-set(TARGET_NAME
+set(ESS_TARGET_NAME
         ApplicationESS)
-set(EXECUTABLE_NAME
+set(ESS_EXECUTABLE_NAME
         ess)
 
 # Project declaration
-project(${PROJECT_NAME}
+project(${ESS_PROJECT_NAME}
     DESCRIPTION
         "A graphical expert system shell for use on modern systems."
     LANGUAGES
         CXX)
 
 # ExpertSystemShell app declaration
-add_executable(${TARGET_NAME})
+add_executable(${ESS_TARGET_NAME})
 
 # Set build type to debug by default.
 if(NOT CMAKE_BUILD_TYPE)
@@ -29,15 +29,17 @@ add_subdirectory(src)
 add_subdirectory(lib)
 
 # App include directories
-#target_include_directories()
+target_include_directories(${ESS_TARGET_NAME}
+    PRIVATE
+        src/)
 
 # App minimum compiler requirements
-target_compile_features(${TARGET_NAME}
+target_compile_features(${ESS_TARGET_NAME}
     PRIVATE
         cxx_std_17)
 
 # App compilation settings
-target_compile_options(${TARGET_NAME}
+target_compile_options(${ESS_TARGET_NAME}
     PRIVATE
         # Clang
         $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>:
@@ -57,10 +59,16 @@ target_compile_options(${TARGET_NAME}
 #target_compile_definitions()
 
 # App linking settings
-#target_link_options()
+target_link_options(${ESS_TARGET_NAME} PRIVATE
+    $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:${SANITIZER_OS}>>:${SANITIZER_FLAGS})
+
+# App linking for libraries
+target_link_libraries(${ESS_TARGET_NAME}
+    PRIVATE
+        nlohmann_json::nlohmann_json)
 
 # App output directories
-set_target_properties(${TARGET_NAME}
+set_target_properties(${ESS_TARGET_NAME}
     PROPERTIES
         CXX_STANDARD
             17
@@ -69,7 +77,7 @@ set_target_properties(${TARGET_NAME}
         CXX_EXTENSIONS
             OFF
         OUTPUT_NAME
-            "${EXECUTABLE_NAME}"
+            "${ESS_EXECUTABLE_NAME}"
         RUNTIME_OUTPUT_DIRECTORY
             "${CMAKE_BINARY_DIR}"
         ARCHIVE_OUTPUT_DIRECTORY
