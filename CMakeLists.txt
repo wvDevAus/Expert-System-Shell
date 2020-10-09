@@ -19,6 +19,11 @@ project(${PROJECT_NAME}
 # ExpertSystemShell app declaration
 add_executable(${TARGET_NAME})
 
+# Set build type to debug by default.
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
 # Subdirectories for Cmake
 add_subdirectory(src)
 
