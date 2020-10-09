@@ -24,8 +24,9 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-# Subdirectories for Cmake
+# Subdirectories for the Cmake tree
 add_subdirectory(src)
+add_subdirectory(lib)
 
 # App include directories
 #target_include_directories()
