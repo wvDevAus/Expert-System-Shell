@@ -20,6 +20,17 @@ project(${ESS_PROJECT_NAME}
     LANGUAGES
         CXX)
 
+# Set build type to debug by default.
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+# Project build type configuration
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo;MinSizeRel" CACHE STRING "Configs" FORCE)
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS  ${CMAKE_CONFIGURATION_TYPES})
+set(${PROJ_NAME}_PATH_INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
+set(CMAKE_INSTALL_PREFIX "")
+
 # Enable CMake's Qt integrations
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -27,11 +38,6 @@ set(CMAKE_AUTOUIC ON)
 
 # ExpertSystemShell app declaration
 add_executable(${ESS_TARGET_NAME})
-
-# Set build type to debug by default.
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
-endif()
 
 # Subdirectories for the Cmake tree
 add_subdirectory(src)
@@ -96,13 +102,13 @@ set_target_properties(${ESS_TARGET_NAME}
         CXX_EXTENSIONS
             OFF
         OUTPUT_NAME
-            "${ESS_EXECUTABLE_NAME}"
+            ${ESS_EXECUTABLE_NAME}
         RUNTIME_OUTPUT_DIRECTORY
-            "${CMAKE_BINARY_DIR}"
+            ${CMAKE_CURRENT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}
         ARCHIVE_OUTPUT_DIRECTORY
-            "${CMAKE_BINARY_DIR}/lib"
+            ${CMAKE_CURRENT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/lib
         LIBRARY_OUTPUT_DIRECTORY
-            "${CMAKE_BINARY_DIR}/lib")
+            ${CMAKE_CURRENT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/lib)
 
 # Copy the required dll's for the output executable
 add_custom_command(TARGET ${ESS_TARGET_NAME}
@@ -120,8 +126,19 @@ add_custom_command(TARGET ${ESS_TARGET_NAME}
                 $<TARGET_FILE:Qt5::Widgets>
                 $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>
         COMMAND ${CMAKE_COMMAND} -E
-            copy
-                ${CMAKE_CURRENT_SOURCE_DIR}/lib/qt5-build/qtbase/plugins/platforms/qwindows$<$<CONFIG:Debug>:d>.dll
-                $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>/platforms/qwindows$<$<CONFIG:Debug>:d>.dll)
+            copy_directory
+                ${CMAKE_CURRENT_SOURCE_DIR}/res/runtime
+                $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>/res)
 
 # Don't forget to copy the platform plugin applicable to the build type
+if(WIN32)
+    # Windows
+    add_custom_command(TARGET ${ESS_TARGET_NAME}
+        POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E
+                copy
+                    ${CMAKE_CURRENT_SOURCE_DIR}/lib/qt5-build/qtbase/plugins/platforms/qwindows$<$<CONFIG:Debug>:d>.dll
+                    $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>/platforms/qwindows$<$<CONFIG:Debug>:d>.dll)
+else()
+    # Other platforms
+endif()
