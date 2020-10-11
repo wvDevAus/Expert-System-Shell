@@ -20,6 +20,11 @@ project(${ESS_PROJECT_NAME}
     LANGUAGES
         CXX)
 
+# Enable CMake's Qt integrations
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
 # ExpertSystemShell app declaration
 add_executable(${ESS_TARGET_NAME})
 
@@ -31,6 +36,13 @@ endif()
 # Subdirectories for the Cmake tree
 add_subdirectory(src)
 add_subdirectory(lib)
+
+# Get the Qt5 Package
+set(Qt5_DIR
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/qt5-build/qtbase/lib/cmake/Qt5)
+find_package(Qt5
+    COMPONENTS
+        Core Gui Widgets REQUIRED)
 
 # App source code directory
 target_include_directories(${ESS_TARGET_NAME}
@@ -70,7 +82,9 @@ target_link_options(${ESS_TARGET_NAME}
 # App linking for libraries
 target_link_libraries(${ESS_TARGET_NAME}
     PRIVATE
-        nlohmann_json::nlohmann_json)
+        nlohmann_json::nlohmann_json
+        Qt5::Core
+        Qt5::Widgets)
 
 # App output directories
 set_target_properties(${ESS_TARGET_NAME}
@@ -89,3 +103,25 @@ set_target_properties(${ESS_TARGET_NAME}
             "${CMAKE_BINARY_DIR}/lib"
         LIBRARY_OUTPUT_DIRECTORY
             "${CMAKE_BINARY_DIR}/lib")
+
+# Copy the required dll's for the output executable
+add_custom_command(TARGET ${ESS_TARGET_NAME}
+    POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E
+            copy_if_different
+                $<TARGET_FILE:Qt5::Core>
+                $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E
+            copy_if_different
+                $<TARGET_FILE:Qt5::Gui>
+                $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E
+            copy_if_different
+                $<TARGET_FILE:Qt5::Widgets>
+                $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E
+            copy
+                ${CMAKE_CURRENT_SOURCE_DIR}/lib/qt5-build/qtbase/plugins/platforms/qwindows$<$<CONFIG:Debug>:d>.dll
+                $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>/platforms/qwindows$<$<CONFIG:Debug>:d>.dll)
+
+# Don't forget to copy the platform plugin applicable to the build type

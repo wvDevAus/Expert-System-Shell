@@ -30,22 +30,25 @@ First, get a copy of this repository and it's submodules:
 2. `cd Expert-System-Shell`
 3. `git submodule update --init`
 
- Next, set-up your installation of Qt5:  
- **This step is OPTIONAL, and should only be done once!**
+ Next, set-up your open-source developer installation of Qt5:  
+ **If you need to repeat this section, delete the lib/qt5-build folder!**
  
 4. `cd lib/qt5`
 5. `perl init-repository --module-subset=essential`
 6. `mkdir ../qt5-build`
 7. `cd ../qt5-build`
 8. `../qt5/configure -developer-build -opensource -nomake examples -nomake tests`
-    * Windows users should use `../qt5/configure.bat` instead.
+    * Windows users should use `..\\qt5\configure.bat` instead.
+    * Windows users may need to perform this step from the VS terminal.
     * You may need to elevate permissions (i.e. `sudo`) on this step.
-    * Make sure to agree with the license, or repeat this step if you didn't!
-9. `make -j$(nproc)`
+    * Make sure to agree with the license if its is presented!
+9. `make -j$(nproc)` - *This step is likely to take a long time.*
     * Windows users should use one of the following instead:
-        * `nmake` - If in doubt, use this
+        * `nmake` - If in doubt, use this.
         * `jom`
         * `mingw32-make`
+
+
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
