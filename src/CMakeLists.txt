@@ -1,9 +1,11 @@
 # Source files for the executable
 target_sources(${ESS_TARGET_NAME}
 	PRIVATE
+		# Entry point
 		main.cpp
-		mainwindow.h
-		mainwindow.cpp
-		mainwindow.ui
-		resources.qrc
+
+		# Main Window
+		gui/mainwindow.h
+		gui/mainwindow.cpp
+		gui/mainwindow.ui
 )

@@ -4,7 +4,7 @@
 #include "QApplication"
 #include "nlohmann/json.hpp"
 
-#include "mainwindow.h"
+#include "gui/mainwindow.h"
 
 int main(int argc, char *argv[]) {
 	// Testing JSON
