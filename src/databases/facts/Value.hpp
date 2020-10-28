@@ -11,7 +11,7 @@ namespace expert_system {
          */
     template<class T>
     struct Value {
-            /// Use of the default constructor is allowed!
+            /// Use of the default constructor is not allowed!
         Value() = delete;
 
             /**

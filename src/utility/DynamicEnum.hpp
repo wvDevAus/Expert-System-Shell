@@ -17,7 +17,7 @@ namespace expert_system {
         DynamicEnum();
 
             /**
-             * @brief Parameterized constructor, assigns starting enums values with order.
+             * @brief Parameterized constructor, assigns starting enums values.
              * @param [in] ordered_names A list of enum names in ascending order.
              * @note Duplicate enum names will be discarded.
              */
