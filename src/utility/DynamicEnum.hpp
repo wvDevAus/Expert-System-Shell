@@ -59,9 +59,17 @@ namespace expert_system {
              * @brief Attempts to gather the name of an enum value at a specified position.
              * @param [in] position The target enum value's position.
              * @return The name of the enum value, or std::nullopt on failure.
-             * @note If a provided position is invalid, this will fail.
+             * @note If the provided position is invalid, this will fail.
              */
         std::optional<std::string> At(int position);
+
+            /**
+             * @brief Attempts to gather the position of an enum value with a specified name.
+             * @param name The name to search existing enum values for.
+             * @return The position of the enum value, or std::nullopt on failure.
+             * @note If the provided name is not found, this will fail.
+             */
+        std::optional<int> At(std::string name);
 
             /**
              * @brief Gathers the entire set of enum value names in ascending order.
@@ -73,14 +81,14 @@ namespace expert_system {
             /**
              * @brief Removes an enum value via its name.
              * @param name The target enum's name.
-             * @return True if the specified enum value existed and was removed, False otherwise.
+             * @return [in] True if the specified enum value existed and was removed, False otherwise.
              * @note This will return False if the specified enum value does not exist.
              */
         bool Remove(std::string name);
 
             /**
              * @brief Removes an enum value via its position.
-             * @param position The target enum's position.
+             * @param [in] position The target enum's position.
              * @return True if the specified enum value existed and was removed, False otherwise.
              * @note This will return False if the specified enum value does not exist.
              */

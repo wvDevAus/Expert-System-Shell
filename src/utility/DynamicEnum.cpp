@@ -80,8 +80,19 @@ namespace expert_system {
             return std::nullopt;
         }
 
-        // Get the enum value's position at the provided location
+        // Get the enum value's name at the requested position
         return position_to_name_[position];
+    }
+
+    std::optional<int> DynamicEnum::At(std::string name) {
+        // Catch if the name is invalid
+        if (!Has(name)) {
+            // Return an indication that the position is invalid
+            return std::nullopt;
+        }
+
+        // Get the enum value's position at the requested name
+        return name_to_position_[name];
     }
 
     std::list<std::string> DynamicEnum::List() {
