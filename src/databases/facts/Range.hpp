@@ -6,7 +6,7 @@ namespace expert_system {
          * @brief A range of valid values for a Fact.
          * @tparam T The raw type of the Fact.
          */
-    template <class T>
+    template<class T>
     struct Range {
             /// Use of the default constructor is not allowed!
         Range() = delete;
@@ -17,7 +17,8 @@ namespace expert_system {
              * @param [in] max The Range's maximum value.
              * @param [in] bounds_inclusive Flag for including the bounds of the Range.
              */
-        Range(T min, T max, bool bounds_inclusive);
+        Range(T min, T max, bool bounds_inclusive)
+            : min_(min), max_(max), bounds_inclusive_(bounds_inclusive){};
 
             /**
              * @brief The minimum value.
@@ -44,22 +45,15 @@ namespace expert_system {
              * @return True if the provided value is within the Range, otherwise False.
              * @warning This has undefined behaviour if the Range's min_ is smaller than max_!
              */
-        static bool InRange(Range<T> range, T value);
+        static bool InRange(Range<T> range, T value) {
+            // Catch if the bounds are also value values
+            if (range.bounds_inclusive) {
+                // Perform the check including bounds and return the result
+                return (range.min_ <= value) && (value <= range.max_);
+            }
+            // Perform the check without bounds and return the result
+            return (range.min_ < value) && (value < range.max_);
+        };
     };
 
-    template <class T>
-    Range::Range(T min, T max, bool bounds_inclusive)
-            : min_(min), max_(max), bounds_inclusive_(bounds_inclusive) {}
-
-    template <class T>
-    static bool InRange(Range<T> range, T value) {
-        // Catch if the bounds are also value values
-        if (range.bounds_inclusive) {
-            // Perform the check including bounds and return the result
-            return (range.min_ <= value) && (value <= range.max_);
-        }
-        // Perform the check without bounds and return the result
-        return (range.min_ < value) && (value < range.max_);
-    }
-
-} // expert_system
+}// namespace expert_system

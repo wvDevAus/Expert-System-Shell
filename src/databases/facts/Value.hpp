@@ -1,7 +1,7 @@
 #pragma once
 
-#include <optional>
 #include <chrono>
+#include <optional>
 
 namespace expert_system {
 
@@ -9,8 +9,11 @@ namespace expert_system {
          * @brief A session value for a Fact, with additional metadata.
          * @tparam T The raw type of the Fact.
          */
-    template <class T>
+    template<class T>
     struct Value {
+            /// Use of the default constructor is allowed!
+        Value() = delete;
+
             /**
              * @brief Parameterized constructor, automatically assigns metadata.
              * @param [in] value The session value for the Fact.
@@ -18,7 +21,12 @@ namespace expert_system {
              * @param [in] source_event The identifier of the event that generated the session value.
              */
         Value(T value, float confidence_factor,
-                  std::optional<int> source_event = std::nullopt);
+              std::optional<int> source_event = std::nullopt)
+            : value_(value), confidence_factor_(confidence_factor),
+              source_event_(source_event) {
+            // Generate and store a timestamp
+            timestamp_ = std::chrono::system_clock::now();
+        };
 
             /// The session value of a Fact.
         T value_;
@@ -33,14 +41,7 @@ namespace expert_system {
         std::chrono::time_point<std::chrono::system_clock> timestamp_;
 
             ///The identifier of the event that generated the session value.
-        int source_event_;
+        std::optional<int> source_event_;
     };
 
-    Value(T value, float confidence_factor, std::optional<int> source_event)
-            : value_(value), confidence_factor_(confidence_factor),
-                source_event_(source_event) {
-        // Generate and store a timestamp
-        timestamp_ = std::chrono::system_clock::now();
-    }
-
-} // expert_system
+}// namespace expert_system
