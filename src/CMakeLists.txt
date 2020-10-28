@@ -4,8 +4,14 @@ target_sources(${ESS_TARGET_NAME}
 		# Entry point
 		main.cpp
 
+		# Utility
+		utility/DynamicEnum.cpp
+
 		# Main Window
 		gui/mainwindow.h
 		gui/mainwindow.cpp
 		gui/mainwindow.ui
+
+		# Fact Database
+		databases/facts/FactDatabase.cpp
 )
