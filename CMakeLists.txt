@@ -41,6 +41,7 @@ add_executable(${ESS_TARGET_NAME})
 
 # Subdirectories for the Cmake tree
 add_subdirectory(src)
+add_subdirectory(res)
 add_subdirectory(lib)
 
 # Get the Qt5 Package
@@ -53,7 +54,8 @@ find_package(Qt5
 # App source code directory
 target_include_directories(${ESS_TARGET_NAME}
     PRIVATE
-        src/)
+        src/
+        res/)
 
 # App minimum compiler requirements
 target_compile_features(${ESS_TARGET_NAME}
@@ -128,7 +130,7 @@ add_custom_command(TARGET ${ESS_TARGET_NAME}
         COMMAND ${CMAKE_COMMAND} -E
             copy_directory
                 ${CMAKE_CURRENT_SOURCE_DIR}/res/runtime
-                $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>/res)
+                $<TARGET_FILE_DIR:${ESS_TARGET_NAME}>/runtime)
 
 # Don't forget to copy the platform plugin applicable to the build type
 if(WIN32)
