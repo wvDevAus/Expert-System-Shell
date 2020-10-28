@@ -3,8 +3,8 @@
 #include <optional>
 #include <string>
 
-#include "databases/facts/Range.hpp"
-#include "databases/facts/Value.hpp"
+#include "utility/Range.hpp"
+#include "utility/Value.hpp"
 
 namespace expert_system {
 
