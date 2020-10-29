@@ -15,13 +15,13 @@ namespace expert_system {
          * @brief Type definition for the functions that can be used to iterate through the FactDatabase.
          * Compatible functions must take a string and const reference to a VariantFact, and return void.
          */
-    using FactIteratingFunction = std::function<void(std::string, const VariantFact& fact)>;
+    using FactIteratingFunction = std::function<void(const std::string& name, VariantFact& fact)>;
 
         /// A database to centralize the storage and operation of Facts.
     class FactDatabase {
     public:
             /// Default constructor.
-        FactDatabase();
+        FactDatabase() = default;
 
             /**
              * @brief Attempts to create and store a new Fact into the database.
@@ -30,14 +30,14 @@ namespace expert_system {
              * @return A reference to the Fact if successful, or std::nullopt otherwise.
              * @note This will fail if the provided name is already in use.
              */
-        std::optional<std::reference_wrapper<VariantFact>> Create(std::string name, FactType type);
+        std::optional<std::reference_wrapper<VariantFact>> Create(const std::string& name, FactType type);
 
             /**
              * @brief Attempts to gather a stored Fact by name.
              * @param [in] name The name of the target Fact.
              * @return A reference to the Fact if successful, or std::nullopt otherwise.
              */
-        std::optional<std::reference_wrapper<VariantFact>> Find(std::string name);
+        std::optional<std::reference_wrapper<VariantFact>> Find(const std::string& name);
 
             /**
              * @brief Gathers a list of the stored Fact names.
@@ -58,7 +58,7 @@ namespace expert_system {
              * @return True if the Fact was found and deleted, False otherwise.
              * @note This will return False if the specified Fact does not exist.
              */
-        bool Remove(std::string name);
+        bool Remove(const std::string& name);
 
             /**
              * @brief Deletes all of the stored Facts.
@@ -77,7 +77,7 @@ namespace expert_system {
              * @param [in] iterating_function A reference to function that can process the stored Facts.
              * @note No guarantees are made for Facts to be processed in a specific order.
              */
-        void Iterate(FactIteratingFunction& iterating_function);
+        void Iterate(const FactIteratingFunction& iterating_function);
 
     private:
             /**
@@ -87,4 +87,4 @@ namespace expert_system {
         std::unordered_map<std::string, VariantFact> stored_facts_;
     };
 
-}// namespace expert_system
+} // namespace expert_system
