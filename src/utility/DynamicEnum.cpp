@@ -95,7 +95,7 @@ namespace expert_system {
         return name_to_position_[name];
     }
 
-    std::list<std::string> DynamicEnum::List() {
+    std::list<std::string> DynamicEnum::List() const {
         // Create a temporary list to store the enum value names in order within
         std::list<std::string> ordered_names;
 
