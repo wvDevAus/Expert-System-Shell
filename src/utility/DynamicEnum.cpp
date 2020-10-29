@@ -150,4 +150,30 @@ namespace expert_system {
         position_to_name_.clear();
     }
 
+    void to_json(nlohmann::json& json_sys, const DynamicEnum& target) {
+        // Gather the ordered list of enum names
+        auto ordered_names = target.List();
+
+        // Iterate through the list
+        int position = 0;
+        for (auto current_name: ordered_names) {
+            // Insert the name at the current position
+            json_sys[position] = current_name;
+
+            // Increment the position counter
+            ++position;
+        }
+    }
+
+    void from_json(const nlohmann::json& json_sys, DynamicEnum& target) {
+        // Delete the current contents of the DynamicEnum
+        target.Clear();
+
+        // Iterate through the JSON object
+        for (const auto& iterator: json_sys) {
+            // Push the enum value names into the map
+            iterator.get<std::string>();
+        }
+    }
+
 } // namespace expert_system
