@@ -117,18 +117,4 @@ namespace expert_system {
         std::vector<std::string> position_to_name_;
     };
 
-        /**
-         * @brief DynamicEnum conversion to JSON format.
-         * @param [in,out] json_sys A reference to a JSON object.
-         * @param [in] target A reference to the DynamicEnum to export.
-         */
-    void to_json(nlohmann::json& json_sys, const DynamicEnum& target);
-
-        /**
-         * @brief DynamicEnum conversion from JSON format.
-         * @param [in,out] json_sys A reference to a JSON object.
-         * @param [in] target A reference to the DynamicEnum to export.
-         */
-    void from_json(const nlohmann::json& json_sys, DynamicEnum& target);
-
 } // namespace expert_system
