@@ -8,15 +8,15 @@ namespace expert_system {
         // Do nothing, everything here is automated.
     }
 
-    DynamicEnum::DynamicEnum(std::list<std::string> ordered_names) {
+    DynamicEnum::DynamicEnum(const std::list<std::string>& ordered_names) {
         // Iterate through the provided list
-        for (auto current_name: ordered_names) {
+        for (const auto& current_name: ordered_names) {
             // Attempt to push the current enum value to the back
             PushBack(current_name);
         }
     }
 
-    bool DynamicEnum::PushBack(std::string name) {
+    bool DynamicEnum::PushBack(const std::string& name) {
         // Catch if the name is already used
         if (Has(name)) {
             // Indicate failure
@@ -33,7 +33,7 @@ namespace expert_system {
         return true;
     }
 
-    bool DynamicEnum::Insert(std::string name, int position) {
+    bool DynamicEnum::Insert(const std::string& name, int position) {
         // Catch if the requested position for the new enum is invalid or at the end of the vector
         if ((position < 0) || ((int) name_to_position_.size() <= position)) {
             // Pass the new enum value to the PushBack to handle
@@ -63,9 +63,9 @@ namespace expert_system {
         return true;
     }
 
-    bool DynamicEnum::Has(std::string name) {
+    bool DynamicEnum::Has(const std::string& name) {
         // Search the map for an existing key identical to the provided string
-        return name_to_position_.find(name) == name_to_position_.end();
+        return name_to_position_.find(name) != name_to_position_.end();
     }
 
     int DynamicEnum::Size() {
@@ -84,7 +84,7 @@ namespace expert_system {
         return position_to_name_[position];
     }
 
-    std::optional<int> DynamicEnum::At(std::string name) {
+    std::optional<int> DynamicEnum::At(const std::string& name) {
         // Catch if the name is invalid
         if (!Has(name)) {
             // Return an indication that the position is invalid
@@ -100,7 +100,7 @@ namespace expert_system {
         std::list<std::string> ordered_names;
 
         // Iterate through the vector to get the enum value names in order
-        for (auto current_name: position_to_name_) {
+        for (const auto& current_name: position_to_name_) {
             // Append the gathered name to the back of the list
             ordered_names.push_back(current_name);
         }
@@ -109,7 +109,7 @@ namespace expert_system {
         return ordered_names;
     }
 
-    bool DynamicEnum::Remove(std::string name) {
+    bool DynamicEnum::Remove(const std::string& name) {
         // Catch if the requested enum value does not exist
         if (!Has(name)) {
             // Stop and indicate failure

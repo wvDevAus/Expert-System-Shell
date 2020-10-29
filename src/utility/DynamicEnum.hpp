@@ -21,7 +21,7 @@ namespace expert_system {
              * @param [in] ordered_names A list of enum names in ascending order.
              * @note Duplicate enum names will be discarded.
              */
-        explicit DynamicEnum(std::list<std::string> ordered_names);
+        explicit DynamicEnum(const std::list<std::string>& ordered_names);
 
             /**
              * @brief Inserts a new enum value, assigned to the current 'end' position.
@@ -29,7 +29,7 @@ namespace expert_system {
              * @return True if the new enum value was added, False otherwise.
              * @warning If the name is already used, this will fail and return False!
              */
-        bool PushBack(std::string name);
+        bool PushBack(const std::string& name);
 
             /**
              * @brief Inserts a new enum value at a specified position.
@@ -40,14 +40,14 @@ namespace expert_system {
              * @return True if the new enum value was added, False otherwise.
              * @warning If the name is already used, this will fail and return False!
              */
-        bool Insert(std::string name, int position);
+        bool Insert(const std::string& name, int position);
 
             /**
              * @brief Checks if the provided name is already used for an enum value.
              * @param [in] name The name to search existing enum values for.
              * @return True if the provided name was found, false otherwise.
              */
-        bool Has(std::string name);
+        bool Has(const std::string& name);
 
             /**
              * @brief Gathers the amount of enum values stored.
@@ -69,7 +69,7 @@ namespace expert_system {
              * @return The position of the enum value, or std::nullopt on failure.
              * @note If the provided name is not found, this will fail.
              */
-        std::optional<int> At(std::string name);
+        std::optional<int> At(const std::string& name);
 
             /**
              * @brief Gathers the entire set of enum value names in ascending order.
@@ -84,7 +84,7 @@ namespace expert_system {
              * @return [in] True if the specified enum value existed and was removed, False otherwise.
              * @note This will return False if the specified enum value does not exist.
              */
-        bool Remove(std::string name);
+        bool Remove(const std::string& name);
 
             /**
              * @brief Removes an enum value via its position.
