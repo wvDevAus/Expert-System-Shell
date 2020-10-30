@@ -171,8 +171,15 @@ namespace expert_system {
 
         // Iterate through the JSON object
         for (const auto& iterator: json_sys) {
-            // Push the enum value names into the map
-            iterator.get<std::string>();
+            // Catch an invalid type
+            if (iterator.is_string()) {
+                // Push the enum value names into the map
+                iterator.get<std::string>();
+            }
+            else {
+                // Stop processing
+                break;
+            }
         }
     }
 
