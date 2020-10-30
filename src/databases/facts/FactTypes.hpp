@@ -17,6 +17,13 @@ namespace expert_system {
         kEnumFact
     };
 
+    NLOHMANN_JSON_SERIALIZE_ENUM(FactType,
+                               {{FactType::kUnknown, nullptr},
+                                {FactType::kBoolFact, "kBoolFact"},
+                                {FactType::kIntFact, "kIntFact"},
+                                {FactType::kFloatFact, "kFloatFact"},
+                                {FactType::kFloatFact, "kFloatFact"}})
+
         /// Boolean specialization of the Fact template
     using BoolFact = Fact<bool>;
 
@@ -40,7 +47,7 @@ namespace expert_system {
              * @param [in] ordered_names A list of enum names in ascending order.
              * @note Duplicate enum names will be discarded.
              */
-        explicit EnumFact(std::list<std::string> ordered_names);
+        explicit EnumFact(const std::list<std::string>& ordered_names);
 
             /**
              * @brief The enum values for the Fact, dynamically configurable.
@@ -84,13 +91,13 @@ namespace expert_system {
          * @param [in,out] json_sys A reference to a JSON object.
          * @param [in] target A reference to the VariantFact to export.
          */
-    //void to_json(nlohmann::json& json_sys, const VariantFact& target);
+    void to_json(nlohmann::json& json_sys, const VariantFact& target);
 
         /**
          * @brief VariantFact serialization from JSON format.
          * @param [in,out] json_sys A reference to a JSON object.
          * @param [in] target A reference to the VariantFact to export.
          */
-    //void from_json(const nlohmann::json& json_sys, VariantFact& target);
+    void from_json(const nlohmann::json& json_sys, VariantFact& target);
 
 } // namespace expert_system
