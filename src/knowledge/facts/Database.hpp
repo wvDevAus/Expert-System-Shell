@@ -9,9 +9,9 @@
 
 #include "nlohmann/json.hpp"
 
-#include "knowledge/facts/FactTypes.hpp"
+#include "knowledge/facts/Facts.hpp"
 
-namespace expert_system {
+namespace expert_system::knowledge::facts {
 
         /**
          * @brief Type definition for the functions that can be used to iterate through the FactDatabase.
@@ -109,4 +109,4 @@ namespace expert_system {
          */
     void from_json(const nlohmann::json& json_sys, FactDatabase& target);
 
-} // namespace expert_system
+} // namespace expert_system::knowledge::facts

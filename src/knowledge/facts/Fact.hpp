@@ -6,7 +6,7 @@
 #include "knowledge/facts/Value.hpp"
 #include "utility/Range.hpp"
 
-namespace expert_system {
+namespace expert_system::knowledge::facts {
 
         /**
          * @brief Abstract Fact parent, used as the interface for all Facts.
@@ -55,7 +55,7 @@ namespace expert_system {
              * @return A copy of range_.
              * @note If the Fact has no Range, this will return std::nullopt.
              */
-        std::optional<Range<T>> GetRange() {
+        std::optional<utility::Range<T>> GetRange() {
             // Just return a copy of range_, not the contents inside of it.
             return range_;
         };
@@ -128,7 +128,7 @@ namespace expert_system {
              * @return A copy of value_.
              * @note If the Fact has no session value, this will return std::nullopt.
              */
-        std::optional<Value<T>> GetValue() {
+        std::optional<utility::Value<T>> GetValue() {
             // Just return a copy of value_.
             return value_;
         };
@@ -147,7 +147,7 @@ namespace expert_system {
              * @brief The Fact's Range.
              * Used to limit the possible set of session values.
              */
-        std::optional<Range<T>> range_;
+        std::optional<utility::Range<T>> range_;
 
             /**
              * @brief A filtered string containing a description of the Fact.
@@ -159,7 +159,7 @@ namespace expert_system {
              * @brief The Fact's session value.
              * Contains the Fact's raw value and metadata.
              */
-        std::optional<Value<T>> value_;
+        std::optional<utility::Value<T>> value_;
     };
 
-}// namespace expert_system
+}// namespace expert_system::knowledge::facts

@@ -6,7 +6,7 @@
 #include "knowledge/facts/Fact.hpp"
 #include "utility/DynamicEnum.hpp"
 
-namespace expert_system {
+namespace expert_system::knowledge::facts {
 
         /// Contains symbols
     enum class FactType {
@@ -53,7 +53,7 @@ namespace expert_system {
              * @brief The enum values for the Fact, dynamically configurable.
              * @warning Avoid editing this while using the Fact!
              */
-        DynamicEnum enum_;
+        utility::DynamicEnum enum_;
 
             /**
              * @brief The raw Fact, interfacing to the DynamicEnum through an int specialization.
@@ -100,4 +100,4 @@ namespace expert_system {
          */
     void from_json(const nlohmann::json& json_sys, VariantFact& target);
 
-} // namespace expert_system
+} // namespace expert_system::knowledge::facts

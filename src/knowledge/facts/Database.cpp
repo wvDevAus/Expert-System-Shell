@@ -1,8 +1,8 @@
-#include "FactDatabase.hpp"
+#include "Database.hpp"
 
 #include <tuple>
 
-namespace expert_system {
+namespace expert_system::knowledge::facts {
 
     std::optional<std::reference_wrapper<VariantFact>> FactDatabase::Create(
             const std::string& name, FactType type) {
@@ -116,4 +116,4 @@ namespace expert_system {
         target.stored_facts_ = json_sys.get<std::unordered_map<std::string, VariantFact>>();
     }
 
-} // expert_system
+} // namespace expert_system::knowledge::facts

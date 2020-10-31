@@ -3,7 +3,7 @@
 #include <chrono>
 #include <optional>
 
-namespace expert_system {
+namespace expert_system::utility {
 
         /**
          * @brief A session value for a Fact, with additional metadata.
@@ -44,4 +44,4 @@ namespace expert_system {
         std::optional<int> source_event_;
     };
 
-}// namespace expert_system
+} // namespace expert_system::utility

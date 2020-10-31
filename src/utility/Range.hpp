@@ -1,6 +1,6 @@
 #pragma once
 
-namespace expert_system {
+namespace expert_system::utility {
 
         /**
          * @brief A range of valid values for a Fact.
@@ -56,4 +56,4 @@ namespace expert_system {
         };
     };
 
-}// namespace expert_system
+} // namespace expert_system::utility

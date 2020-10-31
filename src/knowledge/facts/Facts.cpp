@@ -1,6 +1,6 @@
-#include "FactTypes.hpp"
+#include "Facts.hpp"
 
-namespace expert_system {
+namespace expert_system::knowledge::facts {
 
     constexpr auto JSON_ID_TYPE = "type";
 
@@ -18,7 +18,7 @@ namespace expert_system {
 
     EnumFact::EnumFact(const std::list<std::string>& ordered_names) {
         // Call the DynamicEnum's parameterized constructor
-        enum_ = DynamicEnum(ordered_names);
+        enum_ = utility::DynamicEnum(ordered_names);
     }
 
     VariantFact::VariantFact() : type_(FactType::kUnknown) {}
@@ -359,7 +359,7 @@ namespace expert_system {
                 // Attempt to get the Fact's DynamicEnum
                 if (json_sys.find(JSON_ID_ENUM) != json_sys.end()) {
                     // Store the DynamicEnum
-                    target_proxy.enum_ = json_sys.at(JSON_ID_ENUM).get<DynamicEnum>();
+                    target_proxy.enum_ = json_sys.at(JSON_ID_ENUM).get<utility::DynamicEnum>();
                 }
 
                 // Attempt to find the Fact's description
@@ -421,4 +421,4 @@ namespace expert_system {
         }
     }
 
-} // namespace expert_system
+} // namespace expert_system::knowledge::facts
