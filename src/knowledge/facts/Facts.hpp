@@ -69,7 +69,7 @@ namespace expert_system::knowledge::facts {
              */
         utility::ExpertSystemTypes type_;
 
-            /// A generic type of Fact.
+            /// The encapsulated Fact.
         GenericFact fact_;
     };
 
