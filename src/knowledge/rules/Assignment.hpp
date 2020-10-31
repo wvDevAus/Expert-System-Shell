@@ -25,7 +25,7 @@ namespace expert_system::knowledge::rules {
         T value_;
 
             /**
-             * @brief Attempts to perform the Assignment
+             * @brief Attempts to perform the Assignment.
              * @param [in] database The Fact Database to operate on.
              * @param [in] source The name of the Rule that triggered this Assignment, or std::nullopt to indicate the user.
              * @param [in] confidence_factor The confidence factor from the triggered Condition.
@@ -58,8 +58,14 @@ namespace expert_system::knowledge::rules {
             return false;
         }
 
-        // Assign the Fact the session value
+        // Catch if the Fact already has a session value
         auto& raw_fact = std::get<facts::BoolFact>(variant_fact.fact_);
+        if (raw_fact.GetValue().has_value()) {
+            // Catch session value already being known and stop
+            return false;
+        }
+
+        // Assign the Fact the session value
         raw_fact.SetValue(value_, confidence_factor, source);
         return true;
     }
@@ -83,8 +89,14 @@ namespace expert_system::knowledge::rules {
             return false;
         }
 
-        // Assign the Fact the session value
+        // Catch if the Fact already has a session value
         auto& raw_fact = std::get<facts::IntFact>(variant_fact.fact_);
+        if (raw_fact.GetValue().has_value()) {
+            // Catch session value already being known and stop
+            return false;
+        }
+
+        // Assign the Fact the session value
         raw_fact.SetValue(value_, confidence_factor, source);
         return true;
     }
@@ -108,8 +120,14 @@ namespace expert_system::knowledge::rules {
             return false;
         }
 
-        // Assign the Fact the session value
+        // Catch if the Fact already has a session value
         auto& raw_fact = std::get<facts::FloatFact>(variant_fact.fact_);
+        if (raw_fact.GetValue().has_value()) {
+            // Catch session value already being known and stop
+            return false;
+        }
+
+        // Assign the Fact the session value
         raw_fact.SetValue(value_, confidence_factor, source);
         return true;
     }
@@ -133,8 +151,14 @@ namespace expert_system::knowledge::rules {
             return false;
         }
 
-        // Assign the Fact the session value
+        // Catch if the Fact already has a session value
         auto& raw_fact = std::get<facts::EnumFact>(variant_fact.fact_);
+        if (raw_fact.fact_.GetValue().has_value()) {
+            // Catch session value already being known and stop
+            return false;
+        }
+
+        // Assign the Fact the session value
         auto enum_conversion = raw_fact.enum_.At(value_);
         if (enum_conversion == std::nullopt) {
             // Catch the enum value not existing
