@@ -9,7 +9,7 @@
 namespace expert_system::knowledge::facts {
 
         /**
-         * @brief Abstract Fact parent, used as the interface for all Facts.
+         * @brief Template Fact.
          * @tparam T The raw type of the Fact.
          */
     template<class T>

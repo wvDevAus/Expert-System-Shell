@@ -8,7 +8,7 @@
 
 namespace expert_system::knowledge::facts {
 
-        /// Contains symbols
+        /// The symbolic representations of the compatible types of Facts.
     enum class FactType {
         kUnknown,
         kBoolFact,
@@ -17,12 +17,13 @@ namespace expert_system::knowledge::facts {
         kEnumFact
     };
 
+        /// JSON serialization for the FactType enum.
     NLOHMANN_JSON_SERIALIZE_ENUM(FactType,
-                               {{FactType::kUnknown, nullptr},
-                                {FactType::kBoolFact, "kBoolFact"},
-                                {FactType::kIntFact, "kIntFact"},
-                                {FactType::kFloatFact, "kFloatFact"},
-                                {FactType::kEnumFact, "kEnumFact"}})
+                                {{FactType::kUnknown, nullptr},
+                                 {FactType::kBoolFact, "BoolFact"},
+                                 {FactType::kIntFact, "IntFact"},
+                                 {FactType::kFloatFact, "FloatFact"},
+                                 {FactType::kEnumFact, "EnumFact"}})
 
         /// Boolean specialization of the Fact template
     using BoolFact = Fact<bool>;
