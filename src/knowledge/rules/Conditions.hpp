@@ -39,7 +39,7 @@ namespace expert_system::knowledge::rules {
 
             /**
              * @brief Tests the encapsulated Condition.
-             * @param source The Fact Database to operate on.
+             * @param [in] source The Fact Database to operate on.
              * @return A TestOutcome enum symbol indicating the test's result.
              * @note This will return TestOutcome::kUnknown if no Condition is stored.
              */
@@ -62,7 +62,7 @@ namespace expert_system::knowledge::rules {
             /**
              * @brief Provides read-only access to the encapsulated Condition's inversion flag.
              * @return A copy of the encapsulated Condition's inversion flag.
-             * @return This will return std::nullopt if no Condition is stored.
+             * @note This will return std::nullopt if no Condition is stored.
              */
         std::optional<bool> Invert();
 

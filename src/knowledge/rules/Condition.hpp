@@ -27,8 +27,9 @@ namespace expert_system::knowledge::rules {
                                  {ConditionType::kLessThan, "GreaterThan"},
                                  {ConditionType::kGreaterThan, "LessThan"}})
 
+        /// The symbolic representations for Condition Test outcomes.
     enum class TestOutcome {
-        kUnknown,
+        kUnknown = 0,
         kInvalidCondition,
         kInvalidFactIdentifier,
         kInvalidFactType,
