@@ -73,7 +73,7 @@ namespace expert_system::knowledge::facts {
 
             /**
              * Parameterized constructor, generates a Fact of a specified type.
-             * @param type The type of Fact to generate and store.
+             * @param [in] type The type of Fact to generate and store.
              */
         explicit VariantFact(FactType type);
 

@@ -127,7 +127,7 @@ namespace expert_system::knowledge::facts {
              * @return A copy of value_.
              * @note If the Fact has no session value, this will return std::nullopt.
              */
-        std::optional<utility::Value<T>> GetValue() {
+        std::optional<knowledge::facts::Value<T>> GetValue() {
             // Just return a copy of value_.
             return value_;
         };
@@ -158,7 +158,7 @@ namespace expert_system::knowledge::facts {
              * @brief The Fact's session value.
              * Contains the Fact's raw value and metadata.
              */
-        std::optional<utility::Value<T>> value_;
+        std::optional<knowledge::facts::Value<T>> value_;
     };
 
 }// namespace expert_system::knowledge::facts

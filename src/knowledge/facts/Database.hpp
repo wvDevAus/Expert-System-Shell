@@ -43,8 +43,8 @@ namespace expert_system::knowledge::facts {
 
             /**
              * @brief Checks if a specified Fact has a 'known' (session) value.
-             * @param name The name of the target Fact.
-             * @return True if the Fact could be found with a session value, False othwerise.
+             * @param [in] name The name of the target Fact.
+             * @return True if the Fact could be found with a session value, False otherwise.
              */
         bool Known(const std::string& name);
 
