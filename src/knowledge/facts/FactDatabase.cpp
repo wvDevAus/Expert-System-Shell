@@ -1,6 +1,5 @@
 #include "FactDatabase.hpp"
 
-#include <fstream>
 #include <tuple>
 
 namespace expert_system {

@@ -9,7 +9,7 @@
 
 #include "nlohmann/json.hpp"
 
-#include "databases/facts/FactTypes.hpp"
+#include "knowledge/facts/FactTypes.hpp"
 
 namespace expert_system {
 

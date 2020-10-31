@@ -13,6 +13,6 @@ target_sources(${ESS_TARGET_NAME}
 		gui/mainwindow.ui
 
 		# Fact Database
-		databases/facts/FactTypes.cpp
-		databases/facts/FactDatabase.cpp
+		knowledge/facts/FactTypes.cpp
+		knowledge/facts/FactDatabase.cpp
 )

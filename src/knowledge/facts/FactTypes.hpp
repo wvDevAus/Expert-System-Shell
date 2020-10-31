@@ -3,7 +3,7 @@
 #include <optional>
 #include <variant>
 
-#include "databases/facts/Fact.hpp"
+#include "knowledge/facts/Fact.hpp"
 #include "utility/DynamicEnum.hpp"
 
 namespace expert_system {

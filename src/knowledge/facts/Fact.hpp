@@ -3,7 +3,7 @@
 #include <optional>
 #include <string>
 
-#include "databases/facts/Value.hpp"
+#include "knowledge/facts/Value.hpp"
 #include "utility/Range.hpp"
 
 namespace expert_system {
