@@ -11,16 +11,16 @@
 
 namespace expert_system::knowledge::facts {
 
-        /// Boolean specialization of the Fact template
+        /// Boolean specialization of the Fact template.
     using BoolFact = Fact<bool>;
 
-        /// Integer specialization of the Fact template
+        /// Integer specialization of the Fact template.
     using IntFact = Fact<int>;
 
-        /// Float specialization of the Fact template
+        /// Float specialization of the Fact template.
     using FloatFact = Fact<float>;
 
-        /// Enum 'proxy'/'specialization' of the Fact template
+        /// Enum 'proxy'/'specialization' of the Fact template.
     struct EnumFact {
             /**
              * @brief Default constructor.
