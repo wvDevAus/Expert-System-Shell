@@ -47,7 +47,7 @@ namespace expert_system::utility {
              */
         static bool InRange(Range<T> range, T value) {
             // Catch if the bounds are also value values
-            if (range.bounds_inclusive) {
+            if (range.bounds_inclusive_) {
                 // Perform the check including bounds and return the result
                 return (range.min_ <= value) && (value <= range.max_);
             }

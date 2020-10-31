@@ -21,4 +21,5 @@ target_sources(${ESS_TARGET_NAME}
 		knowledge/rules/Antecedent.cpp
 		knowledge/rules/Assignments.cpp
 		knowledge/rules/Conditions.cpp
+		knowledge/rules/Consequent.cpp
 )
