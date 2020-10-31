@@ -2,6 +2,7 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "nlohmann/json.hpp"
 
@@ -56,20 +57,21 @@ namespace expert_system::knowledge::rules {
              * @brief Default constructor.
              * Assigns an 'empty' target name and sets the condition to kUnknown.
              */
-        Condition() : target_(""), condition_(AntecedentType::kUnknown) {};
+        Condition() : condition_(ConditionType::kUnknown), invert_(false) {};
 
             /**
              * @brief Parameterized constructor.
              * @param [in] fact The identifying name of the target Fact.
              * @param [in] condition The conditional check to perform when testing the Condition.
              * @param [in] target The target value for the Condition's test.
+             * @param [in] invert A flag to indicate if the Condition's Test outcomes should be inverted.
              */
-        Condition(std::string fact, ConditionType condition, T target)
-                : fact_(fact), condition_(condition), target_(target) {};
+        Condition(std::string fact, ConditionType condition, T target, bool invert)
+                : fact_(std::move(fact)), condition_(condition), target_(target), invert_(invert) {};
 
             /**
              * @brief Tests the current Condition.
-             * @param source The Fact Database to operate on.
+             * @param [in] source The Fact Database to operate on.
              * @return A TestOutcome enum symbol indicating the test's result.
              */
         TestOutcome Test(facts::FactDatabase& source) {
@@ -85,6 +87,12 @@ namespace expert_system::knowledge::rules {
 
             /// The target value for the Condition's test.
         T target_;
+
+            /**
+             * @brief A flag to indicate if the Condition's Test outcomes should be inverted.
+             * True to invert the Test results, False to not invert the Test results.
+             */
+        bool invert_;
     };
 
         /// Boolean specialization overload of templated Condition::Test.
@@ -122,31 +130,67 @@ namespace expert_system::knowledge::rules {
             case ConditionType::kEqualTo: {
                 // Perform the test and return the result
                 if (fact_value->value_ == target_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             case ConditionType::kLessThan: {
                 // Perform the test and return the result
                 if (fact_value->value_ < target_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             case ConditionType::kGreaterThan: {
                 // Perform the test and return the result
                 if (target_ < fact_value->value_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             default:
@@ -190,31 +234,67 @@ namespace expert_system::knowledge::rules {
             case ConditionType::kEqualTo: {
                 // Perform the test and return the result
                 if (fact_value->value_ == target_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             case ConditionType::kLessThan: {
                 // Perform the test and return the result
                 if (fact_value->value_ < target_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             case ConditionType::kGreaterThan: {
                 // Perform the test and return the result
                 if (target_ < fact_value->value_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             default:
@@ -258,31 +338,67 @@ namespace expert_system::knowledge::rules {
             case ConditionType::kEqualTo: {
                 // Perform the test and return the result
                 if (fact_value->value_ == target_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             case ConditionType::kLessThan: {
                 // Perform the test and return the result
                 if (fact_value->value_ < target_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             case ConditionType::kGreaterThan: {
                 // Perform the test and return the result
                 if (target_ < fact_value->value_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             default:
@@ -326,31 +442,67 @@ namespace expert_system::knowledge::rules {
             case ConditionType::kEqualTo: {
                 // Perform the test and return the result
                 if (fact_enum.At(fact_value->value_) == target_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             case ConditionType::kLessThan: {
                 // Perform the test and return the result
                 if (fact_enum.At(fact_value->value_) < target_) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             case ConditionType::kGreaterThan: {
                 // Perform the test and return the result
                 if (target_ < fact_enum.At(fact_value->value_)) {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonSuccess;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    }
                 } else {
-                    // Indicate successful test, return test result
-                    return TestOutcome::kComparisonFailure;
+                    // Catch if the result should be inverted
+                    if (invert_) {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonSuccess;
+                    } else {
+                        // Indicate successful test, return test result
+                        return TestOutcome::kComparisonFailure;
+                    }
                 }
             }
             default:

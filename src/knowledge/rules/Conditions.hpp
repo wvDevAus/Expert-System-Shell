@@ -35,7 +35,7 @@ namespace expert_system::knowledge::rules {
              * Parameterized constructor, generates a Condition of a specified type.
              * @param [in] type The type of Condition to generate and store.
              */
-        VariantCondition(utility::ExpertSystemTypes type);
+        explicit VariantCondition(utility::ExpertSystemTypes type);
 
             /**
              * @brief Tests the encapsulated Condition.
