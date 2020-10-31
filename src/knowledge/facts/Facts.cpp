@@ -21,33 +21,33 @@ namespace expert_system::knowledge::facts {
         enum_ = utility::DynamicEnum(ordered_names);
     }
 
-    VariantFact::VariantFact() : type_(FactType::kUnknown) {}
+    VariantFact::VariantFact() : type_(utility::ExpertSystemTypes::kUnknown) {}
 
-    VariantFact::VariantFact(FactType type) {
+    VariantFact::VariantFact(utility::ExpertSystemTypes type) {
         // Store the hint for the generated type
         type_ = type;
 
         // Generate and store a specific Fact specialization
         switch (type) {
-            case FactType::kBoolFact: {
+            case utility::ExpertSystemTypes::kBool: {
                 fact_ = BoolFact();
                 break;
             }
-            case FactType::kIntFact: {
+            case utility::ExpertSystemTypes::kInt: {
                 fact_ = IntFact();
                 break;
             }
-            case FactType::kFloatFact: {
+            case utility::ExpertSystemTypes::kFloat: {
                 fact_ = FloatFact();
                 break;
             }
-            case FactType::kEnumFact: {
+            case utility::ExpertSystemTypes::kEnum: {
                 fact_ = EnumFact();
                 break;
             }
             default: {
                 fact_ = std::monostate();
-                type_ = FactType::kUnknown;
+                type_ = utility::ExpertSystemTypes::kUnknown;
                 break;
             }
         }
@@ -59,7 +59,7 @@ namespace expert_system::knowledge::facts {
 
         // Split logic depending on the current type
         switch (target.type_) {
-            case FactType::kBoolFact: {
+            case utility::ExpertSystemTypes::kBool: {
                 // Get the raw Fact type
                 auto fact_raw = std::get<BoolFact>(target.fact_);
 
@@ -82,7 +82,7 @@ namespace expert_system::knowledge::facts {
                 // Finished
                 break;
             }
-            case FactType::kIntFact: {
+            case utility::ExpertSystemTypes::kInt: {
                 // Get the raw Fact type
                 auto fact_raw = std::get<IntFact>(target.fact_);
 
@@ -105,7 +105,7 @@ namespace expert_system::knowledge::facts {
                 // Finished
                 break;
             }
-            case FactType::kFloatFact: {
+            case utility::ExpertSystemTypes::kFloat: {
                 // Get the raw Fact type
                 auto fact_raw = std::get<FloatFact>(target.fact_);
 
@@ -128,7 +128,7 @@ namespace expert_system::knowledge::facts {
                 // Finished
                 break;
             }
-            case FactType::kEnumFact: {
+            case utility::ExpertSystemTypes::kEnum: {
                 // Get the proxy Fact type
                 auto fact_proxy = std::get<EnumFact>(target.fact_);
 
@@ -164,20 +164,20 @@ namespace expert_system::knowledge::facts {
     void from_json(const nlohmann::json& json_sys, VariantFact& target) {
         // Clear the existing Fact data
         target.fact_ = std::monostate();
-        target.type_ = FactType::kUnknown;
+        target.type_ = utility::ExpertSystemTypes::kUnknown;
 
         // Check if the type data is stored
         if (json_sys.find(JSON_ID_TYPE) != json_sys.end()) {
             // Attempt to gather the type
             if (json_sys.at(JSON_ID_TYPE).is_string()) {
                 // Store the type
-                target.type_ = json_sys.at(JSON_ID_TYPE).get<FactType>();
+                target.type_ = json_sys.at(JSON_ID_TYPE).get<utility::ExpertSystemTypes>();
             }
         }
 
         // Process the Fact data
         switch (target.type_) {
-            case FactType::kBoolFact: {
+            case utility::ExpertSystemTypes::kBool: {
                 // Create and track an empty BoolFact
                 target.fact_.emplace<BoolFact>();
                 auto& target_fact = std::get<BoolFact>(target.fact_);
@@ -235,7 +235,7 @@ namespace expert_system::knowledge::facts {
                 // Finished
                 break;
             }
-            case FactType::kIntFact: {
+            case utility::ExpertSystemTypes::kInt: {
                 // Create and track an empty IntFact
                 target.fact_.emplace<IntFact>();
                 auto& target_fact = std::get<IntFact>(target.fact_);
@@ -293,7 +293,7 @@ namespace expert_system::knowledge::facts {
                 // Finished
                 break;
             }
-            case FactType::kFloatFact: {
+            case utility::ExpertSystemTypes::kFloat: {
                 // Create and track an empty FloatFact
                 target.fact_.emplace<FloatFact>();
                 auto& target_fact = std::get<FloatFact>(target.fact_);
@@ -351,7 +351,7 @@ namespace expert_system::knowledge::facts {
                 // Finished
                 break;
             }
-            case FactType::kEnumFact: {
+            case utility::ExpertSystemTypes::kEnum: {
                 // Create and track an empty EnumFact
                 target.fact_.emplace<EnumFact>();
                 auto& target_proxy = std::get<EnumFact>(target.fact_);

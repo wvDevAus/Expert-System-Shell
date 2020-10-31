@@ -3,27 +3,13 @@
 #include <optional>
 #include <variant>
 
+#include "nlohmann/json.hpp"
+
 #include "knowledge/facts/Fact.hpp"
 #include "utility/DynamicEnum.hpp"
+#include "utility/Types.hpp"
 
 namespace expert_system::knowledge::facts {
-
-        /// The symbolic representations of the compatible types of Facts.
-    enum class FactType {
-        kUnknown,
-        kBoolFact,
-        kIntFact,
-        kFloatFact,
-        kEnumFact
-    };
-
-        /// JSON serialization for the FactType enum.
-    NLOHMANN_JSON_SERIALIZE_ENUM(FactType,
-                                {{FactType::kUnknown, nullptr},
-                                 {FactType::kBoolFact, "Boolean"},
-                                 {FactType::kIntFact, "Integer"},
-                                 {FactType::kFloatFact, "Float"},
-                                 {FactType::kEnumFact, "Enumeration"}})
 
         /// Boolean specialization of the Fact template
     using BoolFact = Fact<bool>;
@@ -75,13 +61,13 @@ namespace expert_system::knowledge::facts {
              * Parameterized constructor, generates a Fact of a specified type.
              * @param [in] type The type of Fact to generate and store.
              */
-        explicit VariantFact(FactType type);
+        explicit VariantFact(utility::ExpertSystemTypes type);
 
             /**
              * @brief A hint for the type of Fact that is stored.
              * @warning This may be incorrect, and should be confirmed before use of the Fact!
              */
-        FactType type_;
+        utility::ExpertSystemTypes type_;
 
             /// A generic type of Fact.
         GenericFact fact_;

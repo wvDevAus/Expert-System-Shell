@@ -10,6 +10,7 @@
 #include "nlohmann/json.hpp"
 
 #include "knowledge/facts/Facts.hpp"
+#include "utility/Types.hpp"
 
 namespace expert_system::knowledge::facts {
 
@@ -32,7 +33,7 @@ namespace expert_system::knowledge::facts {
              * @return A reference to the Fact if successful, or std::nullopt otherwise.
              * @note This will fail if the provided name is already in use.
              */
-        std::optional<std::reference_wrapper<VariantFact>> Create(const std::string& name, FactType type);
+        std::optional<std::reference_wrapper<VariantFact>> Create(const std::string& name, utility::ExpertSystemTypes type);
 
             /**
              * @brief Attempts to gather a stored Fact by name.
