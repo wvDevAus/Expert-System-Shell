@@ -22,7 +22,7 @@ namespace expert_system {
                                 {FactType::kBoolFact, "kBoolFact"},
                                 {FactType::kIntFact, "kIntFact"},
                                 {FactType::kFloatFact, "kFloatFact"},
-                                {FactType::kFloatFact, "kFloatFact"}})
+                                {FactType::kEnumFact, "kEnumFact"}})
 
         /// Boolean specialization of the Fact template
     using BoolFact = Fact<bool>;
