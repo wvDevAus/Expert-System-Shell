@@ -20,10 +20,10 @@ namespace expert_system::knowledge::facts {
         /// JSON serialization for the FactType enum.
     NLOHMANN_JSON_SERIALIZE_ENUM(FactType,
                                 {{FactType::kUnknown, nullptr},
-                                 {FactType::kBoolFact, "BoolFact"},
-                                 {FactType::kIntFact, "IntFact"},
-                                 {FactType::kFloatFact, "FloatFact"},
-                                 {FactType::kEnumFact, "EnumFact"}})
+                                 {FactType::kBoolFact, "Boolean"},
+                                 {FactType::kIntFact, "Integer"},
+                                 {FactType::kFloatFact, "Float"},
+                                 {FactType::kEnumFact, "Enumeration"}})
 
         /// Boolean specialization of the Fact template
     using BoolFact = Fact<bool>;

@@ -31,6 +31,42 @@ namespace expert_system::knowledge::facts {
         return stored_facts_[name];
     }
 
+    bool FactDatabase::Known(const std::string& name) {
+        // Attempt to Find the requested Fact
+        auto target_fact = Find(name);
+        if (target_fact == std::nullopt) {
+            // Catch an invalid Fact and indicate failure
+            return false;
+        }
+
+        // Check if the Fact has a session value
+        switch (target_fact->get().type_) {
+            case FactType::kBoolFact: {
+                // Gather the raw data and check if the session value exists
+                auto raw_fact = std::get<BoolFact>(target_fact->get().fact_);
+                return (raw_fact.GetValue() != std::nullopt);
+            }
+            case FactType::kIntFact: {
+                // Gather the raw data and check if the session value exists
+                auto raw_fact = std::get<IntFact>(target_fact->get().fact_);
+                return (raw_fact.GetValue() != std::nullopt);
+            }
+            case FactType::kFloatFact: {
+                // Gather the raw data and check if the session value exists
+                auto raw_fact = std::get<FloatFact>(target_fact->get().fact_);
+                return (raw_fact.GetValue() != std::nullopt);
+            }
+            case FactType::kEnumFact: {
+                // Gather the raw data and check if the session value exists
+                auto raw_fact = std::get<EnumFact>(target_fact->get().fact_);
+                return (raw_fact.fact_.GetValue() != std::nullopt);
+            }
+            default:
+                // Indicate failure
+                return false;
+        }
+    }
+
     std::list<std::string> FactDatabase::List() const {
         // Create a temporary list to store the Fact names in
         std::list<std::string> fact_names;

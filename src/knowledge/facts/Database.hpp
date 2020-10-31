@@ -42,6 +42,13 @@ namespace expert_system::knowledge::facts {
         std::optional<std::reference_wrapper<VariantFact>> Find(const std::string& name);
 
             /**
+             * @brief Checks if a specified Fact has a 'known' (session) value.
+             * @param name The name of the target Fact.
+             * @return True if the Fact could be found with a session value, False othwerise.
+             */
+        bool Known(const std::string& name);
+
+            /**
              * @brief Gathers a list of the stored Fact names.
              * @return A list of Fact name strings, in ascending order.
              * @note If no Facts are stored, this will return an empty list.

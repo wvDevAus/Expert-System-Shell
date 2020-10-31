@@ -20,8 +20,7 @@ namespace expert_system::knowledge::facts {
              * Assigns std::nullopt to all optional members.
              * Assigns an empty string to the Fact's description.
              */
-        Fact()
-            : range_(std::nullopt), value_(std::nullopt){};
+        Fact() : range_(std::nullopt), value_(std::nullopt) {};
 
             /**
              * @brief Assigns a Range to the Fact.
