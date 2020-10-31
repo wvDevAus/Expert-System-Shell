@@ -60,6 +60,13 @@ namespace expert_system::knowledge::rules {
         std::optional<ConditionType> Condition();
 
             /**
+             * @brief Provides read-only access to the encapsulated Condition's inversion flag.
+             * @return A copy of the encapsulated Condition's inversion flag.
+             * @return This will return std::nullopt if no Condition is stored.
+             */
+        std::optional<bool> Invert();
+
+            /**
              * @brief A hint for the type of Fact that is stored.
              * @warning This may be incorrect, and should be confirmed before use of the Fact!
              */

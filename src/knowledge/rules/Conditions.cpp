@@ -149,4 +149,42 @@ namespace expert_system::knowledge::rules {
         }
     }
 
+    std::optional<bool> VariantCondition::Invert() {
+        // Attempt to gather the raw Condition
+        switch (type_) {
+            case utility::ExpertSystemTypes::kBool: {
+                // Store a reference to the Condition
+                auto& raw_condition = std::get<BoolCondition>(condition_);
+
+                // Return the inversion flag
+                return raw_condition.invert_;
+            }
+            case utility::ExpertSystemTypes::kInt: {
+                // Store a reference to the Condition
+                auto& raw_condition = std::get<IntCondition>(condition_);
+
+                // Return the inversion flag
+                return raw_condition.invert_;
+            }
+            case utility::ExpertSystemTypes::kFloat: {
+                // Store a reference to the Condition
+                auto& raw_condition = std::get<FloatCondition>(condition_);
+
+                // Return the inversion flag
+                return raw_condition.invert_;
+            }
+            case utility::ExpertSystemTypes::kEnum: {
+                // Store a reference to the Condition
+                auto& raw_condition = std::get<EnumCondition>(condition_);
+
+                // Return the inversion flag
+                return raw_condition.invert_;
+            }
+            default: {
+                // Indicate failure
+                return std::nullopt;
+            }
+        }
+    }
+
 } // namespace expert_system::knowledge::rules
