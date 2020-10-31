@@ -6,7 +6,6 @@
 
 #include "knowledge/facts/Database.hpp"
 #include "knowledge/facts/Facts.hpp"
-#include "knowledge/rules/Conditions.hpp"
 
 namespace expert_system::knowledge::rules {
 

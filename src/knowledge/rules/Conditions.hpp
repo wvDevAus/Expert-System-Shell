@@ -69,12 +69,12 @@ namespace expert_system::knowledge::rules {
         std::optional<bool> Invert();
 
             /**
-             * @brief A hint for the type of Fact that is stored.
+             * @brief A hint for the type of Assignment that is stored.
              * @warning This may be incorrect, and should be confirmed before use of the Fact!
              */
         utility::ExpertSystemTypes type_;
 
-            /// The encapsulated condition
+            /// The encapsulated Condition
         GenericCondition condition_;
     };
 
