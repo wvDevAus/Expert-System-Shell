@@ -95,7 +95,7 @@ namespace expert_system {
         return name_to_position_[name];
     }
 
-    std::list<std::string> DynamicEnum::List() {
+    std::list<std::string> DynamicEnum::List() const {
         // Create a temporary list to store the enum value names in order within
         std::list<std::string> ordered_names;
 
@@ -148,6 +148,29 @@ namespace expert_system {
 
         // Empty the contents of the vector
         position_to_name_.clear();
+    }
+
+    void to_json(nlohmann::json& json_sys, const DynamicEnum& target) {
+        // Export the ordered vector of enum value names to the JSON object
+        json_sys = target.position_to_name_;
+    }
+
+    void from_json(const nlohmann::json& json_sys, DynamicEnum& target) {
+        // Delete the current contents of the DynamicEnum
+        target.Clear();
+
+        // Iterate through the JSON object
+        for (const auto& iterator: json_sys) {
+            // Catch an invalid type
+            if (iterator.is_string()) {
+                // Push the enum value names into the map
+                target.PushBack(iterator.get<std::string>());
+            }
+            else {
+                // Stop processing
+                break;
+            }
+        }
     }
 
 } // namespace expert_system

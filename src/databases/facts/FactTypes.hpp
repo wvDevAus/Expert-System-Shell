@@ -10,11 +10,19 @@ namespace expert_system {
 
         /// Contains symbols
     enum class FactType {
+        kUnknown,
         kBoolFact,
         kIntFact,
         kFloatFact,
         kEnumFact
     };
+
+    NLOHMANN_JSON_SERIALIZE_ENUM(FactType,
+                               {{FactType::kUnknown, nullptr},
+                                {FactType::kBoolFact, "kBoolFact"},
+                                {FactType::kIntFact, "kIntFact"},
+                                {FactType::kFloatFact, "kFloatFact"},
+                                {FactType::kEnumFact, "kEnumFact"}})
 
         /// Boolean specialization of the Fact template
     using BoolFact = Fact<bool>;
@@ -31,7 +39,7 @@ namespace expert_system {
              * @brief Default constructor.
              * Constructs both members using their default constructors.
              */
-        EnumFact();
+        EnumFact() = default;
 
             /**
              * @brief Parameterized constructor, assigns starting enums values.
@@ -39,7 +47,7 @@ namespace expert_system {
              * @param [in] ordered_names A list of enum names in ascending order.
              * @note Duplicate enum names will be discarded.
              */
-        EnumFact(std::list<std::string> ordered_names);
+        explicit EnumFact(const std::list<std::string>& ordered_names);
 
             /**
              * @brief The enum values for the Fact, dynamically configurable.
@@ -59,14 +67,14 @@ namespace expert_system {
 
         /// Type-tracked Generic Fact
     struct VariantFact {
-            /// Use of the default constructor is not allowed!
-        VariantFact() = delete;
+            /// Default constructor.
+        VariantFact();
 
             /**
              * Parameterized constructor, generates a Fact of a specified type.
              * @param type The type of Fact to generate and store.
              */
-        VariantFact(FactType type);
+        explicit VariantFact(FactType type);
 
             /**
              * @brief A hint for the type of Fact that is stored.
@@ -77,5 +85,19 @@ namespace expert_system {
             /// A generic type of Fact.
         GenericFact fact_;
     };
+
+        /**
+         * @brief VariantFact serialization to JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the VariantFact to export.
+         */
+    void to_json(nlohmann::json& json_sys, const VariantFact& target);
+
+        /**
+         * @brief VariantFact serialization from JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the VariantFact to export.
+         */
+    void from_json(const nlohmann::json& json_sys, VariantFact& target);
 
 } // namespace expert_system

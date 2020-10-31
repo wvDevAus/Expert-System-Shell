@@ -1,5 +1,6 @@
 #include "FactDatabase.hpp"
 
+#include <fstream>
 #include <tuple>
 
 namespace expert_system {
@@ -31,7 +32,7 @@ namespace expert_system {
         return stored_facts_[name];
     }
 
-    std::list<std::string> FactDatabase::List() {
+    std::list<std::string> FactDatabase::List() const {
         // Create a temporary list to store the Fact names in
         std::list<std::string> fact_names;
 
@@ -92,6 +93,8 @@ namespace expert_system {
                     std::get<EnumFact>(map_iterator.second.fact_).fact_.ClearValue();
                     break;
                 }
+                default:
+                    break;
             }
         }
     }
@@ -102,6 +105,16 @@ namespace expert_system {
             // Pass the current Fact to the function
             iterating_function(map_iterator.first, map_iterator.second);
         }
+    }
+
+    void to_json(nlohmann::json& json_sys, const FactDatabase& target) {
+        // Just export the map's contents
+        json_sys = target.stored_facts_;
+    }
+
+    void from_json(const nlohmann::json& json_sys, FactDatabase& target) {
+        // Just import the map's contents;
+        target.stored_facts_ = json_sys.get<std::unordered_map<std::string, VariantFact>>();
     }
 
 } // expert_system

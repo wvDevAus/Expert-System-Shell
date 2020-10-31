@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <variant>
 
+#include "nlohmann/json.hpp"
+
 #include "databases/facts/FactTypes.hpp"
 
 namespace expert_system {
@@ -44,7 +46,7 @@ namespace expert_system {
              * @return A list of Fact name strings, in ascending order.
              * @note If no Facts are stored, this will return an empty list.
              */
-        std::list<std::string> List();
+        [[nodiscard]] std::list<std::string> List() const;
 
             /**
              * @brief Gathers the amount of the stored Facts.
@@ -85,6 +87,26 @@ namespace expert_system {
              * Maps the Fact name to its data structure.
              */
         std::unordered_map<std::string, VariantFact> stored_facts_;
+
+            /// Enables JSON serializer access to private contents
+        friend void to_json(nlohmann::json& json_sys, const FactDatabase& target);
+
+            /// Enables JSON serializer access to private contents
+        friend void from_json(const nlohmann::json& json_sys, FactDatabase& target);
     };
+
+        /**
+         * @brief FactDatabase serialization to JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the FactDatabase to export.
+         */
+    void to_json(nlohmann::json& json_sys, const FactDatabase& target);
+
+        /**
+         * @brief FactDatabase serialization from JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the FactDatabase to export.
+         */
+    void from_json(const nlohmann::json& json_sys, FactDatabase& target);
 
 } // namespace expert_system
