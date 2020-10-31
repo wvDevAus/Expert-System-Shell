@@ -54,7 +54,10 @@ namespace expert_system::knowledge::facts {
 
         /// Type-tracked Generic Fact
     struct VariantFact {
-            /// Default constructor.
+            /**
+             * @brief Default constructor.
+             * Sets type_ to kUnknown and fact_ to std::monostate.
+             */
         VariantFact();
 
             /**

@@ -25,7 +25,10 @@ namespace expert_system::knowledge::rules {
 
         /// Type-tracked Generic Condition
     struct VariantCondition {
-            /// Default constructor.
+            /**
+             * @brief Default constructor.
+             * Sets type_ to kUnknown and condition_ to std::monostate.
+             */
         VariantCondition();
 
             /**
@@ -38,23 +41,23 @@ namespace expert_system::knowledge::rules {
              * @brief Tests the encapsulated Condition.
              * @param source The Fact Database to operate on.
              * @return A TestOutcome enum symbol indicating the test's result.
+             * @note This will return TestOutcome::kUnknown if no Condition is stored.
+             */
+        TestOutcome Test(facts::FactDatabase& source);
+
+            /**
+             * @brief Provides read-only access to the encapsulated Condition's Fact identifier.
+             * @return A copy of the encapsulated Condition's Fact identifier.
              * @note This will return std::nullopt if no Condition is stored.
              */
-        std::optional<TestOutcome> Test(facts::FactDatabase& source);
+        std::optional<std::string> Fact();
 
             /**
              * @brief Provides read-only access to the encapsulated Condition's target.
              * @return A copy of the encapsulated Condition's target identifier.
              * @note This will return std::nullopt if no Condition is stored.
              */
-        std::optional<std::string> Target();
-
-            /**
-             * @brief Provides read-only access to the encapsulated Condition's target.
-             * @return A copy of the encapsulated Condition's target identifier.
-             * @note This will return std::nullopt if no Condition is stored.
-             */
-        ConditionType Condition();
+        std::optional<ConditionType> Condition();
 
             /**
              * @brief A hint for the type of Fact that is stored.
