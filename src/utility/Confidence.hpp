@@ -19,7 +19,7 @@ namespace expert_system::utility {
              * @param [in] value The confidence factor value to assign.
              * @note This will be replaced by the closest range bounds if outside them.
              */
-        Confidence(float value);
+        explicit Confidence(float value);
 
             /**
              * @brief Attempts to assign a confidence factor value.

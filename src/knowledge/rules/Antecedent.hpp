@@ -34,11 +34,11 @@ namespace expert_system::knowledge::rules {
             /**
              * @brief Test the logically linked Conditions.
              * @param [in] source The Fact Database to operate on.
-             * @return A TestOutcome enum symbol indicating the test's result.
+             * @return A TestOutcome result paired with a confidence factor.
              * @note This will return an error symbol if a Condition could not be operated.
              * @warning No indication will be given for the source of the error!
              */
-        TestOutcome Test(facts::FactDatabase& source);
+        std::pair<TestOutcome, utility::Confidence> Test(facts::FactDatabase& source);
 
             /**
              * @brief The root Condition to begin the test upon.

@@ -5,6 +5,7 @@ target_sources(${ESS_TARGET_NAME}
 		main.cpp
 
 		# Utility
+		utility/Confidence.cpp
 		utility/DynamicEnum.cpp
 
 		# Main Window

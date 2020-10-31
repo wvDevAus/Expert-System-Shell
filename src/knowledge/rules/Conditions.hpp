@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+#include <tuple>
 
 #include "knowledge/rules/Condition.hpp"
+#include "utility/Confidence.hpp"
 #include "utility/Types.hpp"
 
 namespace expert_system::knowledge::rules {
@@ -40,10 +42,10 @@ namespace expert_system::knowledge::rules {
             /**
              * @brief Tests the encapsulated Condition.
              * @param [in] source The Fact Database to operate on.
-             * @return A TestOutcome enum symbol indicating the test's result.
+             * @return A TestOutcome result paired with a confidence factor.
              * @note This will return TestOutcome::kUnknown if no Condition is stored.
              */
-        TestOutcome Test(facts::FactDatabase& source);
+        std::pair<TestOutcome, utility::Confidence> Test(facts::FactDatabase& source);
 
             /**
              * @brief Provides read-only access to the encapsulated Condition's Fact identifier.
