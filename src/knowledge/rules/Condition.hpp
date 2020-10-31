@@ -29,7 +29,7 @@ namespace expert_system::knowledge::rules {
 
         /// The symbolic representations for Condition Test outcomes.
     enum class TestOutcome {
-        kUnknown = 0,
+        kUnknown,
         kInvalidCondition,
         kInvalidFactIdentifier,
         kInvalidFactType,

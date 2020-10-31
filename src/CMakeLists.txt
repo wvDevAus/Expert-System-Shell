@@ -18,4 +18,5 @@ target_sources(${ESS_TARGET_NAME}
 
 		# Rule Database
 		knowledge/rules/Conditions.cpp
+		knowledge/rules/Antecedent.cpp
 )
