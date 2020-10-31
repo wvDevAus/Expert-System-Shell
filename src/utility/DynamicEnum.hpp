@@ -115,6 +115,12 @@ namespace expert_system {
              * @note The positions of enum values always begin at 0.
              */
         std::vector<std::string> position_to_name_;
+
+            /// Enables JSON serializer access to private contents
+        friend void to_json(nlohmann::json& json_sys, const DynamicEnum& target);
+
+            /// Enables JSON serializer access to private contents
+        friend void from_json(const nlohmann::json& json_sys, DynamicEnum& target);
     };
 
         /**

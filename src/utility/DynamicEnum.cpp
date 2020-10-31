@@ -151,18 +151,8 @@ namespace expert_system {
     }
 
     void to_json(nlohmann::json& json_sys, const DynamicEnum& target) {
-        // Gather the ordered list of enum names
-        auto ordered_names = target.List();
-
-        // Iterate through the list
-        int position = 0;
-        for (auto current_name: ordered_names) {
-            // Insert the name at the current position
-            json_sys[position] = current_name;
-
-            // Increment the position counter
-            ++position;
-        }
+        // Export the ordered vector of enum value names to the JSON object
+        json_sys = target.position_to_name_;
     }
 
     void from_json(const nlohmann::json& json_sys, DynamicEnum& target) {
@@ -174,7 +164,7 @@ namespace expert_system {
             // Catch an invalid type
             if (iterator.is_string()) {
                 // Push the enum value names into the map
-                iterator.get<std::string>();
+                target.PushBack(iterator.get<std::string>());
             }
             else {
                 // Stop processing
