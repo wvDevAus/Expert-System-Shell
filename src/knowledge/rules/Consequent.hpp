@@ -4,7 +4,7 @@
 #include <optional>
 #include <string>
 
-#include "knowledge/facts/Database.hpp"
+#include "knowledge/facts/FactDatabase.hpp"
 #include "knowledge/rules/Assignments.hpp"
 #include "utility/Confidence.hpp"
 

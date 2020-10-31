@@ -6,7 +6,7 @@
 
 #include "nlohmann/json.hpp"
 
-#include "knowledge/facts/Database.hpp"
+#include "knowledge/facts/FactDatabase.hpp"
 #include "knowledge/facts/Facts.hpp"
 #include "knowledge/facts/Value.hpp"
 #include "utility/Confidence.hpp"
