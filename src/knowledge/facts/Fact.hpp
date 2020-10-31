@@ -103,16 +103,16 @@ namespace expert_system::knowledge::facts {
              * @brief Assigns a session value to the Fact.
              * @param [in] value The session value for the Fact.
              * @param [in] confidence_factor A specifier of the session value's confidence factor.
-             * @param [in] source_event The identifier of the event that generated the session value.
+             * @param [in] source The name of the Rule that triggered this Assignment, or std::nullopt to indicate the user.
              * @return True if the provided value is within the Fact's Range, False otherwise.
              * @note If the Fact has no Range, this is guaranteed to always return True.
              */
-        bool SetValue(T value, float confidence_factor,
-                      std::optional<int> source_event = std::nullopt) {
+        bool SetValue(T value, utility::Confidence& confidence_factor,
+                      std::optional<std::reference_wrapper<std::string>> source_event = std::nullopt) {
             // Check if the Fact has an assigned range
             if (range_.has_value()) {
                 // Check if the provided value is not valid
-                if (!Range<T>::InRange(range_.value(), value)) {
+                if (!utility::Range<T>::InRange(range_.value(), value)) {
                     // Catch an invalid value and stop
                     return false;
                 }
@@ -120,6 +120,7 @@ namespace expert_system::knowledge::facts {
 
             // Create the new session value
             value_.emplace(value, confidence_factor, source_event);
+            return true;
         };
 
             /**

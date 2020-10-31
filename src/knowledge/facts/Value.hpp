@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <functional>
 #include <optional>
 
 #include "utility/Confidence.hpp"
@@ -20,10 +21,10 @@ namespace expert_system::knowledge::facts {
              * @brief Parameterized constructor, automatically assigns metadata.
              * @param [in] value The session value for the Fact.
              * @param [in] confidence_factor A specifier of the session value's confidence factor.
-             * @param [in] source_event The identifier of the event that generated the session value.
+             * @param [in] source The name of the Rule that triggered this Assignment, or std::nullopt to indicate the user.
              */
-        Value(T value, float confidence_factor,
-              const std::optional<std::string>& source_event = std::nullopt)
+        Value(T value, utility::Confidence& confidence_factor,
+              std::optional<std::reference_wrapper<std::string>> source_event = std::nullopt)
             : value_(value), confidence_factor_(confidence_factor) {
             // Generate and store a timestamp
             timestamp_ = std::chrono::system_clock::now();
