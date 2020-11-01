@@ -118,13 +118,25 @@
      <x>160</x>
      <y>10</y>
      <width>211</width>
-     <height>90</height>
+     <height>81</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="DescriptionContainer">
     <property name="verticalSpacing">
      <number>2</number>
     </property>
+    <item row="1" column="0">
+     <widget class="QPlainTextEdit" name="DescriptionEditor">
+      <property name="font">
+       <font>
+        <family>Calibri Light</family>
+       </font>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QLabel" name="DescriptionLabel">
       <property name="minimumSize">
@@ -144,18 +156,6 @@
       </property>
       <property name="text">
        <string>Description:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QPlainTextEdit" name="DescriptionEditor">
-      <property name="font">
-       <font>
-        <family>Calibri Light</family>
-       </font>
-      </property>
-      <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
       </property>
      </widget>
     </item>
@@ -243,7 +243,7 @@
          <number>0</number>
         </property>
         <property name="leftMargin">
-         <number>6</number>
+         <number>5</number>
         </property>
         <item>
          <widget class="QLabel" name="MinimumLabel">
@@ -296,15 +296,15 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="MaximumContainer">
         <property name="spacing">
          <number>0</number>
         </property>
         <property name="leftMargin">
-         <number>6</number>
+         <number>5</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="MaximumLabel">
           <property name="maximumSize">
            <size>
             <width>16777215</width>
@@ -323,7 +323,7 @@
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_4">
+         <spacer name="MaximumSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -336,7 +336,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_2">
+         <widget class="QLineEdit" name="MaximumEditor">
           <property name="minimumSize">
            <size>
             <width>142</width>
@@ -354,12 +354,12 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QHBoxLayout" name="InclusiveContainer">
         <property name="spacing">
          <number>0</number>
         </property>
         <item alignment="Qt::AlignLeft|Qt::AlignTop">
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="InclusiveCheckbox">
           <property name="maximumSize">
            <size>
             <width>16777215</width>
@@ -384,7 +384,7 @@
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_2">
+         <spacer name="InclusiveSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -411,84 +411,74 @@
      <height>151</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="EnumerationContainer">
     <property name="spacing">
      <number>2</number>
     </property>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="spacing">
-       <number>3</number>
+     <widget class="QLabel" name="EnumerationLabel">
+      <property name="text">
+       <string>Enumerations:</string>
       </property>
-      <property name="topMargin">
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="EnumerationLayout">
+      <property name="spacing">
        <number>0</number>
       </property>
-      <item alignment="Qt::AlignLeft|Qt::AlignBottom">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Enumerations:</string>
+      <item>
+       <widget class="QListWidget" name="EnumerationEditor">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
         </property>
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QVBoxLayout" name="EnumerationButtons">
         <property name="spacing">
-         <number>0</number>
+         <number>1</number>
         </property>
         <item>
-         <widget class="QListWidget" name="listWidget">
+         <widget class="QPushButton" name="EnumerationAdd">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>60</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>16777215</width>
-            <height>16777215</height>
+            <width>20</width>
+            <height>60</height>
            </size>
+          </property>
+          <property name="text">
+           <string>+</string>
           </property>
          </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <property name="spacing">
-           <number>1</number>
+         <widget class="QPushButton" name="EnumerationDelete">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>60</height>
+           </size>
           </property>
-          <item>
-           <widget class="QPushButton" name="pushButton">
-            <property name="minimumSize">
-             <size>
-              <width>20</width>
-              <height>60</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>20</width>
-              <height>60</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>+</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="minimumSize">
-             <size>
-              <width>20</width>
-              <height>60</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>20</width>
-              <height>60</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>-</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>-</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
