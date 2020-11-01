@@ -78,4 +78,18 @@ namespace expert_system::knowledge::rules {
         GenericCondition condition_;
     };
 
+        /**
+         * @brief VariantCondition serialization to JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the VariantCondition to export.
+         */
+    void to_json(nlohmann::json& json_sys, const VariantCondition& target);
+
+        /**
+         * @brief VariantCondition serialization from JSON format.
+         * @param [in] json_sys A reference to a JSON object.
+         * @param [in,out] target A reference to the VariantCondition to import.
+         */
+    void from_json(const nlohmann::json& json_sys, VariantCondition& target);
+
 } // namespace expert_system::knowledge::rules

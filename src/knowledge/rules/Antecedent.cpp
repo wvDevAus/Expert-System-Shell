@@ -1,5 +1,7 @@
 #include "Antecedent.hpp"
 
+#include "utility/SymbolsJSON.hpp"
+
 namespace expert_system::knowledge::rules {
 
     std::pair<TestOutcome, utility::Confidence> Antecedent::Test(facts::FactDatabase& source) {
@@ -62,6 +64,38 @@ namespace expert_system::knowledge::rules {
 
         // Return the final chained outcome
         return combined_outcomes;
+    }
+
+    void to_json(nlohmann::json& json_sys, const Antecedent& target) {
+        // Export the root Condition
+        json_sys[utility::JSON_ID_ROOT] = target.root_condition_;
+
+        // Export the chained Conditions
+        json_sys[utility::JSON_ID_CHAIN] = target.condition_chain_;
+    }
+
+    void from_json(const nlohmann::json& json_sys, Antecedent& target) {
+        // Clear the existing data
+        target.root_condition_ = VariantCondition();
+        target.condition_chain_.clear();
+
+        // Confirm the root condition is actually stored
+        if (json_sys.find(utility::JSON_ID_ROOT) != json_sys.end()) {
+            // Attempt to gather the root condition
+            if (!json_sys.at(utility::JSON_ID_DESCRIPTION).empty()) {
+                // Store the root condition
+                target.root_condition_ = json_sys.at(utility::JSON_ID_DESCRIPTION).get<VariantCondition>();
+            }
+        }
+
+        // Confirm the condition chain is actually stored
+        if (json_sys.find(utility::JSON_ID_CHAIN) != json_sys.end()) {
+            // Attempt to gather the condition chain
+            if (!json_sys.at(utility::JSON_ID_CHAIN).empty()) {
+                // Store the condition chain
+                target.condition_chain_ = json_sys.at(utility::JSON_ID_CHAIN).get<std::list<std::pair<ConnectorType, VariantCondition>>>();
+            }
+        }
     }
 
 } // namespace expert_system::knowledge::rules
