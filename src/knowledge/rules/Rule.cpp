@@ -77,7 +77,7 @@ namespace expert_system::knowledge::rules {
     }
 
     std::pair<TestOutcome, utility::Confidence> Rule::Run(facts::FactDatabase& database,
-                                                    std::optional<std::reference_wrapper<std::string>> source) {
+                                                          std::string source) {
         // Run the Antecedent to identify if the Consequent should be triggered
         auto result = trigger_.Test(database);
 

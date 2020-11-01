@@ -9,6 +9,10 @@
 
 namespace expert_system::knowledge::rules {
 
+        /**
+         * @brief An expert system Rule, composed of a Antecedent and Consequent.
+         * Manages the process of running individual expert system Rules.
+         */
     class Rule {
     public:
             /// Default constructor
@@ -20,7 +24,7 @@ namespace expert_system::knowledge::rules {
              * @note All of these Facts must have a known session value to trigger the Rule.
              * @warning No tests will be performed to check that these Fact names are valid!
              */
-            std::optional<std::set<std::string>> TriggerFacts();
+        std::optional<std::set<std::string>> TriggerFacts();
 
             /**
              * @brief Gathers the identifiers of the Facts that would be assigned a session value by this Rule.
@@ -39,7 +43,7 @@ namespace expert_system::knowledge::rules {
              * @warning A TestOutcome of KComparisonSuccess may hide Consequent operation failure!
              */
         std::pair<TestOutcome, utility::Confidence> Run(facts::FactDatabase& database,
-                                                        std::optional<std::reference_wrapper<std::string>> source);
+                                                        std::string source);
 
             /**
              * @brief Updates the Fact's description.
