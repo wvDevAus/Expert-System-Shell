@@ -1,11 +1,13 @@
 #include "NewFact.h"
 
+#include <string>
+
 #include <QMessageBox>
 
 #include "knowledge/facts/FactDatabase.hpp"
 #include "utility/Singleton.hpp"
 
-NewFact::NewFact(QWidget *parent) {
+NewFact::NewFact(QWidget *parent) : QDialog(parent) {
     // Ensure that the UI is configured
     ui.setupUi(this);
 
@@ -28,7 +30,7 @@ void NewFact::CreateNewFact() {
 
     // Catch a known name
     auto& database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
-    if (database.Known(ui.NameEdit->text().toStdString())) {
+    if (database.Find(ui.NameEdit->text().toStdString()) != std::nullopt) {
         // Catch the error and indicate failure
         QMessageBox error_indication;
         error_indication.setText("Error: provided name is already used by another Fact!");

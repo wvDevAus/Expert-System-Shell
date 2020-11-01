@@ -1,5 +1,8 @@
 #pragma once
 
+#include <optional>
+#include <string>
+
 #include <QDialog>
 
 #include "ui_FactEditor.h"
@@ -16,12 +19,30 @@ public:
     explicit FactEditor(QWidget *parent = nullptr);
 
 private slots:
+        /// Opens a new dialog for the user to create a new Fact.
     void NewFact();
+
+        /// Attempts to delete the currently selected Fact.
     void DeleteFact();
-    void UpdateFactEditors();
+
+        /// Attempts to save the currently selected Fact from the current editor values.
+    void SaveFact();
+
+        /// Processes a selected Fact.
+    void FactSelected();
 
 private:
+        /// Disables and removes the data from all editors.
+    void ClearFactEditors();
+
+        /// Updates the editor elements to reflect the selected Fact.
+    void UpdateFactEditors();
+
+        /// Updates the list of Stored facts.
     void UpdateFactList();
+
+        /// Stores the name of the currently selected Fact.
+    std::optional<std::string> selectedFact;
 
         /// Pointer member to auto-generated UI element.
     Ui::FactEditor ui;

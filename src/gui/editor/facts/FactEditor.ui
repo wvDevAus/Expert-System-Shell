@@ -74,21 +74,21 @@
   <widget class="QPushButton" name="FactDelete">
    <property name="geometry">
     <rect>
-     <x>85</x>
+     <x>60</x>
      <y>330</y>
-     <width>65</width>
+     <width>40</width>
      <height>30</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>65</width>
+     <width>40</width>
      <height>30</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>65</width>
+     <width>40</width>
      <height>30</height>
     </size>
    </property>
@@ -99,7 +99,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Delete Fact</string>
+    <string>Delete</string>
    </property>
   </widget>
   <widget class="QPushButton" name="FactCreate">
@@ -107,19 +107,19 @@
     <rect>
      <x>10</x>
      <y>330</y>
-     <width>65</width>
+     <width>40</width>
      <height>30</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>65</width>
+     <width>40</width>
      <height>30</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>65</width>
+     <width>40</width>
      <height>30</height>
     </size>
    </property>
@@ -130,7 +130,7 @@
     </font>
    </property>
    <property name="text">
-    <string>New Fact</string>
+    <string>New</string>
    </property>
   </widget>
   <widget class="QFrame" name="DescriptionFrame">
@@ -140,9 +140,9 @@
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>10</y>
+     <y>40</y>
      <width>211</width>
-     <height>81</height>
+     <height>71</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="DescriptionContainer">
@@ -297,9 +297,9 @@
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>95</y>
-     <width>211</width>
-     <height>101</height>
+     <y>105</y>
+     <width>210</width>
+     <height>100</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -439,6 +439,9 @@
              <height>18</height>
             </size>
            </property>
+           <property name="clearButtonEnabled">
+            <bool>false</bool>
+           </property>
           </widget>
          </item>
         </layout>
@@ -554,6 +557,90 @@
     </item>
    </layout>
   </widget>
+  <widget class="QFrame" name="Type">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>10</y>
+     <width>211</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="TypeFrame">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QLabel" name="TypeLabel">
+      <property name="text">
+       <string>Type:  </string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="TypeIndicator">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="FactDelete_2">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>330</y>
+     <width>40</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>40</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>40</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri Light</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
@@ -593,15 +680,15 @@
    <sender>FactList</sender>
    <signal>itemClicked(QListWidgetItem*)</signal>
    <receiver>FactEditor</receiver>
-   <slot>UpdateFactEditors()</slot>
+   <slot>FactSelected()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>167</y>
+     <x>36</x>
+     <y>152</y>
     </hint>
     <hint type="destinationlabel">
-     <x>4</x>
-     <y>171</y>
+     <x>6</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -609,6 +696,6 @@
  <slots>
   <slot>NewFact()</slot>
   <slot>DeleteFact()</slot>
-  <slot>UpdateFactEditors()</slot>
+  <slot>FactSelected()</slot>
  </slots>
 </ui>
