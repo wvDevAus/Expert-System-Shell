@@ -18,6 +18,10 @@ namespace expert_system::utility {
 
     constexpr auto JSON_ID_CONFIDENCE = "confidence";
 
+    constexpr auto JSON_ID_ROOT = "root";
+
+    constexpr auto JSON_ID_CHAIN = "chain";
+
     constexpr auto JSON_ID_RANGE = "range";
 
     constexpr auto JSON_ID_RANGE_MIN = "min";

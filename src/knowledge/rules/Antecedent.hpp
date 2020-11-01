@@ -53,4 +53,18 @@ namespace expert_system::knowledge::rules {
         std::list<std::pair<ConnectorType, VariantCondition>> condition_chain_;
     };
 
+        /**
+         * @brief Antecedent serialization to JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the Antecedent to export.
+         */
+    void to_json(nlohmann::json& json_sys, const Antecedent& target);
+
+        /**
+         * @brief Antecedent serialization from JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the Antecedent to import.
+         */
+    void from_json(const nlohmann::json& json_sys, Antecedent& target);
+
 } // namespace expert_system::knowledge::rules
