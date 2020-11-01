@@ -610,7 +610,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="FactDelete_2">
+  <widget class="QPushButton" name="FactSave">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -692,10 +692,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>FactSave</sender>
+   <signal>clicked()</signal>
+   <receiver>FactEditor</receiver>
+   <slot>SaveFact()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>127</x>
+     <y>337</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>108</x>
+     <y>340</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>NewFact()</slot>
   <slot>DeleteFact()</slot>
   <slot>FactSelected()</slot>
+  <slot>SaveFact()</slot>
  </slots>
 </ui>
