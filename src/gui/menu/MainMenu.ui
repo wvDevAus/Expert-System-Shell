@@ -53,6 +53,12 @@
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="toolTip">
+     <string>Begin a consultation using backward inferrence.</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
+    </property>
     <property name="text">
      <string>Backwards Inferrencing</string>
     </property>
@@ -83,6 +89,12 @@
       <family>Calibri Light</family>
       <pointsize>10</pointsize>
      </font>
+    </property>
+    <property name="toolTip">
+     <string>Begin a consultation using forward inferrence.</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
     </property>
     <property name="text">
      <string>Forward Inferrencing</string>
@@ -115,6 +127,12 @@
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="toolTip">
+     <string>Opens the Fact editor.</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
+    </property>
     <property name="text">
      <string>Facts</string>
     </property>
@@ -145,6 +163,12 @@
       <family>Calibri Light</family>
       <pointsize>10</pointsize>
      </font>
+    </property>
+    <property name="toolTip">
+     <string>Opens the Rule editor.</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
     </property>
     <property name="text">
      <string>Rules</string>
@@ -202,6 +226,12 @@
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="toolTip">
+     <string>Saves the current Expert System configuration to file.</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
+    </property>
     <property name="text">
      <string>Save</string>
     </property>
@@ -232,6 +262,12 @@
       <family>Calibri Light</family>
       <pointsize>10</pointsize>
      </font>
+    </property>
+    <property name="toolTip">
+     <string>Loads an Expert System configuration from file.</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
     </property>
     <property name="text">
      <string>Load</string>

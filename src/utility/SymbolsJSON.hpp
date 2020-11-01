@@ -34,4 +34,8 @@ namespace expert_system::utility {
 
     constexpr auto JSON_ID_RANGE_INCLUSIVE = "inclusive";
 
+    constexpr auto JSON_ID_DATABASE_FACTS = "database_facts";
+
+    constexpr auto JSON_ID_DATABASE_RULES = "database_rules";
+
 }
