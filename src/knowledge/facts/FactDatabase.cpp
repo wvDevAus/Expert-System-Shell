@@ -1,12 +1,11 @@
 #include "FactDatabase.hpp"
 
-#include <fstream>
 #include <tuple>
 
-namespace expert_system {
+namespace expert_system::knowledge::facts {
 
     std::optional<std::reference_wrapper<VariantFact>> FactDatabase::Create(
-            const std::string& name, FactType type) {
+            const std::string& name, utility::ExpertSystemTypes type) {
         // Catch if the name is already used
         if (stored_facts_.find(name) != stored_facts_.end()) {
             // Stop and indicate failure
@@ -30,6 +29,42 @@ namespace expert_system {
 
         // Gather a reference to the Fact
         return stored_facts_[name];
+    }
+
+    bool FactDatabase::Known(const std::string& name) {
+        // Attempt to Find the requested Fact
+        auto target_fact = Find(name);
+        if (target_fact == std::nullopt) {
+            // Catch an invalid Fact and indicate failure
+            return false;
+        }
+
+        // Check if the Fact has a session value
+        switch (target_fact->get().type_) {
+            case utility::ExpertSystemTypes::kBool: {
+                // Gather the raw data and check if the session value exists
+                auto raw_fact = std::get<BoolFact>(target_fact->get().fact_);
+                return (raw_fact.GetValue() != std::nullopt);
+            }
+            case utility::ExpertSystemTypes::kInt: {
+                // Gather the raw data and check if the session value exists
+                auto raw_fact = std::get<IntFact>(target_fact->get().fact_);
+                return (raw_fact.GetValue() != std::nullopt);
+            }
+            case utility::ExpertSystemTypes::kFloat: {
+                // Gather the raw data and check if the session value exists
+                auto raw_fact = std::get<FloatFact>(target_fact->get().fact_);
+                return (raw_fact.GetValue() != std::nullopt);
+            }
+            case utility::ExpertSystemTypes::kEnum: {
+                // Gather the raw data and check if the session value exists
+                auto raw_fact = std::get<EnumFact>(target_fact->get().fact_);
+                return (raw_fact.fact_.GetValue() != std::nullopt);
+            }
+            default:
+                // Indicate failure
+                return false;
+        }
     }
 
     std::list<std::string> FactDatabase::List() const {
@@ -73,22 +108,22 @@ namespace expert_system {
         for (auto map_iterator: stored_facts_) {
             // Split logic for each Fact type, assume the stored hint is correct
             switch (map_iterator.second.type_) {
-                case FactType::kBoolFact: {
+                case utility::ExpertSystemTypes::kBool: {
                     // Gather a reference to the Fact and clear its session data
                     std::get<BoolFact>(map_iterator.second.fact_).ClearValue();
                     break;
                 }
-                case FactType::kIntFact: {
+                case utility::ExpertSystemTypes::kInt: {
                     // Gather a reference to the Fact and clear its session data
                     std::get<IntFact>(map_iterator.second.fact_).ClearValue();
                     break;
                 }
-                case FactType::kFloatFact: {
+                case utility::ExpertSystemTypes::kFloat: {
                     // Gather a reference to the Fact and clear its session data
                     std::get<FloatFact>(map_iterator.second.fact_).ClearValue();
                     break;
                 }
-                case FactType::kEnumFact: {
+                case utility::ExpertSystemTypes::kEnum: {
                     // Gather a reference to the Fact and clear its session data
                     std::get<EnumFact>(map_iterator.second.fact_).fact_.ClearValue();
                     break;
@@ -117,4 +152,4 @@ namespace expert_system {
         target.stored_facts_ = json_sys.get<std::unordered_map<std::string, VariantFact>>();
     }
 
-} // expert_system
+} // namespace expert_system::knowledge::facts

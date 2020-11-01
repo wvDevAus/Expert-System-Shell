@@ -3,13 +3,13 @@
 #include <optional>
 #include <string>
 
-#include "databases/facts/Value.hpp"
+#include "knowledge/facts/Value.hpp"
 #include "utility/Range.hpp"
 
-namespace expert_system {
+namespace expert_system::knowledge::facts {
 
         /**
-         * @brief Abstract Fact parent, used as the interface for all Facts.
+         * @brief Template Fact.
          * @tparam T The raw type of the Fact.
          */
     template<class T>
@@ -20,8 +20,7 @@ namespace expert_system {
              * Assigns std::nullopt to all optional members.
              * Assigns an empty string to the Fact's description.
              */
-        Fact()
-            : range_(std::nullopt), value_(std::nullopt){};
+        Fact() : range_(std::nullopt), value_(std::nullopt) {};
 
             /**
              * @brief Assigns a Range to the Fact.
@@ -55,7 +54,7 @@ namespace expert_system {
              * @return A copy of range_.
              * @note If the Fact has no Range, this will return std::nullopt.
              */
-        std::optional<Range<T>> GetRange() {
+        std::optional<utility::Range<T>> GetRange() {
             // Just return a copy of range_, not the contents inside of it.
             return range_;
         };
@@ -104,23 +103,22 @@ namespace expert_system {
              * @brief Assigns a session value to the Fact.
              * @param [in] value The session value for the Fact.
              * @param [in] confidence_factor A specifier of the session value's confidence factor.
-             * @param [in] source_event The identifier of the event that generated the session value.
              * @return True if the provided value is within the Fact's Range, False otherwise.
              * @note If the Fact has no Range, this is guaranteed to always return True.
              */
-        bool SetValue(T value, float confidence_factor,
-                      std::optional<int> source_event = std::nullopt) {
+        bool SetValue(T value, utility::Confidence& confidence_factor) {
             // Check if the Fact has an assigned range
             if (range_.has_value()) {
                 // Check if the provided value is not valid
-                if (!Range<T>::InRange(range_.value(), value)) {
+                if (!utility::Range<T>::InRange(range_.value(), value)) {
                     // Catch an invalid value and stop
                     return false;
                 }
             }
 
             // Create the new session value
-            value_.emplace(value, confidence_factor, source_event);
+            value_.emplace(value, confidence_factor);
+            return true;
         };
 
             /**
@@ -128,7 +126,7 @@ namespace expert_system {
              * @return A copy of value_.
              * @note If the Fact has no session value, this will return std::nullopt.
              */
-        std::optional<Value<T>> GetValue() {
+        std::optional<knowledge::facts::Value<T>> GetValue() {
             // Just return a copy of value_.
             return value_;
         };
@@ -147,7 +145,7 @@ namespace expert_system {
              * @brief The Fact's Range.
              * Used to limit the possible set of session values.
              */
-        std::optional<Range<T>> range_;
+        std::optional<utility::Range<T>> range_;
 
             /**
              * @brief A filtered string containing a description of the Fact.
@@ -159,7 +157,7 @@ namespace expert_system {
              * @brief The Fact's session value.
              * Contains the Fact's raw value and metadata.
              */
-        std::optional<Value<T>> value_;
+        std::optional<knowledge::facts::Value<T>> value_;
     };
 
-}// namespace expert_system
+}// namespace expert_system::knowledge::facts

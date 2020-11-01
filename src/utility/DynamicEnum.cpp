@@ -2,11 +2,7 @@
 
 #include <tuple>
 
-namespace expert_system {
-
-    DynamicEnum::DynamicEnum() {
-        // Do nothing, everything here is automated.
-    }
+namespace expert_system::utility {
 
     DynamicEnum::DynamicEnum(const std::list<std::string>& ordered_names) {
         // Iterate through the provided list
@@ -173,4 +169,4 @@ namespace expert_system {
         }
     }
 
-} // namespace expert_system
+} // namespace expert_system::utility

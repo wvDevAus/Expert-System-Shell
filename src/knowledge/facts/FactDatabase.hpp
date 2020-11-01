@@ -9,9 +9,10 @@
 
 #include "nlohmann/json.hpp"
 
-#include "databases/facts/FactTypes.hpp"
+#include "knowledge/facts/Facts.hpp"
+#include "utility/Types.hpp"
 
-namespace expert_system {
+namespace expert_system::knowledge::facts {
 
         /**
          * @brief Type definition for the functions that can be used to iterate through the FactDatabase.
@@ -32,7 +33,7 @@ namespace expert_system {
              * @return A reference to the Fact if successful, or std::nullopt otherwise.
              * @note This will fail if the provided name is already in use.
              */
-        std::optional<std::reference_wrapper<VariantFact>> Create(const std::string& name, FactType type);
+        std::optional<std::reference_wrapper<VariantFact>> Create(const std::string& name, utility::ExpertSystemTypes type);
 
             /**
              * @brief Attempts to gather a stored Fact by name.
@@ -40,6 +41,13 @@ namespace expert_system {
              * @return A reference to the Fact if successful, or std::nullopt otherwise.
              */
         std::optional<std::reference_wrapper<VariantFact>> Find(const std::string& name);
+
+            /**
+             * @brief Checks if a specified Fact has a 'known' (session) value.
+             * @param [in] name The name of the target Fact.
+             * @return True if the Fact could be found with a session value, False otherwise.
+             */
+        bool Known(const std::string& name);
 
             /**
              * @brief Gathers a list of the stored Fact names.
@@ -109,4 +117,4 @@ namespace expert_system {
          */
     void from_json(const nlohmann::json& json_sys, FactDatabase& target);
 
-} // namespace expert_system
+} // namespace expert_system::knowledge::facts

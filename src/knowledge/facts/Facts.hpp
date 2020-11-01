@@ -3,37 +3,24 @@
 #include <optional>
 #include <variant>
 
-#include "databases/facts/Fact.hpp"
+#include "nlohmann/json.hpp"
+
+#include "knowledge/facts/Fact.hpp"
 #include "utility/DynamicEnum.hpp"
+#include "utility/Types.hpp"
 
-namespace expert_system {
+namespace expert_system::knowledge::facts {
 
-        /// Contains symbols
-    enum class FactType {
-        kUnknown,
-        kBoolFact,
-        kIntFact,
-        kFloatFact,
-        kEnumFact
-    };
-
-    NLOHMANN_JSON_SERIALIZE_ENUM(FactType,
-                               {{FactType::kUnknown, nullptr},
-                                {FactType::kBoolFact, "kBoolFact"},
-                                {FactType::kIntFact, "kIntFact"},
-                                {FactType::kFloatFact, "kFloatFact"},
-                                {FactType::kEnumFact, "kEnumFact"}})
-
-        /// Boolean specialization of the Fact template
+        /// Boolean specialization of the Fact template.
     using BoolFact = Fact<bool>;
 
-        /// Integer specialization of the Fact template
+        /// Integer specialization of the Fact template.
     using IntFact = Fact<int>;
 
-        /// Float specialization of the Fact template
+        /// Float specialization of the Fact template.
     using FloatFact = Fact<float>;
 
-        /// Enum 'proxy'/'specialization' of the Fact template
+        /// Enum 'proxy'/'specialization' of the Fact template.
     struct EnumFact {
             /**
              * @brief Default constructor.
@@ -53,7 +40,7 @@ namespace expert_system {
              * @brief The enum values for the Fact, dynamically configurable.
              * @warning Avoid editing this while using the Fact!
              */
-        DynamicEnum enum_;
+        utility::DynamicEnum enum_;
 
             /**
              * @brief The raw Fact, interfacing to the DynamicEnum through an int specialization.
@@ -67,22 +54,25 @@ namespace expert_system {
 
         /// Type-tracked Generic Fact
     struct VariantFact {
-            /// Default constructor.
+            /**
+             * @brief Default constructor.
+             * Sets type_ to kUnknown and fact_ to std::monostate.
+             */
         VariantFact();
 
             /**
              * Parameterized constructor, generates a Fact of a specified type.
-             * @param type The type of Fact to generate and store.
+             * @param [in] type The type of Fact to generate and store.
              */
-        explicit VariantFact(FactType type);
+        explicit VariantFact(utility::ExpertSystemTypes type);
 
             /**
              * @brief A hint for the type of Fact that is stored.
              * @warning This may be incorrect, and should be confirmed before use of the Fact!
              */
-        FactType type_;
+        utility::ExpertSystemTypes type_;
 
-            /// A generic type of Fact.
+            /// The encapsulated Fact.
         GenericFact fact_;
     };
 
@@ -100,4 +90,4 @@ namespace expert_system {
          */
     void from_json(const nlohmann::json& json_sys, VariantFact& target);
 
-} // namespace expert_system
+} // namespace expert_system::knowledge::facts

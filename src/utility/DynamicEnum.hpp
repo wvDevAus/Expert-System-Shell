@@ -7,7 +7,7 @@
 
 #include "nlohmann/json.hpp"
 
-namespace expert_system {
+namespace expert_system::utility {
 
         /**
          * @brief An enumeration system with customizable values.
@@ -16,7 +16,7 @@ namespace expert_system {
     class DynamicEnum {
     public:
             /// Default constructor.
-        DynamicEnum();
+        DynamicEnum() = default;
 
             /**
              * @brief Parameterized constructor, assigns starting enums values.
@@ -137,4 +137,4 @@ namespace expert_system {
          */
     void from_json(const nlohmann::json& json_sys, DynamicEnum& target);
 
-} // namespace expert_system
+} // namespace expert_system::utility

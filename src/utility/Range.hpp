@@ -1,6 +1,6 @@
 #pragma once
 
-namespace expert_system {
+namespace expert_system::utility {
 
         /**
          * @brief A range of valid values for a Fact.
@@ -47,7 +47,7 @@ namespace expert_system {
              */
         static bool InRange(Range<T> range, T value) {
             // Catch if the bounds are also value values
-            if (range.bounds_inclusive) {
+            if (range.bounds_inclusive_) {
                 // Perform the check including bounds and return the result
                 return (range.min_ <= value) && (value <= range.max_);
             }
@@ -56,4 +56,4 @@ namespace expert_system {
         };
     };
 
-}// namespace expert_system
+} // namespace expert_system::utility

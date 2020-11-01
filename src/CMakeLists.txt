@@ -5,6 +5,7 @@ target_sources(${ESS_TARGET_NAME}
 		main.cpp
 
 		# Utility
+		utility/Confidence.cpp
 		utility/DynamicEnum.cpp
 
 		# Main Window
@@ -13,6 +14,14 @@ target_sources(${ESS_TARGET_NAME}
 		gui/mainwindow.ui
 
 		# Fact Database
-		databases/facts/FactTypes.cpp
-		databases/facts/FactDatabase.cpp
+		knowledge/facts/Facts.cpp
+		knowledge/facts/FactDatabase.cpp
+
+		# Rule Database
+		knowledge/rules/Antecedent.cpp
+		knowledge/rules/Assignments.cpp
+		knowledge/rules/Conditions.cpp
+		knowledge/rules/Consequent.cpp
+		knowledge/rules/Rule.cpp
+		knowledge/rules/RuleDatabase.cpp
 )
