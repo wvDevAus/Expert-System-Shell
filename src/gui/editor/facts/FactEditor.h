@@ -16,8 +16,13 @@ public:
     explicit FactEditor(QWidget *parent = nullptr);
 
 private slots:
+    void NewFact();
+    void DeleteFact();
+    void UpdateFactEditors();
 
 private:
-        /// Pointer member to auto-generated MainMenu UI class
+    void UpdateFactList();
+
+        /// Pointer member to auto-generated UI element.
     Ui::FactEditor ui;
 };

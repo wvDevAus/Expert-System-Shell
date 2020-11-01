@@ -29,4 +29,9 @@ target_sources(${ESS_TARGET_NAME}
 		gui/editor/facts/FactEditor.h
 		gui/editor/facts/FactEditor.cpp
 		gui/editor/facts/FactEditor.ui
+
+		# New Fact
+		gui/editor/facts/NewFact.h
+		gui/editor/facts/NewFact.cpp
+		gui/editor/facts/NewFact.ui
 )

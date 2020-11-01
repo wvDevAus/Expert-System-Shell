@@ -9,11 +9,11 @@
 
 #include "nlohmann/json.hpp"
 
+#include "gui/editor/facts/FactEditor.h"
 #include "knowledge/facts/FactDatabase.hpp"
 #include "knowledge/rules/RuleDatabase.hpp"
 #include "utility/Singleton.hpp"
 #include "utility/SymbolsJSON.hpp"
-#include "gui/editor/facts/FactEditor.h"
 
 MainMenu::MainMenu(QWidget *parent) : QMainWindow(parent) {
     // Ensure that the UI is configured
@@ -24,21 +24,21 @@ void MainMenu::SaveExpertSystem() {
     // Present the dialog and get a file name
     QString file_name = QFileDialog::getOpenFileName(
             this,
-            tr("Save Expert System File"),
+            "Save Expert System File",
             "/home",
-            tr("Expert System JSON (*.json);;All files (*)"));
+            "Expert System JSON (*.json);;All files (*)");
     if (file_name.isEmpty()) {
         // Catch the invalid file name and stop
         return;
     }
 
     // Attempt to open the requested file
-    std::ofstream file_stream(file_name.toUtf8().constData(),
+    std::ofstream file_stream(file_name.toStdString(),
                               std::ofstream::out | std::ofstream::ate);
     if (!file_stream.is_open()) {
         // Catch the error and indicate failure
         QMessageBox error_indication;
-        error_indication.setText(tr("Unable to open file \"") + file_name + tr("\""));
+        error_indication.setText("Unable to open file \"" + file_name + "\"");
         error_indication.exec();
         return;
     }
@@ -59,20 +59,20 @@ void MainMenu::LoadExpertSystem() {
     // Present the dialog and get a file name
     QString file_name = QFileDialog::getOpenFileName(
             this,
-            tr("Save Expert System File"),
+            "Save Expert System File",
             "/home",
-            tr("Expert System JSON (*.json);;All files (*)"));
+            "Expert System JSON (*.json);;All files (*)");
     if (file_name.isEmpty()) {
         // Catch the invalid file name and stop
         return;
     }
 
     // Attempt to open the requested file
-    std::ifstream file_stream(file_name.toUtf8().constData(), std::ifstream::in);
+    std::ifstream file_stream(file_name.toStdString(), std::ifstream::in);
     if (!file_stream.is_open()) {
         // Catch the error and indicate failure
         QMessageBox error_indication;
-        error_indication.setText(tr("Unable to open file \"") + file_name + tr("\""));
+        error_indication.setText("Unable to open file \"" + file_name + "\"");
         error_indication.exec();
         return;
     }
@@ -86,14 +86,14 @@ void MainMenu::LoadExpertSystem() {
     if (json_store.find(expert_system::utility::JSON_ID_DATABASE_FACTS) == json_store.end()) {
         // Catch the error and indicate failure
         QMessageBox error_indication;
-        error_indication.setText(tr("Could not load the Fact Database from \"") + file_name + tr("\""));
+        error_indication.setText("Could not load the Fact Database from \"" + file_name + "\"");
         error_indication.exec();
         return;
     }
     if (json_store.find(expert_system::utility::JSON_ID_DATABASE_RULES) == json_store.end()) {
         // Catch the error and indicate failure
         QMessageBox error_indication;
-        error_indication.setText(tr("Could not load the Rule Database from \"") + file_name + tr("\""));
+        error_indication.setText("Could not load the Rule Database from \"" + file_name + "\"");
         error_indication.exec();
         return;
     }

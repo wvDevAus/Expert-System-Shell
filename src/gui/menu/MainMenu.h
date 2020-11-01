@@ -53,6 +53,6 @@ private slots:
     void BackwardInferrencingConsult();
 
 private:
-        /// Pointer member to auto-generated MainMenu UI class
+        /// Pointer member to auto-generated UI element.
     Ui::MainMenu ui;
 };
