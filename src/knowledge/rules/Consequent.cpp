@@ -44,7 +44,7 @@ namespace expert_system::knowledge::rules {
     void from_json(const nlohmann::json& json_sys, Consequent& target) {
         // Attempt to gather the Assignments
         if (!json_sys.empty()) {
-            // Store the condition chain
+            // Store the list of Assignments
             target.assignments_ = json_sys.get<std::list<VariantAssignment>>();
         }
     }
