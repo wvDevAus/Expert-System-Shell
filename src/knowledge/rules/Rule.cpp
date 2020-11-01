@@ -2,6 +2,8 @@
 
 #include <variant>
 
+#include "utility/SymbolsJSON.hpp"
+
 namespace expert_system::knowledge::rules {
 
     std::optional<std::set<std::string>> Rule::TriggerFacts() {
@@ -113,6 +115,49 @@ namespace expert_system::knowledge::rules {
     std::string Rule::GetDescription() {
         // Simply provide a copy of the stored string
         return description_;
+    }
+
+    void to_json(nlohmann::json& json_sys, const Rule& target) {
+        // Export the trigger
+        json_sys[utility::JSON_ID_ANTECEDENT] = target.trigger_;
+
+        // Export the response
+        json_sys[utility::JSON_ID_CONSEQUENT] = target.response_;
+
+        // Export the description
+        json_sys[utility::JSON_ID_DESCRIPTION] = target.description_;
+    }
+
+    void from_json(const nlohmann::json& json_sys, Rule& target) {
+        // Clear the Rule's existing data
+        target = Rule();
+
+        // Attempt to find the Rule's trigger
+        if (json_sys.find(utility::JSON_ID_ANTECEDENT) != json_sys.end()) {
+            // Attempt to gather the description
+            if (json_sys.at(utility::JSON_ID_ANTECEDENT).is_object()) {
+                // Store the description
+                target.trigger_ = json_sys.at(utility::JSON_ID_ANTECEDENT).get<Antecedent>();
+            }
+        }
+
+        // Attempt to find the Rule's response
+        if (json_sys.find(utility::JSON_ID_CONSEQUENT) != json_sys.end()) {
+            // Attempt to gather the description
+            if (json_sys.at(utility::JSON_ID_CONSEQUENT).is_object()) {
+                // Store the description
+                target.response_ = json_sys.at(utility::JSON_ID_CONSEQUENT).get<Consequent>();
+            }
+        }
+
+        // Attempt to find the Rule's description
+        if (json_sys.find(utility::JSON_ID_DESCRIPTION) != json_sys.end()) {
+            // Attempt to gather the description
+            if (json_sys.at(utility::JSON_ID_DESCRIPTION).is_string()) {
+                // Store the description
+                target.SetDescription(json_sys.at(utility::JSON_ID_DESCRIPTION).get<std::string>());
+            }
+        }
     }
 
 } // namespace expert_system::knowledge::rules

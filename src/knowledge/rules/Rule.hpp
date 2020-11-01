@@ -70,6 +70,26 @@ namespace expert_system::knowledge::rules {
              * May be completely empty.
              */
         std::string description_;
+
+            /// Enables JSON serializer access to private contents
+        friend void to_json(nlohmann::json& json_sys, const Rule& target);
+
+            /// Enables JSON serializer access to private contents
+        friend void from_json(const nlohmann::json& json_sys, Rule& target);
     };
+
+        /**
+         * @brief Rule serialization to JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the Rule to export.
+         */
+    void to_json(nlohmann::json& json_sys, const Rule& target);
+
+        /**
+         * @brief Rule serialization from JSON format.
+         * @param [in] json_sys A reference to a JSON object.
+         * @param [in,out] target A reference to the Rule to import.
+         */
+    void from_json(const nlohmann::json& json_sys, Rule& target);
 
 }

@@ -18,6 +18,10 @@ namespace expert_system::utility {
 
     constexpr auto JSON_ID_CONFIDENCE = "confidence";
 
+    constexpr auto JSON_ID_ANTECEDENT = "antecedent";
+
+    constexpr auto JSON_ID_CONSEQUENT = "consequent";
+
     constexpr auto JSON_ID_ROOT = "root";
 
     constexpr auto JSON_ID_CHAIN = "chain";
