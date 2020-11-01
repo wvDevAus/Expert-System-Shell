@@ -113,7 +113,7 @@ namespace expert_system::knowledge::facts {
         /**
          * @brief FactDatabase serialization from JSON format.
          * @param [in,out] json_sys A reference to a JSON object.
-         * @param [in] target A reference to the FactDatabase to export.
+         * @param [in] target A reference to the FactDatabase to import.
          */
     void from_json(const nlohmann::json& json_sys, FactDatabase& target);
 
