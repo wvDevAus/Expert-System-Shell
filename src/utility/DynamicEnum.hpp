@@ -133,7 +133,7 @@ namespace expert_system::utility {
         /**
          * @brief DynamicEnum serialization from JSON format.
          * @param [in,out] json_sys A reference to a JSON object.
-         * @param [in] target A reference to the DynamicEnum to export.
+         * @param [in] target A reference to the DynamicEnum to import.
          */
     void from_json(const nlohmann::json& json_sys, DynamicEnum& target);
 
