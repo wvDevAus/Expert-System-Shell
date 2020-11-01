@@ -21,15 +21,11 @@ namespace expert_system::knowledge::facts {
              * @brief Parameterized constructor, automatically assigns metadata.
              * @param [in] value The session value for the Fact.
              * @param [in] confidence_factor A specifier of the session value's confidence factor.
-             * @param [in] source The name of the Rule that triggered this Assignment, or std::nullopt to indicate the user.
              */
-        Value(T value, utility::Confidence& confidence_factor,
-              std::optional<std::reference_wrapper<std::string>> source_event = std::nullopt)
+        Value(T value, utility::Confidence& confidence_factor)
             : value_(value), confidence_factor_(confidence_factor) {
             // Generate and store a timestamp
             timestamp_ = std::chrono::system_clock::now();
-
-            // TODO: Log the generation of this session value.
         };
 
             /// The session value of a Fact.

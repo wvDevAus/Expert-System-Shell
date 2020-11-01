@@ -21,12 +21,10 @@ namespace expert_system::knowledge::rules {
             /**
              * @brief Attempts to perform the stored Assignments.
              * @param [in] database The Fact Database to operate on.
-             * @param [in] source The name of the Rule that triggered this Assignment, or std::nullopt to indicate the user.
              * @param [in] confidence_factor The confidence factor from the triggered Condition.
              * @warning Assignments may fail, and will do so silently!
              */
         void Assign(facts::FactDatabase& database,
-                    std::optional<std::reference_wrapper<std::string>> source,
                     utility::Confidence& confidence_factor);
 
             /**
