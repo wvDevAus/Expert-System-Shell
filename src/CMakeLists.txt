@@ -8,11 +8,6 @@ target_sources(${ESS_TARGET_NAME}
 		utility/Confidence.cpp
 		utility/DynamicEnum.cpp
 
-		# Main Window
-		gui/mainwindow.h
-		gui/mainwindow.cpp
-		gui/mainwindow.ui
-
 		# Fact Database
 		knowledge/facts/Facts.cpp
 		knowledge/facts/FactDatabase.cpp
@@ -24,4 +19,9 @@ target_sources(${ESS_TARGET_NAME}
 		knowledge/rules/Consequent.cpp
 		knowledge/rules/Rule.cpp
 		knowledge/rules/RuleDatabase.cpp
+
+		# Main Menu
+		gui/menu/MainMenu.h
+		gui/menu/MainMenu.cpp
+		gui/menu/MainMenu.ui
 )
