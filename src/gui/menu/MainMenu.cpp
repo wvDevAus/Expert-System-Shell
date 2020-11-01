@@ -13,6 +13,7 @@
 #include "knowledge/rules/RuleDatabase.hpp"
 #include "utility/Singleton.hpp"
 #include "utility/SymbolsJSON.hpp"
+#include "gui/editor/facts/FactEditor.h"
 
 MainMenu::MainMenu(QWidget *parent) : QMainWindow(parent) {
     // Ensure that the UI is configured
@@ -107,17 +108,22 @@ void MainMenu::LoadExpertSystem() {
 }
 
 void MainMenu::RulesDomainKnowledge() {
-
+    // Open the RuleEditor dialog
+    // TODO: Create the RuleEditor dialog
 }
 
 void MainMenu::FactsDomainKnowledge() {
-
+    // Open the FactEditor dialog
+    FactEditor modal_dialog(this);
+    modal_dialog.exec();
 }
 
 void MainMenu::ForwardInferrencingConsult() {
-
+    // Open the ConsultForwardsChain dialog
+    // TODO: Create the ConsultForwardsChain dialog
 }
 
 void MainMenu::BackwardInferrencingConsult() {
-
+    // Open the ConsultBackwardsChain dialog
+    // TODO: Create the ConsultBackwardsChain dialog
 }

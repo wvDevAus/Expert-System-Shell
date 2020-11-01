@@ -24,4 +24,9 @@ target_sources(${ESS_TARGET_NAME}
 		gui/menu/MainMenu.h
 		gui/menu/MainMenu.cpp
 		gui/menu/MainMenu.ui
+
+		# Fact Editor
+		gui/editor/facts/FactEditor.h
+		gui/editor/facts/FactEditor.cpp
+		gui/editor/facts/FactEditor.ui
 )

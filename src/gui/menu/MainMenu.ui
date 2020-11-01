@@ -361,70 +361,6 @@
  <resources/>
  <connections>
   <connection>
-   <sender>ConsultationForward</sender>
-   <signal>clicked()</signal>
-   <receiver>MainMenu</receiver>
-   <slot>ForwardInferrencingConsult()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>76</x>
-     <y>51</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>4</x>
-     <y>34</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ConsultationBackward</sender>
-   <signal>clicked()</signal>
-   <receiver>MainMenu</receiver>
-   <slot>BackwardInferrencingConsult()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>46</x>
-     <y>115</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>3</x>
-     <y>97</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>DomainKnowledgeFacts</sender>
-   <signal>clicked()</signal>
-   <receiver>MainMenu</receiver>
-   <slot>FactsDomainKnowledge()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>184</x>
-     <y>49</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>166</x>
-     <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>DomainKnowledgeRules</sender>
-   <signal>clicked()</signal>
-   <receiver>MainMenu</receiver>
-   <slot>RulesDomainKnowledge()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>265</x>
-     <y>57</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>164</x>
-     <y>98</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>SystemSave</sender>
    <signal>clicked()</signal>
    <receiver>MainMenu</receiver>
@@ -453,6 +389,70 @@
     <hint type="destinationlabel">
      <x>239</x>
      <y>109</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>DomainKnowledgeRules</sender>
+   <signal>clicked()</signal>
+   <receiver>MainMenu</receiver>
+   <slot>RulesDomainKnowledge()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>265</x>
+     <y>57</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>98</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>DomainKnowledgeFacts</sender>
+   <signal>clicked()</signal>
+   <receiver>MainMenu</receiver>
+   <slot>FactsDomainKnowledge()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>184</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>166</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ConsultationBackward</sender>
+   <signal>clicked()</signal>
+   <receiver>MainMenu</receiver>
+   <slot>BackwardInferrencingConsult()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>46</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>97</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ConsultationForward</sender>
+   <signal>clicked()</signal>
+   <receiver>MainMenu</receiver>
+   <slot>ForwardInferrencingConsult()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>76</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>34</y>
     </hint>
    </hints>
   </connection>
