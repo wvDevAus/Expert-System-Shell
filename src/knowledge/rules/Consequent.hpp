@@ -34,4 +34,18 @@ namespace expert_system::knowledge::rules {
         std::list<VariantAssignment> assignments_;
     };
 
+        /**
+         * @brief Consequent serialization to JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the Consequent to export.
+         */
+    void to_json(nlohmann::json& json_sys, const Consequent& target);
+
+        /**
+         * @brief Consequent serialization from JSON format.
+         * @param [in] json_sys A reference to a JSON object.
+         * @param [in,out] target A reference to the Consequent to import.
+         */
+    void from_json(const nlohmann::json& json_sys, Consequent& target);
+
 } // namespace expert_system::knowledge::rules

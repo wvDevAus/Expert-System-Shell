@@ -36,4 +36,17 @@ namespace expert_system::knowledge::rules {
         }
     }
 
+    void to_json(nlohmann::json& json_sys, const Consequent& target) {
+        // Export the list of Assignments
+        json_sys = target.assignments_;
+    }
+
+    void from_json(const nlohmann::json& json_sys, Consequent& target) {
+        // Attempt to gather the Assignments
+        if (!json_sys.empty()) {
+            // Store the condition chain
+            target.assignments_ = json_sys.get<std::list<VariantAssignment>>();
+        }
+    }
+
 } // namespace expert_system::knowledge::rules

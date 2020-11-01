@@ -63,8 +63,8 @@ namespace expert_system::utility {
 
         /**
          * @brief Confidence serialization from JSON format.
-         * @param [in,out] json_sys A reference to a JSON object.
-         * @param [in] target A reference to the Confidence to import.
+         * @param [in] json_sys A reference to a JSON object.
+         * @param [in,out] target A reference to the Confidence to import.
          */
     void from_json(const nlohmann::json& json_sys, Confidence& target);
 
