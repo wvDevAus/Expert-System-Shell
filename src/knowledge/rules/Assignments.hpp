@@ -47,4 +47,18 @@ namespace expert_system::knowledge::rules {
         GenericAssignment assignment_;
     };
 
+        /**
+         * @brief VariantAssignment serialization to JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the VariantAssignment to export.
+         */
+    void to_json(nlohmann::json& json_sys, const VariantAssignment& target);
+
+        /**
+         * @brief VariantFact serialization from JSON format.
+         * @param [in,out] json_sys A reference to a JSON object.
+         * @param [in] target A reference to the VariantAssignment to import.
+         */
+    void from_json(const nlohmann::json& json_sys, VariantAssignment& target);
+
 } // namespace expert_system::knowledge::rules

@@ -323,7 +323,7 @@ namespace expert_system::knowledge::rules {
                 // Attempt to find the condition type
                 if (json_sys.find(utility::JSON_ID_CONDITION) != json_sys.end()) {
                     // Attempt to gather the condition type
-                    if (!json_sys.at(utility::JSON_ID_CONDITION).is_null()) {
+                    if (json_sys.at(utility::JSON_ID_CONDITION).is_string()) {
                         // Store the condition type
                         target_condition.condition_ = json_sys.at(utility::JSON_ID_CONDITION).get<ConditionType>();
                     }
@@ -376,7 +376,7 @@ namespace expert_system::knowledge::rules {
                 // Attempt to find the condition type
                 if (json_sys.find(utility::JSON_ID_CONDITION) != json_sys.end()) {
                     // Attempt to gather the condition type
-                    if (!json_sys.at(utility::JSON_ID_CONDITION).is_null()) {
+                    if (json_sys.at(utility::JSON_ID_CONDITION).is_string()) {
                         // Store the condition type
                         target_condition.condition_ = json_sys.at(utility::JSON_ID_CONDITION).get<ConditionType>();
                     }
@@ -429,7 +429,7 @@ namespace expert_system::knowledge::rules {
                 // Attempt to find the condition type
                 if (json_sys.find(utility::JSON_ID_CONDITION) != json_sys.end()) {
                     // Attempt to gather the condition type
-                    if (!json_sys.at(utility::JSON_ID_CONDITION).is_null()) {
+                    if (json_sys.at(utility::JSON_ID_CONDITION).is_string()) {
                         // Store the condition type
                         target_condition.condition_ = json_sys.at(utility::JSON_ID_CONDITION).get<ConditionType>();
                     }
@@ -482,7 +482,7 @@ namespace expert_system::knowledge::rules {
                 // Attempt to find the condition type
                 if (json_sys.find(utility::JSON_ID_CONDITION) != json_sys.end()) {
                     // Attempt to gather the condition type
-                    if (!json_sys.at(utility::JSON_ID_CONDITION).is_null()) {
+                    if (json_sys.at(utility::JSON_ID_CONDITION).is_string()) {
                         // Store the condition type
                         target_condition.condition_ = json_sys.at(utility::JSON_ID_CONDITION).get<ConditionType>();
                     }
