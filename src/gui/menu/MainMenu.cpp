@@ -10,6 +10,7 @@
 #include "nlohmann/json.hpp"
 
 #include "gui/editor/facts/FactEditor.h"
+#include "gui/editor/rules/RuleEditor.h"
 #include "knowledge/facts/FactDatabase.hpp"
 #include "knowledge/rules/RuleDatabase.hpp"
 #include "utility/Singleton.hpp"
@@ -109,7 +110,8 @@ void MainMenu::LoadExpertSystem() {
 
 void MainMenu::RulesDomainKnowledge() {
     // Open the RuleEditor dialog
-    // TODO: Create the RuleEditor dialog
+    RuleEditor modal_dialog(this);
+    modal_dialog.exec();
 }
 
 void MainMenu::FactsDomainKnowledge() {

@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>RuleEditor</string>
+   <string>Rule Editor</string>
   </property>
   <widget class="QListWidget" name="RuleList">
    <property name="geometry">
@@ -52,8 +52,11 @@
      <pointsize>10</pointsize>
     </font>
    </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
    <property name="frameShadow">
-    <enum>QFrame::Sunken</enum>
+    <enum>QFrame::Plain</enum>
    </property>
    <property name="horizontalScrollBarPolicy">
     <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -102,7 +105,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Delete</string>
+    <string>Delete Rule</string>
+   </property>
+   <property name="flat">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="RuleCreate">
@@ -133,7 +139,10 @@
     </font>
    </property>
    <property name="text">
-    <string>New</string>
+    <string>New Rule</string>
+   </property>
+   <property name="flat">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QFrame" name="RuleFrame">
@@ -161,10 +170,10 @@
     </size>
    </property>
    <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+    <enum>QFrame::NoFrame</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+    <enum>QFrame::Plain</enum>
    </property>
    <widget class="QFrame" name="DescriptionFrame">
     <property name="enabled">
@@ -202,8 +211,11 @@
          <pointsize>10</pointsize>
         </font>
        </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
        <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+        <enum>QFrame::Plain</enum>
        </property>
        <property name="horizontalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -247,10 +259,10 @@
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Plain</enum>
     </property>
     <widget class="QListWidget" name="ConditionList">
      <property name="geometry">
@@ -279,8 +291,11 @@
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
      <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
+      <enum>QFrame::Plain</enum>
      </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -361,6 +376,9 @@
      </property>
      <property name="text">
       <string>New</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QPushButton" name="ConditionSave">
@@ -753,10 +771,10 @@
      </rect>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Plain</enum>
     </property>
     <widget class="QListWidget" name="AssignmentList">
      <property name="geometry">
@@ -785,8 +803,11 @@
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
      <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
+      <enum>QFrame::Plain</enum>
      </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -1145,15 +1166,6 @@
   <tabstop>AssignmentDelete</tabstop>
   <tabstop>AssignmentSave</tabstop>
   <tabstop>DescriptionEditor</tabstop>
-  <tabstop>ConditionCreate_2</tabstop>
-  <tabstop>ConditionSave_2</tabstop>
-  <tabstop>TypeIndicator_2</tabstop>
-  <tabstop>FactSelector_2</tabstop>
-  <tabstop>OperationSelection_2</tabstop>
-  <tabstop>TargetEditor_2</tabstop>
-  <tabstop>ConfidenceEditor_2</tabstop>
-  <tabstop>ConditionList_2</tabstop>
-  <tabstop>ConditionDelete_2</tabstop>
  </tabstops>
  <resources/>
  <connections>
