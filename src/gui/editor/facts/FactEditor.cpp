@@ -12,6 +12,7 @@
 #include <QString>
 
 #include "gui/editor/facts/NewFact.h"
+#include "gui/editor/facts/NewEnum.h"
 #include "knowledge/facts/Facts.hpp"
 #include "knowledge/facts/FactDatabase.hpp"
 #include "utility/Singleton.hpp"
@@ -493,6 +494,7 @@ void FactEditor::UpdateFactEditors() {
                 }
                 element_counter++;
             }
+            ui.EnumerationFrame->setEnabled(true);
 
             // Check if the Fact has a Range
             if (fact_raw.fact_.GetRange() != std::nullopt) {
@@ -547,7 +549,33 @@ void FactEditor::EnumSelected() {
 }
 
 void FactEditor::NewEnum() {
+    // Get access to the database and check the Fact exists
+    auto& database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
+    if (database.Find(selectedFact.value()) == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit invalid Fact!");
+        error_indication.exec();
+        return;
+    }
 
+    // Catch an invalid type
+    auto& fact_target = database.Find(selectedFact.value()).value().get();
+    if (fact_target.type_ != expert_system::utility::ExpertSystemTypes::kEnum) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit Enumeration on this type of Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Open the NewEnum dialog
+    auto& fact_enum = std::get<expert_system::knowledge::facts::EnumFact>(fact_target.fact_);
+    class NewEnum modal_dialog(this, fact_enum);
+    modal_dialog.exec();
+
+    // Update the Fact editors
+    UpdateFactEditors();
 }
 
 void FactEditor::DeleteEnum() {

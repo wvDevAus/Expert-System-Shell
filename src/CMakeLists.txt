@@ -34,4 +34,9 @@ target_sources(${ESS_TARGET_NAME}
 		gui/editor/facts/NewFact.h
 		gui/editor/facts/NewFact.cpp
 		gui/editor/facts/NewFact.ui
+
+		# New Enum
+		gui/editor/facts/NewEnum.h
+		gui/editor/facts/NewEnum.cpp
+		gui/editor/facts/NewEnum.ui
 )

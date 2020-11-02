@@ -74,5 +74,5 @@ void NewFact::CreateNewFact() {
     }
 
     // End the Dialog
-    this->reject();
+    this->accept();
 }
