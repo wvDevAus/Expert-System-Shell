@@ -34,6 +34,15 @@ private slots:
         /// Updates the Range editor UI to be locked/unlocked.
     void UpdateRangeLock();
 
+        /// Processes a selected Enum.
+    void EnumSelected();
+
+        /// Opens a new dialog for the user to create a new Fact Enum value.
+    void NewEnum();
+
+        /// Attempts to delete the currently selected Enum from the current editor values, also deletes the Range.
+    void DeleteEnum();
+
 private:
         /// Disables and removes the data from all editors.
     void ClearFactEditors();
@@ -46,6 +55,9 @@ private:
 
         /// Stores the name of the currently selected Fact.
     std::optional<std::string> selectedFact;
+
+        /// Stores the name of the currently selected enumeration.
+    std::optional<std::string> selectedEnum;
 
         /// Pointer member to auto-generated UI element.
     Ui::FactEditor ui;

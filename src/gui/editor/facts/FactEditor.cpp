@@ -284,6 +284,9 @@ void FactEditor::UpdateRangeLock() {
 }
 
 void FactEditor::ClearFactEditors() {
+    // Clear the selected enum value
+    selectedEnum = std::nullopt;
+
     // Clear and lock type editor
     ui.TypeIndicator->setText("");
     ui.Type->setEnabled(false);
@@ -527,6 +530,68 @@ void FactEditor::UpdateFactEditors() {
             break;
         }
     }
+}
+
+void FactEditor::EnumSelected() {
+    // Track the selected Enum's name
+    auto selection = ui.EnumerationEditor->currentItem();
+    if (selection == nullptr) {
+        // Indicate no Fact is currently stored and stop
+        selectedEnum = std::nullopt;
+        ClearFactEditors();
+        return;
+    }
+
+    // Gather the name of the Enum
+    selectedEnum = selection->text().toStdString();
+}
+
+void FactEditor::NewEnum() {
+
+}
+
+void FactEditor::DeleteEnum() {
+    // Find the selected list Enum
+    if (selectedFact == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit unselected Fact!");
+        error_indication.exec();
+        return;
+    }
+    if (selectedEnum == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot delete unselected Enum!");
+        error_indication.exec();
+        return;
+    }
+
+    // Catch if the current Fact is valid
+    auto& database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
+    auto target_fact = database.Find(selectedFact.value());
+    if (target_fact == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit invalid Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Catch if the current Fact is the correct type
+    if (target_fact.value().get().type_ != expert_system::utility::ExpertSystemTypes::kEnum) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit enumeration values of a non-Enum Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Update the Fact
+    auto& raw_fact = std::get<expert_system::knowledge::facts::EnumFact>(target_fact.value().get().fact_);
+    raw_fact.fact_.ClearRange();
+    raw_fact.enum_.Remove(selectedEnum.value());
+    UpdateFactEditors();
 }
 
 void FactEditor::UpdateFactList() {
