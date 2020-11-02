@@ -31,6 +31,9 @@ private slots:
         /// Processes a selected Fact.
     void FactSelected();
 
+        /// Updates the Range editor UI to be locked/unlocked.
+    void UpdateRangeLock();
+
 private:
         /// Disables and removes the data from all editors.
     void ClearFactEditors();

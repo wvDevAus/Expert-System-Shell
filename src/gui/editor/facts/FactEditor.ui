@@ -142,10 +142,22 @@
      <x>160</x>
      <y>40</y>
      <width>211</width>
-     <height>71</height>
+     <height>61</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="DescriptionContainer">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <property name="spacing">
      <number>0</number>
     </property>
@@ -203,6 +215,18 @@
    <layout class="QVBoxLayout" name="EnumerationContainer">
     <property name="spacing">
      <number>2</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
     </property>
     <item>
      <widget class="QLabel" name="EnumerationLabel">
@@ -296,9 +320,9 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>150</x>
      <y>105</y>
-     <width>210</width>
+     <width>221</width>
      <height>100</height>
     </rect>
    </property>
@@ -307,7 +331,7 @@
      <number>0</number>
     </property>
     <property name="leftMargin">
-     <number>0</number>
+     <number>6</number>
     </property>
     <property name="topMargin">
      <number>0</number>
@@ -382,6 +406,15 @@
        <property name="sizeConstraint">
         <enum>QLayout::SetFixedSize</enum>
        </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <layout class="QHBoxLayout" name="MinimumContainer">
          <property name="spacing">
@@ -429,7 +462,7 @@
           <widget class="QLineEdit" name="MinimumEditor">
            <property name="minimumSize">
             <size>
-             <width>142</width>
+             <width>135</width>
              <height>0</height>
             </size>
            </property>
@@ -493,7 +526,7 @@
           <widget class="QLineEdit" name="MaximumEditor">
            <property name="minimumSize">
             <size>
-             <width>142</width>
+             <width>135</width>
              <height>0</height>
             </size>
            </property>
@@ -514,6 +547,9 @@
          </property>
          <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
           <widget class="QCheckBox" name="InclusiveCheckbox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -708,11 +744,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>RangeCheckbox</sender>
+   <signal>clicked()</signal>
+   <receiver>FactEditor</receiver>
+   <slot>UpdateRangeLock()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>195</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>155</x>
+     <y>177</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>NewFact()</slot>
   <slot>DeleteFact()</slot>
   <slot>FactSelected()</slot>
   <slot>SaveFact()</slot>
+  <slot>UpdateRangeLock()</slot>
  </slots>
 </ui>
