@@ -39,4 +39,9 @@ target_sources(${ESS_TARGET_NAME}
 		gui/editor/facts/NewEnum.h
 		gui/editor/facts/NewEnum.cpp
 		gui/editor/facts/NewEnum.ui
+
+		# Rule Editor
+		gui/editor/rules/RuleEditor.h
+		gui/editor/rules/RuleEditor.cpp
+		gui/editor/rules/RuleEditor.ui
 )
