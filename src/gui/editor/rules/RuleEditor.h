@@ -56,6 +56,15 @@ private slots:
     void AssignmentFactSelected();
 
 private:
+        /// Updates the contents of the Rule list.
+    void UpdateRuleList();
+
+        /// Updates the contents of the Rule editors.
+    void UpdateRuleEditors();
+
+        /// Resets the state and contents of the Rule editors.
+    void ClearRuleEditors();
+
         /// Pointer member to auto-generated UI element.
     Ui::RuleEditor ui;
 };

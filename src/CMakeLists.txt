@@ -44,4 +44,9 @@ target_sources(${ESS_TARGET_NAME}
 		gui/editor/rules/RuleEditor.h
 		gui/editor/rules/RuleEditor.cpp
 		gui/editor/rules/RuleEditor.ui
+
+		# New Rule
+		gui/editor/rules/NewRule.h
+		gui/editor/rules/NewRule.cpp
+		gui/editor/rules/NewRule.ui
 )
