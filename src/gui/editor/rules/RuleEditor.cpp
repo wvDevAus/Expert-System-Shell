@@ -534,7 +534,53 @@ void RuleEditor::DeleteAssignment() {
 }
 
 void RuleEditor::SaveAssignment() {
-    //TODO: this
+    // Get the selected Rule
+    auto& rule_database = expert_system::utility::Singleton<expert_system::knowledge::rules::RuleDatabase>::Get();
+    auto& selected_rule = rule_database.managed_rules_.at(current_rule_name_.value());
+
+    // Get the reference to the selected Assignment
+    auto selected_assignment = selected_rule.response_.assignments_.begin();
+    std::advance(selected_assignment, current_response_index_.value());
+
+    // Split logic depending on the Assignment's type
+    switch (selected_assignment->type_) {
+        case expert_system::utility::ExpertSystemTypes::kBool: {
+            // Get the raw Assignment
+            auto& raw_assignment = std::get<expert_system::knowledge::rules::BoolAssignment>(selected_assignment->assignment_);
+
+            // Store the value
+            raw_assignment.value_ = (QString("True").compare(ui.ValueEditor->text()) == 0);
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kInt: {
+            // Get the raw Assignment
+            auto& raw_assignment = std::get<expert_system::knowledge::rules::IntAssignment>(selected_assignment->assignment_);
+
+            // Store the value
+            raw_assignment.value_ = ui.ValueEditor->text().toInt();
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kFloat: {
+            // Get the raw Assignment
+            auto& raw_assignment = std::get<expert_system::knowledge::rules::FloatAssignment>(selected_assignment->assignment_);
+
+            // Store the value
+            raw_assignment.value_ = ui.ValueEditor->text().toFloat();
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kEnum: {
+            // Get the raw Assignment
+            auto& raw_assignment = std::get<expert_system::knowledge::rules::EnumAssignment>(selected_assignment->assignment_);
+
+            // Store the value
+            raw_assignment.value_ = ui.ValueEditor->text().toStdString();
+            break;
+        }
+        default: {
+            // Do nothing
+            break;
+        }
+    }
 }
 
 void RuleEditor::UpdateRuleEditor() {

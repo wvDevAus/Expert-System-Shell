@@ -1287,15 +1287,19 @@
   <tabstop>RuleCreate</tabstop>
   <tabstop>RuleDelete</tabstop>
   <tabstop>ConditionList</tabstop>
-  <tabstop>TypeIndicatorCondition</tabstop>
-  <tabstop>OperationSelection</tabstop>
-  <tabstop>TargetEditor</tabstop>
-  <tabstop>ConfidenceEditor</tabstop>
   <tabstop>ConditionCreate</tabstop>
   <tabstop>ConditionDelete</tabstop>
   <tabstop>ConditionSave</tabstop>
+  <tabstop>TypeIndicatorCondition</tabstop>
+  <tabstop>FactIndicatorCondition</tabstop>
+  <tabstop>OperationLabelInversion</tabstop>
+  <tabstop>OperationSelection</tabstop>
+  <tabstop>TargetEditor</tabstop>
+  <tabstop>ConfidenceEditor</tabstop>
+  <tabstop>ConnectorSelection</tabstop>
   <tabstop>AssignmentList</tabstop>
   <tabstop>TypeIndicatorAssignment</tabstop>
+  <tabstop>FactIndicatorAssignment</tabstop>
   <tabstop>ValueEditor</tabstop>
   <tabstop>AssignmentCreate</tabstop>
   <tabstop>AssignmentDelete</tabstop>
