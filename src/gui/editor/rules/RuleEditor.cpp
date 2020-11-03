@@ -2,6 +2,7 @@
 
 #include <QMessageBox>
 
+#include "gui/editor/rules/NewAssignment.h"
 #include "gui/editor/rules/NewCondition.h"
 #include "gui/editor/rules/NewRule.h"
 #include "knowledge/rules/Antecedent.hpp"
@@ -136,6 +137,7 @@ void RuleEditor::AssignmentSelected() {
 void RuleEditor::NewAssignment() {
     // Get the database and check the current rule is valid
     auto& database = expert_system::utility::Singleton<expert_system::knowledge::rules::RuleDatabase>::Get().managed_rules_;
+    auto current_rule = database.find(current_rule_name_.value());
     if (database.find(current_rule_name_.value()) == database.end()) {
         // Catch the error and indicate failure
         QMessageBox error_indication;
@@ -144,8 +146,9 @@ void RuleEditor::NewAssignment() {
         return;
     }
 
-    // Create the new Assignment
-    //TODO: rewrite this with an additional dialog
+    // Pass the Condition creation over to a new dialog
+    class NewAssignment assignment_dialog(this, current_rule->second);
+    assignment_dialog.exec();
 
     // Refresh only this editor
     UpdateConsequentEditor();
@@ -179,7 +182,7 @@ void RuleEditor::DeleteAssignment() {
 
     // Remove the user's selection and update the editor
     current_response_index_ = std::nullopt;
-    UpdateAntecedentEditor();
+    UpdateConsequentEditor();
 }
 
 void RuleEditor::SaveAssignment() {

@@ -54,4 +54,9 @@ target_sources(${ESS_TARGET_NAME}
 		gui/editor/rules/NewCondition.h
 		gui/editor/rules/NewCondition.cpp
 		gui/editor/rules/NewCondition.ui
+
+		# New Assignment
+		gui/editor/rules/NewAssignment.h
+		gui/editor/rules/NewAssignment.cpp
+		gui/editor/rules/NewAssignment.ui
 )

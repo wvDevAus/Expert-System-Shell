@@ -9,7 +9,7 @@
      * Implemented through the Member Variable method.
      */
 class NewRule : public QDialog {
-Q_OBJECT
+    Q_OBJECT
 
 public:
         /// Inherited Qt5 constructor.
