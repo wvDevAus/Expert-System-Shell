@@ -1,6 +1,8 @@
 #include "RuleEditor.h"
 
 #include <QMessageBox>
+#include <QRegExp>
+#include <QRegExpValidator>
 
 #include "gui/editor/rules/NewAssignment.h"
 #include "gui/editor/rules/NewCondition.h"
@@ -226,14 +228,288 @@ void RuleEditor::UpdateAntecedentEditor() {
         current_position++;
     }
 
-    // Catch if the user has not selected a Condition
+    // Get the selected condition
+    std::optional<expert_system::knowledge::rules::ConnectorType> condition_connector = std::nullopt;
+    std::optional<std::reference_wrapper<expert_system::knowledge::rules::VariantCondition>> selected_condition = std::nullopt;
     if (current_condition_index_ == std::nullopt) {
+        // Just stop now, no need to render anything else
+        return;
+    } else if (current_condition_index_.value() != 0) {
+        // Get the reference to the selected condition
+        auto selection_iterator = selected_rule.trigger_.condition_chain_.begin();
+        std::advance(selection_iterator, current_condition_index_.value() - 1);
+        selected_condition = selection_iterator->second;
+        condition_connector = selection_iterator->first;
+    } else if (current_condition_index_.value() == 0) {
+        // Get the reference to the root condition
+        selected_condition = selected_rule.trigger_.root_condition_;
+    } else {
         // Just stop now, no need to render anything else
         return;
     }
 
-    // Fill in the rest of the editor
-    //TODO: THIS
+    // Split logic based on the condition's type
+    switch (selected_condition.value().get().type_) {
+        case expert_system::utility::ExpertSystemTypes::kBool: {
+            // Get the raw Condition
+            auto& raw_condition = std::get<expert_system::knowledge::rules::BoolCondition>(selected_condition.value().get().condition_);
+
+            // Populate the Condition editor's target Fact data
+            ui.TypeIndicatorCondition->setText("Boolean");
+            ui.FactIndicatorCondition->setText(raw_condition.fact_.c_str());
+
+            // Update the Condition editor's operation
+            ui.OperationLabelInversion->setChecked(raw_condition.invert_);
+            ui.OperationSelection->insertItem(0, "Equal to (==)");
+            ui.OperationSelection->insertItem(1, "Less than (>)");
+            ui.OperationSelection->insertItem(2, "More than (<)");
+            switch (raw_condition.condition_) {
+                case expert_system::knowledge::rules::ConditionType::kEqualTo:
+                    ui.OperationSelection->setCurrentIndex(0);
+                    break;
+                case expert_system::knowledge::rules::ConditionType::kLessThan:
+                    ui.OperationSelection->setCurrentIndex(1);
+                    break;
+                case expert_system::knowledge::rules::ConditionType::kGreaterThan:
+                    ui.OperationSelection->setCurrentIndex(2);
+                    break;
+                default:
+                    ui.OperationSelection->setCurrentIndex(0);
+                    break;
+            }
+
+            // Update the target value and confidence factor
+            static QRegExp boolExpr("True|False");
+            ui.TargetEditor->setValidator(new QRegExpValidator(boolExpr, this));
+            if (raw_condition.target_) {
+                ui.TargetEditor->setText("True");
+            } else {
+                ui.TargetEditor->setText("False");
+            }
+            ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+
+            // Update the Condition connector if its isn't the root Condition
+            if (condition_connector.has_value()) {
+                // Update the Condition's connector list
+                ui.ConnectorSelection->insertItem(0, "AND");
+                ui.ConnectorSelection->insertItem(1, "OR");
+                ui.ConnectorSelection->insertItem(2, "XOR");
+                switch (condition_connector.value()) {
+                    case expert_system::knowledge::rules::ConnectorType::kAnd:
+                        ui.OperationSelection->setCurrentIndex(0);
+                        break;
+                    case expert_system::knowledge::rules::ConnectorType::kOr:
+                        ui.OperationSelection->setCurrentIndex(1);
+                        break;
+                    case expert_system::knowledge::rules::ConnectorType::kXor:
+                        ui.OperationSelection->setCurrentIndex(2);
+                        break;
+                    default:
+                        ui.OperationSelection->setCurrentIndex(0);
+                        break;
+                }
+            }
+
+            // Finished inserting data
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kInt: {
+            // Get the raw Condition
+            auto& raw_condition = std::get<expert_system::knowledge::rules::IntCondition>(selected_condition.value().get().condition_);
+
+            // Populate the Condition editor's target Fact data
+            ui.TypeIndicatorCondition->setText("Integer");
+            ui.FactIndicatorCondition->setText(raw_condition.fact_.c_str());
+
+            // Update the Condition editor's operation
+            ui.OperationLabelInversion->setChecked(raw_condition.invert_);
+            ui.OperationSelection->insertItem(0, "Equal to (==)");
+            ui.OperationSelection->insertItem(1, "Less than (>)");
+            ui.OperationSelection->insertItem(2, "More than (<)");
+            switch (raw_condition.condition_) {
+                case expert_system::knowledge::rules::ConditionType::kEqualTo:
+                    ui.OperationSelection->setCurrentIndex(0);
+                    break;
+                case expert_system::knowledge::rules::ConditionType::kLessThan:
+                    ui.OperationSelection->setCurrentIndex(1);
+                    break;
+                case expert_system::knowledge::rules::ConditionType::kGreaterThan:
+                    ui.OperationSelection->setCurrentIndex(2);
+                    break;
+                default:
+                    ui.OperationSelection->setCurrentIndex(0);
+                    break;
+            }
+
+            // Update the target value and confidence factor
+            ui.TargetEditor->setValidator(new QIntValidator(std::numeric_limits<int>::min(),
+                                                            std::numeric_limits<int>::max(),
+                                                            this));
+            ui.TargetEditor->setText(QString::number(raw_condition.target_));
+            ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+
+            // Update the Condition connector if its isn't the root Condition
+            if (condition_connector.has_value()) {
+                // Update the Condition's connector list
+                ui.ConnectorSelection->insertItem(0, "AND");
+                ui.ConnectorSelection->insertItem(1, "OR");
+                ui.ConnectorSelection->insertItem(2, "XOR");
+                switch (condition_connector.value()) {
+                    case expert_system::knowledge::rules::ConnectorType::kAnd:
+                        ui.OperationSelection->setCurrentIndex(0);
+                        break;
+                    case expert_system::knowledge::rules::ConnectorType::kOr:
+                        ui.OperationSelection->setCurrentIndex(1);
+                        break;
+                    case expert_system::knowledge::rules::ConnectorType::kXor:
+                        ui.OperationSelection->setCurrentIndex(2);
+                        break;
+                    default:
+                        ui.OperationSelection->setCurrentIndex(0);
+                        break;
+                }
+            }
+
+            // Finished inserting data
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kFloat: {
+            // Get the raw Condition
+            auto& raw_condition = std::get<expert_system::knowledge::rules::FloatCondition>(selected_condition.value().get().condition_);
+
+            // Populate the Condition editor's target Fact data
+            ui.TypeIndicatorCondition->setText("Float");
+            ui.FactIndicatorCondition->setText(raw_condition.fact_.c_str());
+
+            // Update the Condition editor's operation
+            ui.OperationLabelInversion->setChecked(raw_condition.invert_);
+            ui.OperationSelection->insertItem(0, "Equal to (==)");
+            ui.OperationSelection->insertItem(1, "Less than (>)");
+            ui.OperationSelection->insertItem(2, "More than (<)");
+            switch (raw_condition.condition_) {
+                case expert_system::knowledge::rules::ConditionType::kEqualTo:
+                    ui.OperationSelection->setCurrentIndex(0);
+                    break;
+                case expert_system::knowledge::rules::ConditionType::kLessThan:
+                    ui.OperationSelection->setCurrentIndex(1);
+                    break;
+                case expert_system::knowledge::rules::ConditionType::kGreaterThan:
+                    ui.OperationSelection->setCurrentIndex(2);
+                    break;
+                default:
+                    ui.OperationSelection->setCurrentIndex(0);
+                    break;
+            }
+
+            // Update the target value and confidence factor
+            ui.TargetEditor->setValidator(new QDoubleValidator((double) std::numeric_limits<float>::min(),
+                                                               (double) std::numeric_limits<float>::max(),
+                                                               std::numeric_limits<float>::digits, this));
+            ui.TargetEditor->setText(QString::number(raw_condition.target_));
+            ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+
+            // Update the Condition connector if its isn't the root Condition
+            if (condition_connector.has_value()) {
+                // Update the Condition's connector list
+                ui.ConnectorSelection->insertItem(0, "AND");
+                ui.ConnectorSelection->insertItem(1, "OR");
+                ui.ConnectorSelection->insertItem(2, "XOR");
+                switch (condition_connector.value()) {
+                    case expert_system::knowledge::rules::ConnectorType::kAnd:
+                        ui.OperationSelection->setCurrentIndex(0);
+                        break;
+                    case expert_system::knowledge::rules::ConnectorType::kOr:
+                        ui.OperationSelection->setCurrentIndex(1);
+                        break;
+                    case expert_system::knowledge::rules::ConnectorType::kXor:
+                        ui.OperationSelection->setCurrentIndex(2);
+                        break;
+                    default:
+                        ui.OperationSelection->setCurrentIndex(0);
+                        break;
+                }
+            }
+
+            // Finished inserting data
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kEnum: {
+            // Get the raw Condition
+            auto& raw_condition = std::get<expert_system::knowledge::rules::EnumCondition>(selected_condition.value().get().condition_);
+
+            // Populate the Condition editor's target Fact data
+            ui.TypeIndicatorCondition->setText("Enumeration");
+            ui.FactIndicatorCondition->setText(raw_condition.fact_.c_str());
+
+            // Update the Condition editor's operation
+            ui.OperationLabelInversion->setChecked(raw_condition.invert_);
+            ui.OperationSelection->insertItem(0, "Equal to (==)");
+            ui.OperationSelection->insertItem(1, "Less than (>)");
+            ui.OperationSelection->insertItem(2, "More than (<)");
+            switch (raw_condition.condition_) {
+                case expert_system::knowledge::rules::ConditionType::kEqualTo:
+                    ui.OperationSelection->setCurrentIndex(0);
+                    break;
+                case expert_system::knowledge::rules::ConditionType::kLessThan:
+                    ui.OperationSelection->setCurrentIndex(1);
+                    break;
+                case expert_system::knowledge::rules::ConditionType::kGreaterThan:
+                    ui.OperationSelection->setCurrentIndex(2);
+                    break;
+                default:
+                    ui.OperationSelection->setCurrentIndex(0);
+                    break;
+            }
+
+            // Update the target value and confidence factor
+            auto& fact_database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
+            auto& target_fact = fact_database.Find(raw_condition.target_).value().get();
+            auto& raw_fact = std::get<expert_system::knowledge::facts::EnumFact>(target_fact.fact_);
+            int element_counter = 0;
+            QString enumExprStr;
+            auto enum_list = raw_fact.enum_.List();
+            for (auto current_enum: enum_list) {
+                // Append the current enum value to the string
+                enumExprStr += current_enum.c_str();
+
+                // Prevent attaching the separator to the very end of the string
+                if (element_counter != (int) enum_list.size() - 1) {
+                    // Append the regex separator
+                    enumExprStr += "|";
+                }
+                element_counter++;
+            }
+            QRegExp enumExpr(enumExprStr);
+            ui.TargetEditor->setValidator(new QRegExpValidator(enumExpr, this));
+            ui.TargetEditor->setText(raw_condition.target_.c_str());
+            ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+
+            // Update the Condition connector if its isn't the root Condition
+            if (condition_connector.has_value()) {
+                // Update the Condition's connector list
+                ui.ConnectorSelection->insertItem(0, "AND");
+                ui.ConnectorSelection->insertItem(1, "OR");
+                ui.ConnectorSelection->insertItem(2, "XOR");
+                switch (condition_connector.value()) {
+                    case expert_system::knowledge::rules::ConnectorType::kAnd:
+                        ui.OperationSelection->setCurrentIndex(0);
+                        break;
+                    case expert_system::knowledge::rules::ConnectorType::kOr:
+                        ui.OperationSelection->setCurrentIndex(1);
+                        break;
+                    case expert_system::knowledge::rules::ConnectorType::kXor:
+                        ui.OperationSelection->setCurrentIndex(2);
+                        break;
+                    default:
+                        ui.OperationSelection->setCurrentIndex(0);
+                        break;
+                }
+            }
+
+            // Finished inserting data
+            break;
+        }
+    }
 
     // Finish by enabling user interactivity with the editor
     ui.ConditionFrame->setEnabled(true);
