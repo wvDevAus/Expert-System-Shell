@@ -49,4 +49,9 @@ target_sources(${ESS_TARGET_NAME}
 		gui/editor/rules/NewRule.h
 		gui/editor/rules/NewRule.cpp
 		gui/editor/rules/NewRule.ui
+
+		# New Condition
+		gui/editor/rules/NewCondition.h
+		gui/editor/rules/NewCondition.cpp
+		gui/editor/rules/NewCondition.ui
 )

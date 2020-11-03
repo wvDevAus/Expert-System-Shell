@@ -2,6 +2,7 @@
 
 #include <QMessageBox>
 
+#include "gui/editor/rules/NewCondition.h"
 #include "gui/editor/rules/NewRule.h"
 #include "knowledge/rules/Antecedent.hpp"
 #include "knowledge/rules/RuleDatabase.hpp"
@@ -65,7 +66,8 @@ void RuleEditor::ConditionSelected() {
 void RuleEditor::NewCondition() {
     // Get the database and check the current rule is valid
     auto& database = expert_system::utility::Singleton<expert_system::knowledge::rules::RuleDatabase>::Get().managed_rules_;
-    if (database.find(current_rule_name_.value()) == database.end()) {
+    auto current_rule = database.find(current_rule_name_.value());
+    if (current_rule == database.end()) {
         // Catch the error and indicate failure
         QMessageBox error_indication;
         error_indication.setText("Error: cannot operate an invalid Rule!");
@@ -73,8 +75,9 @@ void RuleEditor::NewCondition() {
         return;
     }
 
-    // Create the new Condition
-    //TODO: rewrite this with an additional dialog
+    // Pass the Condition creation over to a new dialog
+    class NewCondition condition_dialog(this, current_rule->second);
+    condition_dialog.exec();
 
     // Refresh only this editor
     UpdateAntecedentEditor();
@@ -112,7 +115,7 @@ void RuleEditor::DeleteCondition() {
     // Delete the selected condition
     auto& conditions = database.at(current_rule_name_.value()).trigger_.condition_chain_;
     auto condition_iterator = conditions.begin();
-    std::advance(condition_iterator, current_condition_index_.value());
+    std::advance(condition_iterator, current_condition_index_.value() - 1);
     conditions.erase(condition_iterator);
 
     // Remove the user's selection and update the editor
@@ -205,10 +208,7 @@ void RuleEditor::UpdateAntecedentEditor() {
 
     // Catch no Rule being selected
     if (current_rule_name_ == std::nullopt) {
-        // Catch the error and indicate failure
-        QMessageBox error_indication;
-        error_indication.setText("Error: cannot operate on unselected Rule!");
-        error_indication.exec();
+        // Simply stop
         return;
     }
 
@@ -242,10 +242,7 @@ void RuleEditor::UpdateConsequentEditor() {
 
     // Catch no Rule being selected
     if (current_rule_name_ == std::nullopt) {
-        // Catch the error and indicate failure
-        QMessageBox error_indication;
-        error_indication.setText("Error: cannot operate on unselected Rule!");
-        error_indication.exec();
+        // Just stop
         return;
     }
 
@@ -291,7 +288,6 @@ void RuleEditor::ClearRuleEditor() {
 void RuleEditor::ClearAntecedentEditor() {
     // Clear and lock the content in the Condition editor
     ui.TypeIndicatorCondition->clear();
-    ui.FactSelectorCondition->clear();
     ui.OperationSelection->clear();
     ui.TargetEditor->clear();
     ui.TargetEditor->setValidator(nullptr);
@@ -304,7 +300,6 @@ void RuleEditor::ClearAntecedentEditor() {
 void RuleEditor::ClearConsequentEditor() {
     // Clear and lock the content in the Assignment editor
     ui.TypeIndicatorAssignment->clear();
-    ui.FactSelectorAssignment->clear();
     ui.ValueEditor->clear();
     ui.AssignmentList->clear();
     ui.AssignmentFrame->setEnabled(false);
