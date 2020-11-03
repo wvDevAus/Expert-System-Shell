@@ -34,10 +34,11 @@ void NewCondition::CreateNewCondition() {
     switch (selected_fact.type_) {
         case expert_system::utility::ExpertSystemTypes::kBool: {
             // Create the Condition
-            auto new_condition = current_rule_.value().get().trigger_.condition_chain_.emplace_back(
+            current_rule_.value().get().trigger_.condition_chain_.emplace_back(
                     expert_system::knowledge::rules::ConnectorType::kAnd,
                     expert_system::knowledge::rules::VariantCondition(expert_system::utility::ExpertSystemTypes::kBool));
-            auto& raw_condition = std::get<expert_system::knowledge::rules::BoolCondition>(new_condition.second.condition_);
+            auto new_condition = current_rule_.value().get().trigger_.condition_chain_.rbegin();
+            auto& raw_condition = std::get<expert_system::knowledge::rules::BoolCondition>(new_condition->second.condition_);
 
             // Assign the property data
             raw_condition.fact_ = ui.FactSelector->currentText().toStdString();
@@ -51,10 +52,11 @@ void NewCondition::CreateNewCondition() {
         }
         case expert_system::utility::ExpertSystemTypes::kInt: {
             // Create the Condition
-            auto new_condition = current_rule_.value().get().trigger_.condition_chain_.emplace_back(
+            current_rule_.value().get().trigger_.condition_chain_.emplace_back(
                     expert_system::knowledge::rules::ConnectorType::kAnd,
                     expert_system::knowledge::rules::VariantCondition(expert_system::utility::ExpertSystemTypes::kInt));
-            auto& raw_condition = std::get<expert_system::knowledge::rules::IntCondition>(new_condition.second.condition_);
+            auto new_condition = current_rule_.value().get().trigger_.condition_chain_.rbegin();
+            auto& raw_condition = std::get<expert_system::knowledge::rules::IntCondition>(new_condition->second.condition_);
 
             // Assign the property data
             raw_condition.fact_ = ui.FactSelector->currentText().toStdString();
@@ -68,10 +70,11 @@ void NewCondition::CreateNewCondition() {
         }
         case expert_system::utility::ExpertSystemTypes::kFloat: {
             // Create the Condition
-            auto new_condition = current_rule_.value().get().trigger_.condition_chain_.emplace_back(
+            current_rule_.value().get().trigger_.condition_chain_.emplace_back(
                     expert_system::knowledge::rules::ConnectorType::kAnd,
                     expert_system::knowledge::rules::VariantCondition(expert_system::utility::ExpertSystemTypes::kFloat));
-            auto& raw_condition = std::get<expert_system::knowledge::rules::FloatCondition>(new_condition.second.condition_);
+            auto new_condition = current_rule_.value().get().trigger_.condition_chain_.rbegin();
+            auto& raw_condition = std::get<expert_system::knowledge::rules::FloatCondition>(new_condition->second.condition_);
 
             // Assign the property data
             raw_condition.fact_ = ui.FactSelector->currentText().toStdString();
@@ -85,10 +88,11 @@ void NewCondition::CreateNewCondition() {
         }
         case expert_system::utility::ExpertSystemTypes::kEnum: {
             // Create the Condition
-            auto new_condition = current_rule_.value().get().trigger_.condition_chain_.emplace_back(
+            current_rule_.value().get().trigger_.condition_chain_.emplace_back(
                     expert_system::knowledge::rules::ConnectorType::kAnd,
                     expert_system::knowledge::rules::VariantCondition(expert_system::utility::ExpertSystemTypes::kEnum));
-            auto& raw_condition = std::get<expert_system::knowledge::rules::EnumCondition>(new_condition.second.condition_);
+            auto new_condition = current_rule_.value().get().trigger_.condition_chain_.rbegin();
+            auto& raw_condition = std::get<expert_system::knowledge::rules::EnumCondition>(new_condition->second.condition_);
 
             // Assign the property data
             raw_condition.fact_ = ui.FactSelector->currentText().toStdString();
