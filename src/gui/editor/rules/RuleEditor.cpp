@@ -129,7 +129,351 @@ void RuleEditor::DeleteCondition() {
 }
 
 void RuleEditor::SaveCondition() {
-    //TODO: this
+    // Get the selected Rule
+    auto& rule_database = expert_system::utility::Singleton<expert_system::knowledge::rules::RuleDatabase>::Get();
+    auto& selected_rule = rule_database.managed_rules_.at(current_rule_name_.value());
+
+    // Split the logic depending on the source
+    if (current_condition_index_ == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot save an unselected Condition!");
+        error_indication.exec();
+        return;
+    } else if (current_condition_index_.value() != 0) {
+        // Get the reference to the selected condition
+        auto chained_condition = selected_rule.trigger_.condition_chain_.begin();
+        std::advance(chained_condition, current_condition_index_.value() - 1);
+
+        // Split the logic relative to the condition type
+        switch (chained_condition->second.type_) {
+            case expert_system::utility::ExpertSystemTypes::kBool: {
+                // Get the raw Condition
+                auto& raw_condition = std::get<expert_system::knowledge::rules::BoolCondition>(chained_condition->second.condition_);
+
+                // Store the values in the data fields
+                raw_condition.invert_ = ui.OperationLabelInversion->isChecked();
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    } case 1: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kLessThan;
+                        break;
+                    } case 2: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kGreaterThan;
+                        break;
+                    } default: {
+                        // Treat this as if it was index 0
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    }
+                }
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kAnd;
+                        break;
+                    } case 1: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kOr;
+                        break;
+                    } case 2: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kXor;
+                        break;
+                    } default: {
+                        // Treat this as if it were index 0
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kAnd;
+                        break;
+                    }
+                }
+                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+
+                // Get the target value
+                raw_condition.target_ = (QString("True").compare(ui.TargetEditor->text()) == 0);
+
+                // Finished
+                break;
+            }
+            case expert_system::utility::ExpertSystemTypes::kInt: {
+                // Get the raw Condition
+                auto& raw_condition = std::get<expert_system::knowledge::rules::IntCondition>(chained_condition->second.condition_);
+
+                // Store the values in the data fields
+                raw_condition.invert_ = ui.OperationLabelInversion->isChecked();
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    } case 1: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kLessThan;
+                        break;
+                    } case 2: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kGreaterThan;
+                        break;
+                    } default: {
+                        // Treat this as if it was index 0
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    }
+                }
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kAnd;
+                        break;
+                    } case 1: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kOr;
+                        break;
+                    } case 2: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kXor;
+                        break;
+                    } default: {
+                        // Treat this as if it were index 0
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kAnd;
+                        break;
+                    }
+                }
+                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+
+                // Get the target value
+                raw_condition.target_ = ui.TargetEditor->text().toInt();
+
+                // Finished
+                break;
+            }
+            case expert_system::utility::ExpertSystemTypes::kFloat: {
+                // Get the raw Condition
+                auto& raw_condition = std::get<expert_system::knowledge::rules::FloatCondition>(chained_condition->second.condition_);
+
+                // Store the values in the data fields
+                raw_condition.invert_ = ui.OperationLabelInversion->isChecked();
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    } case 1: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kLessThan;
+                        break;
+                    } case 2: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kGreaterThan;
+                        break;
+                    } default: {
+                        // Treat this as if it was index 0
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    }
+                }
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kAnd;
+                        break;
+                    } case 1: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kOr;
+                        break;
+                    } case 2: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kXor;
+                        break;
+                    } default: {
+                        // Treat this as if it were index 0
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kAnd;
+                        break;
+                    }
+                }
+                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+
+                // Get the target value
+                raw_condition.target_ = ui.TargetEditor->text().toFloat();
+
+                // Finished
+                break;
+            }
+            case expert_system::utility::ExpertSystemTypes::kEnum: {
+                // Get the raw Condition
+                auto& raw_condition = std::get<expert_system::knowledge::rules::EnumCondition>(chained_condition->second.condition_);
+
+                // Store the values in the data fields
+                raw_condition.invert_ = ui.OperationLabelInversion->isChecked();
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    } case 1: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kLessThan;
+                        break;
+                    } case 2: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kGreaterThan;
+                        break;
+                    } default: {
+                        // Treat this as if it was index 0
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    }
+                }
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kAnd;
+                        break;
+                    } case 1: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kOr;
+                        break;
+                    } case 2: {
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kXor;
+                        break;
+                    } default: {
+                        // Treat this as if it were index 0
+                        chained_condition->first = expert_system::knowledge::rules::ConnectorType::kAnd;
+                        break;
+                    }
+                }
+                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+
+                // Get the target value
+                raw_condition.target_ = ui.TargetEditor->text().toStdString();
+
+                // Finished
+                break;
+            }
+            default: {
+                // Do nothing
+                return;
+            }
+        }
+    } else if (current_condition_index_.value() == 0) {
+        // Get the reference to the root condition
+        auto& root_condition = selected_rule.trigger_.root_condition_;
+
+        // Split the logic relative to the condition type
+        switch (root_condition.type_) {
+            case expert_system::utility::ExpertSystemTypes::kBool: {
+                // Get the raw Condition
+                auto& raw_condition = std::get<expert_system::knowledge::rules::BoolCondition>(root_condition.condition_);
+
+                // Store the values in the data fields
+                raw_condition.invert_ = ui.OperationLabelInversion->isChecked();
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    } case 1: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kLessThan;
+                        break;
+                    } case 2: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kGreaterThan;
+                        break;
+                    } default: {
+                        // Treat this as if it was index 0
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    }
+                }
+                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+
+                // Get the target value
+                raw_condition.target_ = (QString("True").compare(ui.TargetEditor->text()) == 0);
+
+                // Finished
+                break;
+            }
+            case expert_system::utility::ExpertSystemTypes::kInt: {
+                // Get the raw Condition
+                auto& raw_condition = std::get<expert_system::knowledge::rules::IntCondition>(root_condition.condition_);
+
+                // Store the values in the data fields
+                raw_condition.invert_ = ui.OperationLabelInversion->isChecked();
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    } case 1: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kLessThan;
+                        break;
+                    } case 2: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kGreaterThan;
+                        break;
+                    } default: {
+                        // Treat this as if it was index 0
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    }
+                }
+                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+
+                // Get the target value
+                raw_condition.target_ = ui.TargetEditor->text().toInt();
+
+                // Finished
+                break;
+            }
+            case expert_system::utility::ExpertSystemTypes::kFloat: {
+                // Get the raw Condition
+                auto& raw_condition = std::get<expert_system::knowledge::rules::FloatCondition>(root_condition.condition_);
+
+                // Store the values in the data fields
+                raw_condition.invert_ = ui.OperationLabelInversion->isChecked();
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    } case 1: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kLessThan;
+                        break;
+                    } case 2: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kGreaterThan;
+                        break;
+                    } default: {
+                        // Treat this as if it was index 0
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    }
+                }
+                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+
+                // Get the target value
+                raw_condition.target_ = ui.TargetEditor->text().toFloat();
+
+                // Finished
+                break;
+            }
+            case expert_system::utility::ExpertSystemTypes::kEnum: {
+                // Get the raw Condition
+                auto& raw_condition = std::get<expert_system::knowledge::rules::EnumCondition>(root_condition.condition_);
+
+                // Store the values in the data fields
+                raw_condition.invert_ = ui.OperationLabelInversion->isChecked();
+                switch (ui.OperationSelection->currentIndex()) {
+                    case 0: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    } case 1: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kLessThan;
+                        break;
+                    } case 2: {
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kGreaterThan;
+                        break;
+                    } default: {
+                        // Treat this as if it was index 0
+                        raw_condition.condition_ = expert_system::knowledge::rules::ConditionType::kEqualTo;
+                        break;
+                    }
+                }
+                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+
+                // Get the target value
+                raw_condition.target_ = ui.TargetEditor->text().toStdString();
+
+                // Finished
+                break;
+            }
+            default: {
+                // Do nothing
+                return;
+            }
+        }
+    } else {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot save an invalid Condition!");
+        error_indication.exec();
+        return;
+    }
 }
 
 void RuleEditor::AssignmentSelected() {
@@ -863,6 +1207,7 @@ void RuleEditor::ClearConsequentEditor() {
     ui.TypeIndicatorAssignment->clear();
     ui.FactIndicatorAssignment->clear();
     ui.ValueEditor->clear();
+    ui.ValueEditor->setValidator(nullptr);
     ui.AssignmentList->clear();
     ui.AssignmentFrame->setEnabled(false);
 }
