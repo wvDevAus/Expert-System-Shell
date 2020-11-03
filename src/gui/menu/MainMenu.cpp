@@ -23,10 +23,10 @@ MainMenu::MainMenu(QWidget *parent) : QMainWindow(parent) {
 
 void MainMenu::SaveExpertSystem() {
     // Present the dialog and get a file name
-    QString file_name = QFileDialog::getOpenFileName(
+    QString file_name = QFileDialog::getSaveFileName(
             this,
-            "Save Expert System File",
-            "/home",
+            "Save Expert System",
+            "./",
             "Expert System JSON (*.json);;All files (*)");
     if (file_name.isEmpty()) {
         // Catch the invalid file name and stop
@@ -60,8 +60,8 @@ void MainMenu::LoadExpertSystem() {
     // Present the dialog and get a file name
     QString file_name = QFileDialog::getOpenFileName(
             this,
-            "Save Expert System File",
-            "/home",
+            "Load Expert System",
+            "./",
             "Expert System JSON (*.json);;All files (*)");
     if (file_name.isEmpty()) {
         // Catch the invalid file name and stop

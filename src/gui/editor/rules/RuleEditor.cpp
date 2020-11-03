@@ -308,6 +308,11 @@ void RuleEditor::UpdateAntecedentEditor() {
                         ui.OperationSelection->setCurrentIndex(0);
                         break;
                 }
+                ui.ConnectorSelection->setEnabled(true);
+            } else {
+                // Prevent use
+                ui.ConnectorSelection->insertItem(0, "ROOT");
+                ui.ConnectorSelection->setEnabled(false);
             }
 
             // Finished inserting data
@@ -368,6 +373,11 @@ void RuleEditor::UpdateAntecedentEditor() {
                         ui.OperationSelection->setCurrentIndex(0);
                         break;
                 }
+                ui.ConnectorSelection->setEnabled(true);
+            } else {
+                // Prevent use
+                ui.ConnectorSelection->insertItem(0, "ROOT");
+                ui.ConnectorSelection->setEnabled(false);
             }
 
             // Finished inserting data
@@ -428,6 +438,11 @@ void RuleEditor::UpdateAntecedentEditor() {
                         ui.OperationSelection->setCurrentIndex(0);
                         break;
                 }
+                ui.ConnectorSelection->setEnabled(true);
+            } else {
+                // Prevent use
+                ui.ConnectorSelection->insertItem(0, "ROOT");
+                ui.ConnectorSelection->setEnabled(false);
             }
 
             // Finished inserting data
@@ -504,6 +519,11 @@ void RuleEditor::UpdateAntecedentEditor() {
                         ui.OperationSelection->setCurrentIndex(0);
                         break;
                 }
+                ui.ConnectorSelection->setEnabled(true);
+            } else {
+                // Prevent use
+                ui.ConnectorSelection->insertItem(0, "ROOT");
+                ui.ConnectorSelection->setEnabled(false);
             }
 
             // Finished inserting data

@@ -298,6 +298,7 @@ void FactEditor::ClearFactEditors() {
 
     // Clear and lock the range editor
     ui.RangeCheckbox->setChecked(false);
+    ui.InclusiveCheckbox->setChecked(false);
     ui.MinimumEditor->setText("");
     ui.MinimumEditor->setValidator(nullptr);
     ui.MaximumEditor->setText("");
