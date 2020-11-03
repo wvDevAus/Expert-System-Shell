@@ -1,5 +1,8 @@
 #pragma once
 
+#include <optional>
+#include <string>
+
 #include <QDialog>
 
 #include "ui_RuleEditor.h"
@@ -37,9 +40,6 @@ private slots:
         /// Attempts to save the selected Antecedent Condition.
     void SaveCondition();
 
-        /// Reacts to the user changing the Condition's target Fact.
-    void ConditionFactSelected();
-
         /// Processes a selected Rule Condition.
     void AssignmentSelected();
 
@@ -52,18 +52,33 @@ private slots:
         /// Attempts to save the selected Antecedent Condition.
     void SaveAssignment();
 
-        /// Reacts to the user changing the Condition's target Fact.
-    void AssignmentFactSelected();
-
 private:
+        /// Tracks the user's currently selected Rule.
+    std::optional<std::string> current_rule_name_;
+
+        /// Tracks the user's currently selected Antecedent Condition.
+    std::optional<int> current_condition_index_;
+
+        /// Tracks the user's currently selected Consequent Assignment.
+    std::optional<int> current_response_index_;
+
         /// Updates the contents of the Rule list.
-    void UpdateRuleList();
+    void UpdateRuleEditor();
 
         /// Updates the contents of the Rule editors.
-    void UpdateRuleEditors();
+    void UpdateAntecedentEditor();
 
-        /// Resets the state and contents of the Rule editors.
-    void ClearRuleEditors();
+        /// Updates the contents of the Rule editors.
+    void UpdateConsequentEditor();
+
+        /// Resets the state and contents of the Rule editor.
+    void ClearRuleEditor();
+
+        /// Resets the state and contents of the Antecedent editor.
+    void ClearAntecedentEditor();
+
+        /// Resets the state and contents of the Consequent editor.
+    void ClearConsequentEditor();
 
         /// Pointer member to auto-generated UI element.
     Ui::RuleEditor ui;
