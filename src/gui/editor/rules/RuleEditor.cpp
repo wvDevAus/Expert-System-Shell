@@ -185,7 +185,7 @@ void RuleEditor::SaveCondition() {
                         break;
                     }
                 }
-                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+                raw_condition.confidence_factor_.Set((float) ui.MinimumConfidenceEditor->value());
 
                 // Get the target value
                 raw_condition.target_ = (QString("True").compare(ui.TargetEditor->text()) == 0);
@@ -231,7 +231,7 @@ void RuleEditor::SaveCondition() {
                         break;
                     }
                 }
-                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+                raw_condition.confidence_factor_.Set((float) ui.MinimumConfidenceEditor->value());
 
                 // Get the target value
                 raw_condition.target_ = ui.TargetEditor->text().toInt();
@@ -277,7 +277,7 @@ void RuleEditor::SaveCondition() {
                         break;
                     }
                 }
-                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+                raw_condition.confidence_factor_.Set((float) ui.MinimumConfidenceEditor->value());
 
                 // Get the target value
                 raw_condition.target_ = ui.TargetEditor->text().toFloat();
@@ -323,7 +323,7 @@ void RuleEditor::SaveCondition() {
                         break;
                     }
                 }
-                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+                raw_condition.confidence_factor_.Set((float) ui.MinimumConfidenceEditor->value());
 
                 // Get the target value
                 raw_condition.target_ = ui.TargetEditor->text().toStdString();
@@ -364,7 +364,7 @@ void RuleEditor::SaveCondition() {
                         break;
                     }
                 }
-                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+                raw_condition.confidence_factor_.Set((float) ui.MinimumConfidenceEditor->value());
 
                 // Get the target value
                 raw_condition.target_ = (QString("True").compare(ui.TargetEditor->text()) == 0);
@@ -394,7 +394,7 @@ void RuleEditor::SaveCondition() {
                         break;
                     }
                 }
-                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+                raw_condition.confidence_factor_.Set((float) ui.MinimumConfidenceEditor->value());
 
                 // Get the target value
                 raw_condition.target_ = ui.TargetEditor->text().toInt();
@@ -424,7 +424,7 @@ void RuleEditor::SaveCondition() {
                         break;
                     }
                 }
-                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+                raw_condition.confidence_factor_.Set((float) ui.MinimumConfidenceEditor->value());
 
                 // Get the target value
                 raw_condition.target_ = ui.TargetEditor->text().toFloat();
@@ -454,7 +454,7 @@ void RuleEditor::SaveCondition() {
                         break;
                     }
                 }
-                raw_condition.confidence_factor_.Set((float) ui.ConfidenceEditor->value());
+                raw_condition.confidence_factor_.Set((float) ui.MinimumConfidenceEditor->value());
 
                 // Get the target value
                 raw_condition.target_ = ui.TargetEditor->text().toStdString();
@@ -667,7 +667,7 @@ void RuleEditor::UpdateAntecedentEditor() {
                 } else {
                     ui.TargetEditor->setText("False");
                 }
-                ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+                ui.MinimumConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
 
                 // Update the Condition's connector list
                 ui.ConnectorSelection->insertItem(0, "AND");
@@ -725,7 +725,7 @@ void RuleEditor::UpdateAntecedentEditor() {
                                                                 std::numeric_limits<int>::max(),
                                                                 this));
                 ui.TargetEditor->setText(QString::number(raw_condition.target_));
-                ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+                ui.MinimumConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
 
                 // Update the Condition's connector list
                 ui.ConnectorSelection->insertItem(0, "AND");
@@ -783,7 +783,7 @@ void RuleEditor::UpdateAntecedentEditor() {
                                                                    (double) std::numeric_limits<float>::max(),
                                                                    std::numeric_limits<float>::digits, this));
                 ui.TargetEditor->setText(QString::number(raw_condition.target_));
-                ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+                ui.MinimumConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
 
                 // Update the Condition's connector list
                 ui.ConnectorSelection->insertItem(0, "AND");
@@ -859,7 +859,7 @@ void RuleEditor::UpdateAntecedentEditor() {
                 QRegExp enumExpr(enumExprStr);
                 ui.TargetEditor->setValidator(new QRegExpValidator(enumExpr, this));
                 ui.TargetEditor->setText(raw_condition.target_.c_str());
-                ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+                ui.MinimumConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
 
                 // Update the Condition's connector list
                 ui.ConnectorSelection->insertItem(0, "AND");
@@ -933,7 +933,7 @@ void RuleEditor::UpdateAntecedentEditor() {
                 } else {
                     ui.TargetEditor->setText("False");
                 }
-                ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+                ui.MinimumConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
 
                 // Finished inserting data
                 break;
@@ -971,7 +971,7 @@ void RuleEditor::UpdateAntecedentEditor() {
                                                                 std::numeric_limits<int>::max(),
                                                                 this));
                 ui.TargetEditor->setText(QString::number(raw_condition.target_));
-                ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+                ui.MinimumConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
 
                 // Finished inserting data
                 break;
@@ -1009,7 +1009,7 @@ void RuleEditor::UpdateAntecedentEditor() {
                                                                    (double) std::numeric_limits<float>::max(),
                                                                    std::numeric_limits<float>::digits, this));
                 ui.TargetEditor->setText(QString::number(raw_condition.target_));
-                ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+                ui.MinimumConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
 
                 // Finished inserting data
                 break;
@@ -1063,7 +1063,7 @@ void RuleEditor::UpdateAntecedentEditor() {
                 QRegExp enumExpr(enumExprStr);
                 ui.TargetEditor->setValidator(new QRegExpValidator(enumExpr, this));
                 ui.TargetEditor->setText(raw_condition.target_.c_str());
-                ui.ConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
+                ui.MinimumConfidenceEditor->setValue((double) raw_condition.confidence_factor_.Get());
 
                 // Finished inserting data
                 break;
@@ -1242,7 +1242,7 @@ void RuleEditor::ClearAntecedentEditor() {
     ui.FactIndicatorCondition->clear();
     ui.TargetEditor->clear();
     ui.TargetEditor->setValidator(nullptr);
-    ui.ConfidenceEditor->clear();
+    ui.MinimumConfidenceEditor->clear();
     ui.ConnectorSelection->clear();
     ui.ConditionList->clear();
     ui.ConditionFrame->setEnabled(false);

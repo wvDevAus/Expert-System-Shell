@@ -37,13 +37,12 @@ namespace expert_system::knowledge::rules {
             /**
              * @brief Test's the Rule's Antecedent and runs its Consequent on a successful trigger.
              * @param [in] database The Fact Database to operate on.
-             * @param [in] source The name of this Rule (stored externally).
-             * @return A TestOutcome result paired with a confidence factor.
+             * @param [in] rule_name The name of this Rule (stored externally).
+             * @return A TestOutcome enum symbol indicating the test's result.
              * @note This will return an error symbol if a Condition could not be operated.
              * @warning A TestOutcome of KComparisonSuccess may hide Consequent operation failure!
              */
-        std::pair<TestOutcome, utility::Confidence> Run(facts::FactDatabase& database,
-                                                        std::string source);
+        TestOutcome Run(facts::FactDatabase& database, std::string rule_name);
 
             /**
              * @brief Updates the Fact's description.

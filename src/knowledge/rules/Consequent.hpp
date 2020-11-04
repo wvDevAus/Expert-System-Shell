@@ -21,11 +21,9 @@ namespace expert_system::knowledge::rules {
             /**
              * @brief Attempts to perform the stored Assignments.
              * @param [in] database The Fact Database to operate on.
-             * @param [in] confidence_factor The confidence factor from the triggered Condition.
              * @warning Assignments may fail, and will do so silently!
              */
-        void Assign(facts::FactDatabase& database,
-                    utility::Confidence& confidence_factor);
+        void Assign(facts::FactDatabase& database);
 
             /**
              * @brief The list of Assignments to activate.

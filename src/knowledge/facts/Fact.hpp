@@ -120,13 +120,17 @@ namespace expert_system::knowledge::facts {
             // Catch if the Fact already has a value
             if (value_.has_value()) {
                 // Stop the assignment if the new value has a lower confidence value
-                if (confidence_factor < value.get().confidence_factor_) {
+                if (confidence_factor < value_.value().confidence_factor_) {
                     // Catch the less confident value and stop
                     return false;
                 }
+
+                // Assign the new value and indicate success
+                value_.emplace(value, confidence_factor);
+                return true;
             }
 
-            // Create the new session value
+            // Assign the new value and indicate success
             value_.emplace(value, confidence_factor);
             return true;
         };

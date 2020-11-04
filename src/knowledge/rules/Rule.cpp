@@ -78,15 +78,14 @@ namespace expert_system::knowledge::rules {
         return fact_names;
     }
 
-    std::pair<TestOutcome, utility::Confidence> Rule::Run(facts::FactDatabase& database,
-                                                          std::string source) {
+    TestOutcome Rule::Run(facts::FactDatabase& database, std::string rule_name) {
         // Run the Antecedent to identify if the Consequent should be triggered
         auto result = trigger_.Test(database);
 
         // Run the Consequent only if the Antecedent was triggered
-        if (result.first == TestOutcome::kComparisonSuccess) {
+        if (result == TestOutcome::kComparisonSuccess) {
             // Run the Consequent
-            response_.Assign(database, result.second);
+            response_.Assign(database);
         }
 
         // TODO: Log the generation of this session value.
