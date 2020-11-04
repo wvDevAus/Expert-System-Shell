@@ -418,6 +418,7 @@ void FactEditor::UpdateFactEditors() {
 
                 // Enable the range contents
                 ui.RangeContents->setEnabled(true);
+                ui.InclusiveCheckbox->setEnabled(true);
             }
             ui.RangeFrame->setEnabled(true);
             break;
@@ -461,6 +462,7 @@ void FactEditor::UpdateFactEditors() {
 
                 // Enable the range contents
                 ui.RangeContents->setEnabled(true);
+                ui.InclusiveCheckbox->setEnabled(true);
             }
             ui.RangeFrame->setEnabled(true);
             break;

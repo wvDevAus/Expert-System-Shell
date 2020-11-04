@@ -34,9 +34,10 @@ void NewAssignment::CreateNewAssignment() {
     switch (selected_fact.type_) {
         case expert_system::utility::ExpertSystemTypes::kBool: {
             // Create the Assignment
-            auto new_assignment = current_rule_.value().get().response_.assignments_.emplace_back(
+            current_rule_.value().get().response_.assignments_.emplace_back(
                     expert_system::knowledge::rules::VariantAssignment(expert_system::utility::ExpertSystemTypes::kBool));
-            auto& raw_condition = std::get<expert_system::knowledge::rules::BoolAssignment>(new_assignment.assignment_);
+            auto new_assignment = current_rule_.value().get().response_.assignments_.rbegin();
+            auto& raw_condition = std::get<expert_system::knowledge::rules::BoolAssignment>(new_assignment->assignment_);
 
             // Assign the property data
             raw_condition.fact_ = ui.FactSelector->currentText().toStdString();
@@ -47,9 +48,10 @@ void NewAssignment::CreateNewAssignment() {
         }
         case expert_system::utility::ExpertSystemTypes::kInt: {
             // Create the Assignment
-            auto new_assignment = current_rule_.value().get().response_.assignments_.emplace_back(
+            current_rule_.value().get().response_.assignments_.emplace_back(
                     expert_system::knowledge::rules::VariantAssignment(expert_system::utility::ExpertSystemTypes::kInt));
-            auto& raw_condition = std::get<expert_system::knowledge::rules::IntAssignment>(new_assignment.assignment_);
+            auto new_assignment = current_rule_.value().get().response_.assignments_.rbegin();
+            auto& raw_condition = std::get<expert_system::knowledge::rules::IntAssignment>(new_assignment->assignment_);
 
             // Assign the property data
             raw_condition.fact_ = ui.FactSelector->currentText().toStdString();
@@ -60,9 +62,10 @@ void NewAssignment::CreateNewAssignment() {
         }
         case expert_system::utility::ExpertSystemTypes::kFloat: {
             // Create the Assignment
-            auto new_assignment = current_rule_.value().get().response_.assignments_.emplace_back(
+            current_rule_.value().get().response_.assignments_.emplace_back(
                     expert_system::knowledge::rules::VariantAssignment(expert_system::utility::ExpertSystemTypes::kFloat));
-            auto& raw_condition = std::get<expert_system::knowledge::rules::FloatAssignment>(new_assignment.assignment_);
+            auto new_assignment = current_rule_.value().get().response_.assignments_.rbegin();
+            auto& raw_condition = std::get<expert_system::knowledge::rules::FloatAssignment>(new_assignment->assignment_);
 
             // Assign the property data
             raw_condition.fact_ = ui.FactSelector->currentText().toStdString();
@@ -73,9 +76,10 @@ void NewAssignment::CreateNewAssignment() {
         }
         case expert_system::utility::ExpertSystemTypes::kEnum: {
             // Create the Assignment
-            auto new_assignment = current_rule_.value().get().response_.assignments_.emplace_back(
+            current_rule_.value().get().response_.assignments_.emplace_back(
                     expert_system::knowledge::rules::VariantAssignment(expert_system::utility::ExpertSystemTypes::kEnum));
-            auto& raw_condition = std::get<expert_system::knowledge::rules::EnumAssignment>(new_assignment.assignment_);
+            auto new_assignment = current_rule_.value().get().response_.assignments_.rbegin();
+            auto& raw_condition = std::get<expert_system::knowledge::rules::EnumAssignment>(new_assignment->assignment_);
 
             // Assign the property data
             raw_condition.fact_ = ui.FactSelector->currentText().toStdString();

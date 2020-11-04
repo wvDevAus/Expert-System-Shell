@@ -13,6 +13,9 @@
 RuleEditor::RuleEditor(QWidget *parent) : QDialog(parent) {
     // Ensure that the UI is configured
     ui.setupUi(this);
+
+    // Ensure that the Rules can actually be seen
+    UpdateRuleEditor();
 }
 
 void RuleEditor::RuleSelected() {
@@ -1135,11 +1138,11 @@ void RuleEditor::UpdateConsequentEditor() {
 
             // Update the target value
             static QRegExp boolExpr("True|False");
-            ui.TargetEditor->setValidator(new QRegExpValidator(boolExpr, this));
+            ui.ValueEditor->setValidator(new QRegExpValidator(boolExpr, this));
             if (raw_assignment.value_) {
-                ui.TargetEditor->setText("True");
+                ui.ValueEditor->setText("True");
             } else {
-                ui.TargetEditor->setText("False");
+                ui.ValueEditor->setText("False");
             }
 
             // Update the outcome confidence value
@@ -1157,10 +1160,10 @@ void RuleEditor::UpdateConsequentEditor() {
             ui.FactIndicatorAssignment->setText(raw_assignment.fact_.c_str());
 
             // Update the target value and confidence factor
-            ui.TargetEditor->setValidator(new QIntValidator(std::numeric_limits<int>::min(),
+            ui.ValueEditor->setValidator(new QIntValidator(std::numeric_limits<int>::min(),
                                                             std::numeric_limits<int>::max(),
                                                             this));
-            ui.TargetEditor->setText(QString::number(raw_assignment.value_));
+            ui.ValueEditor->setText(QString::number(raw_assignment.value_));
 
             // Update the outcome confidence value
             ui.OutcomeConfidenceEditor->setValue((double) raw_assignment.confidence_factor_.Get());
@@ -1177,10 +1180,10 @@ void RuleEditor::UpdateConsequentEditor() {
             ui.FactIndicatorAssignment->setText(raw_assignment.fact_.c_str());
 
             // Update the target value
-            ui.TargetEditor->setValidator(new QDoubleValidator((double) std::numeric_limits<float>::min(),
+            ui.ValueEditor->setValidator(new QDoubleValidator((double) std::numeric_limits<float>::min(),
                                                                (double) std::numeric_limits<float>::max(),
                                                                std::numeric_limits<float>::digits, this));
-            ui.TargetEditor->setText(QString::number(raw_assignment.value_));
+            ui.ValueEditor->setText(QString::number(raw_assignment.value_));
 
             // Update the outcome confidence value
             ui.OutcomeConfidenceEditor->setValue((double) raw_assignment.confidence_factor_.Get());
@@ -1215,8 +1218,8 @@ void RuleEditor::UpdateConsequentEditor() {
                 element_counter++;
             }
             QRegExp enumExpr(enumExprStr);
-            ui.TargetEditor->setValidator(new QRegExpValidator(enumExpr, this));
-            ui.TargetEditor->setText(raw_assignment.value_.c_str());
+            ui.ValueEditor->setValidator(new QRegExpValidator(enumExpr, this));
+            ui.ValueEditor->setText(raw_assignment.value_.c_str());
 
             // Update the outcome confidence value
             ui.OutcomeConfidenceEditor->setValue((double) raw_assignment.confidence_factor_.Get());
