@@ -24,14 +24,15 @@ namespace expert_system::knowledge::rules {
             /// The value to assign to the target Fact.
         T value_;
 
+            /// The Confidence factor or the value to be assigned.
+        utility::Confidence confidence_factor_;
+
             /**
              * @brief Attempts to perform the Assignment.
              * @param [in] database The Fact Database to operate on.
-             * @param [in] confidence_factor The confidence factor from the triggered Condition.
              * @return True if the target Fact was assigned a session value, False otherwise.
              */
-        bool Assign(facts::FactDatabase& database,
-                    utility::Confidence& confidence_factor) {
+        bool Assign(facts::FactDatabase& database) {
             // Non-specialized types are not supported
             return false;
         }
@@ -39,8 +40,7 @@ namespace expert_system::knowledge::rules {
 
         /// Boolean specialization overload of templated Assignment::Assign.
     template<>
-    bool Assignment<bool>::Assign(facts::FactDatabase& database,
-                                  utility::Confidence& confidence_factor) {
+    bool Assignment<bool>::Assign(facts::FactDatabase& database) {
         // Confirm the identified Fact actually exists
         auto optional_fact = database.Find(fact_);
         if (!optional_fact.has_value()) {
@@ -55,22 +55,14 @@ namespace expert_system::knowledge::rules {
             return false;
         }
 
-        // Catch if the Fact already has a session value
+        // Attempt to assign the Value
         auto& raw_fact = std::get<facts::BoolFact>(variant_fact.fact_);
-        if (raw_fact.GetValue().has_value()) {
-            // Catch session value already being known and stop
-            return false;
-        }
-
-        // Assign the Fact the session value
-        raw_fact.SetValue(value_, confidence_factor);
-        return true;
+        return raw_fact.SetValue(value_, confidence_factor_);
     }
 
         /// Integer specialization overload of templated Assignment::Assign.
     template<>
-    bool Assignment<int>::Assign(facts::FactDatabase& database,
-                                 utility::Confidence& confidence_factor) {
+    bool Assignment<int>::Assign(facts::FactDatabase& database) {
         // Confirm the identified Fact actually exists
         auto optional_fact = database.Find(fact_);
         if (!optional_fact.has_value()) {
@@ -85,22 +77,14 @@ namespace expert_system::knowledge::rules {
             return false;
         }
 
-        // Catch if the Fact already has a session value
+        // Attempt to assign the Value
         auto& raw_fact = std::get<facts::IntFact>(variant_fact.fact_);
-        if (raw_fact.GetValue().has_value()) {
-            // Catch session value already being known and stop
-            return false;
-        }
-
-        // Assign the Fact the session value
-        raw_fact.SetValue(value_, confidence_factor);
-        return true;
+        return raw_fact.SetValue(value_, confidence_factor_);
     }
 
         /// Float specialization overload of templated Assignment::Assign.
     template<>
-    bool Assignment<float>::Assign(facts::FactDatabase& database,
-                                   utility::Confidence& confidence_factor) {
+    bool Assignment<float>::Assign(facts::FactDatabase& database) {
         // Confirm the identified Fact actually exists
         auto optional_fact = database.Find(fact_);
         if (!optional_fact.has_value()) {
@@ -115,22 +99,14 @@ namespace expert_system::knowledge::rules {
             return false;
         }
 
-        // Catch if the Fact already has a session value
+        // Attempt to assign the Value
         auto& raw_fact = std::get<facts::FloatFact>(variant_fact.fact_);
-        if (raw_fact.GetValue().has_value()) {
-            // Catch session value already being known and stop
-            return false;
-        }
-
-        // Assign the Fact the session value
-        raw_fact.SetValue(value_, confidence_factor);
-        return true;
+        return raw_fact.SetValue(value_, confidence_factor_);
     }
 
         /// Enumeration specialization overload of templated Assignment::Assign.
     template<>
-    bool Assignment<std::string>::Assign(facts::FactDatabase& database,
-                                         utility::Confidence& confidence_factor) {
+    bool Assignment<std::string>::Assign(facts::FactDatabase& database) {
         // Confirm the identified Fact actually exists
         auto optional_fact = database.Find(fact_);
         if (!optional_fact.has_value()) {
@@ -145,21 +121,14 @@ namespace expert_system::knowledge::rules {
             return false;
         }
 
-        // Catch if the Fact already has a session value
+        // Attempt to assign the Value
         auto& raw_fact = std::get<facts::EnumFact>(variant_fact.fact_);
-        if (raw_fact.fact_.GetValue().has_value()) {
-            // Catch session value already being known and stop
-            return false;
-        }
-
-        // Assign the Fact the session value
         auto enum_conversion = raw_fact.enum_.At(value_);
         if (enum_conversion == std::nullopt) {
             // Catch the enum value not existing
             return false;
         }
-        raw_fact.fact_.SetValue(enum_conversion.value(), confidence_factor);
-        return true;
+        return raw_fact.fact_.SetValue(enum_conversion.value(), confidence_factor_);
     }
 
 } // namespace expert_system::knowledge::rules

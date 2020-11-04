@@ -1,20 +1,15 @@
-#include <iostream>
-#include <string>
+#include <QApplication>
 
-#include "QApplication"
-#include "nlohmann/json.hpp"
-
-#include "gui/mainwindow.h"
+#include "gui/menu/MainMenu.h"
 
 int main(int argc, char *argv[]) {
-	// Testing JSON
-    nlohmann::json JSONTest;
-    JSONTest["example"] = "Hello World!";
-	std::cout << JSONTest["example"];
+    // Create and configure the QApplication
+    QApplication expert_system_shell_app(argc, argv);
 
-    // Testing Qt
-    QApplication QtAppTest(argc, argv);
-    MainWindow QtWindowTest;
-    QtWindowTest.show();
-    return QtAppTest.exec();
+    // Generate and show the MainMenu
+    MainMenu expert_system_shell_main_menu;
+    expert_system_shell_main_menu.show();
+
+    // Run the QApplication
+    return expert_system_shell_app.exec();
 }

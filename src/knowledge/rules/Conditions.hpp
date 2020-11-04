@@ -42,10 +42,10 @@ namespace expert_system::knowledge::rules {
             /**
              * @brief Tests the encapsulated Condition.
              * @param [in] source The Fact Database to operate on.
-             * @return A TestOutcome result paired with a confidence factor.
+             * @return A TestOutcome enum symbol indicating the test's result.
              * @note This will return TestOutcome::kUnknown if no Condition is stored.
              */
-        std::pair<TestOutcome, utility::Confidence> Test(facts::FactDatabase& source);
+        TestOutcome Test(facts::FactDatabase& source);
 
             /**
              * @brief Provides read-only access to the encapsulated Condition's Fact identifier.

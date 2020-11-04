@@ -2,5 +2,4 @@
 target_sources(${ESS_TARGET_NAME}
     PRIVATE
         # Qt5 Resources
-        resources.qrc
 )

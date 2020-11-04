@@ -88,7 +88,7 @@ namespace expert_system::knowledge::facts {
 
     bool FactDatabase::Remove(const std::string& name) {
         // Catch if the name is currently used
-        if (stored_facts_.find(name) != stored_facts_.end()) {
+        if (stored_facts_.find(name) == stored_facts_.end()) {
             // Stop and indicate failure
             return false;
         }

@@ -43,6 +43,27 @@ namespace expert_system::utility {
              */
         [[nodiscard]] Confidence Combine(const Confidence& value) const;
 
+            /**
+             * @brief 'More than' relational operator overload.
+             * @param target A reference to a Confidence factor.
+             * @return True if the target Confidence factor value is more than this.
+             */
+        bool operator<(const Confidence& target);
+
+            /**
+             * @brief 'Less than' relational operator overload.
+             * @param target A reference to a Confidence factor.
+             * @return True if the target Confidence factor value is less than this.
+             */
+        bool operator>(const Confidence& target);
+
+            /**
+             * @brief 'Equal to' relational operator overload.
+             * @param target A reference to a Confidence factor.
+             * @return True if the target Confidence factor value is equal to this.
+             */
+        bool operator==(const Confidence& target);
+
     private:
             /// The protected confidence factor value.
         float confidence_factor_;

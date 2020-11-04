@@ -8,11 +8,6 @@ target_sources(${ESS_TARGET_NAME}
 		utility/Confidence.cpp
 		utility/DynamicEnum.cpp
 
-		# Main Window
-		gui/mainwindow.h
-		gui/mainwindow.cpp
-		gui/mainwindow.ui
-
 		# Fact Database
 		knowledge/facts/Facts.cpp
 		knowledge/facts/FactDatabase.cpp
@@ -24,4 +19,44 @@ target_sources(${ESS_TARGET_NAME}
 		knowledge/rules/Consequent.cpp
 		knowledge/rules/Rule.cpp
 		knowledge/rules/RuleDatabase.cpp
+
+		# Main Menu
+		gui/menu/MainMenu.h
+		gui/menu/MainMenu.cpp
+		gui/menu/MainMenu.ui
+
+		# Fact Editor
+		gui/editor/facts/FactEditor.h
+		gui/editor/facts/FactEditor.cpp
+		gui/editor/facts/FactEditor.ui
+
+		# New Fact
+		gui/editor/facts/NewFact.h
+		gui/editor/facts/NewFact.cpp
+		gui/editor/facts/NewFact.ui
+
+		# New Enum
+		gui/editor/facts/NewEnum.h
+		gui/editor/facts/NewEnum.cpp
+		gui/editor/facts/NewEnum.ui
+
+		# Rule Editor
+		gui/editor/rules/RuleEditor.h
+		gui/editor/rules/RuleEditor.cpp
+		gui/editor/rules/RuleEditor.ui
+
+		# New Rule
+		gui/editor/rules/NewRule.h
+		gui/editor/rules/NewRule.cpp
+		gui/editor/rules/NewRule.ui
+
+		# New Condition
+		gui/editor/rules/NewCondition.h
+		gui/editor/rules/NewCondition.cpp
+		gui/editor/rules/NewCondition.ui
+
+		# New Assignment
+		gui/editor/rules/NewAssignment.h
+		gui/editor/rules/NewAssignment.cpp
+		gui/editor/rules/NewAssignment.ui
 )

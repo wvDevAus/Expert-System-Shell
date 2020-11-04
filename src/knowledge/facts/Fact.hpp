@@ -100,11 +100,12 @@ namespace expert_system::knowledge::facts {
         };
 
             /**
-             * @brief Assigns a session value to the Fact.
+             * @brief Assigns a session value to the Fact through a filter.
+             * This prevents values outside of the Fact's range from being assigned.
+             * If a value is already assigned, new values will be discarded if they have a lower confidence factor.
              * @param [in] value The session value for the Fact.
              * @param [in] confidence_factor A specifier of the session value's confidence factor.
-             * @return True if the provided value is within the Fact's Range, False otherwise.
-             * @note If the Fact has no Range, this is guaranteed to always return True.
+             * @return True if the provided value is assigned, False otherwise.
              */
         bool SetValue(T value, utility::Confidence& confidence_factor) {
             // Check if the Fact has an assigned range
@@ -116,7 +117,20 @@ namespace expert_system::knowledge::facts {
                 }
             }
 
-            // Create the new session value
+            // Catch if the Fact already has a value
+            if (value_.has_value()) {
+                // Stop the assignment if the new value has a lower confidence value
+                if (confidence_factor < value_.value().confidence_factor_) {
+                    // Catch the less confident value and stop
+                    return false;
+                }
+
+                // Assign the new value and indicate success
+                value_.emplace(value, confidence_factor);
+                return true;
+            }
+
+            // Assign the new value and indicate success
             value_.emplace(value, confidence_factor);
             return true;
         };

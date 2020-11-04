@@ -37,7 +37,7 @@ namespace expert_system::knowledge::rules {
         }
     }
 
-    std::pair<TestOutcome, utility::Confidence> VariantCondition::Test(facts::FactDatabase& source) {
+    TestOutcome VariantCondition::Test(facts::FactDatabase& source) {
         // Attempt to gather the raw Condition
         switch (type_) {
             case utility::ExpertSystemTypes::kBool: {
@@ -70,7 +70,7 @@ namespace expert_system::knowledge::rules {
             }
             default: {
                 // Indicate failure
-                return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kUnknown, 0.0f);
+                return TestOutcome::kUnknown;
             }
         }
     }

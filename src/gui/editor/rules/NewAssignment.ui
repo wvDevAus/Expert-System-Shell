@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NewAssignment</class>
+ <widget class="QDialog" name="NewAssignment">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>230</width>
+    <height>70</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>230</width>
+    <height>70</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>230</width>
+    <height>70</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>New Assignment</string>
+  </property>
+  <widget class="QLabel" name="FactLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>31</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="text">
+    <string>Fact:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="CreateButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>100</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Create</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="CancelButton">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>40</y>
+     <width>100</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="FactSelector">
+   <property name="geometry">
+    <rect>
+     <x>45</x>
+     <y>10</y>
+     <width>175</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>175</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>175</width>
+     <height>20</height>
+    </size>
+   </property>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>FactSelector</tabstop>
+  <tabstop>CreateButton</tabstop>
+  <tabstop>CancelButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>CancelButton</sender>
+   <signal>clicked()</signal>
+   <receiver>NewAssignment</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>116</x>
+     <y>46</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CreateButton</sender>
+   <signal>clicked()</signal>
+   <receiver>NewAssignment</receiver>
+   <slot>CreateNewAssignment()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>55</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>6</x>
+     <y>44</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>CreateNewAssignment()</slot>
+ </slots>
+</ui>

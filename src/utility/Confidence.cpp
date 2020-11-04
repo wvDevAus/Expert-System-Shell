@@ -60,4 +60,19 @@ namespace expert_system::utility {
         }
     }
 
+    bool Confidence::operator<(const Confidence& target) {
+        // Compare the stored values
+        return (confidence_factor_ < target.confidence_factor_);
+    }
+
+    bool Confidence::operator>(const Confidence& target) {
+        // Compare the stored values
+        return (confidence_factor_ > target.confidence_factor_);
+    }
+
+    bool Confidence::operator==(const Confidence& target) {
+        // Compare the stored values
+        return (confidence_factor_ == target.confidence_factor_);
+    }
+
 } // namespace expert_system::utility

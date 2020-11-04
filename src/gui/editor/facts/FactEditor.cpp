@@ -1,0 +1,642 @@
+#include "FactEditor.h"
+
+#include <limits>
+#include <string>
+
+#include <QDoubleValidator>
+#include <QIntValidator>
+#include <QListWidget>
+#include <QMessageBox>
+#include <QRegExp>
+#include <QRegExpValidator>
+#include <QString>
+
+#include "gui/editor/facts/NewFact.h"
+#include "gui/editor/facts/NewEnum.h"
+#include "knowledge/facts/Facts.hpp"
+#include "knowledge/facts/FactDatabase.hpp"
+#include "utility/Singleton.hpp"
+
+FactEditor::FactEditor(QWidget *parent) : QDialog(parent) {
+    // Ensure that the UI is configured
+    ui.setupUi(this);
+
+    // Update the Fact list
+    UpdateFactList();
+}
+
+void FactEditor::NewFact() {
+    // Open the NewFact dialog
+    class NewFact modal_dialog(this);
+    modal_dialog.exec();
+
+    // Update the Fact list
+    UpdateFactList();
+}
+
+void FactEditor::DeleteFact() {
+    // Find the selected list Fact
+    if (selectedFact == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot delete unselected Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Get the selected Fact's name and delete it
+    auto& database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
+    database.Remove(selectedFact.value());
+    UpdateFactList();
+
+    // Clear the fact editors to prevent accessing invalid Facts
+    selectedFact = std::nullopt;
+    ClearFactEditors();
+}
+
+void FactEditor::SaveFact() {
+    // Catch an empty Fact selection
+    if (selectedFact == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot save to unselected Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Catch an invalid Fact selection
+    auto& database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
+    auto search_result = database.Find(selectedFact.value());
+    if (search_result == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot save to invalid Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Split the logic for each type of Fact
+    switch (search_result.value().get().type_) {
+        case expert_system::utility::ExpertSystemTypes::kBool: {
+            // Get a reference to the raw Fact
+            auto& raw_fact = std::get<expert_system::knowledge::facts::BoolFact>(search_result.value().get().fact_);
+
+            // Catch the required editors being disabled
+            if ((!ui.DescriptionFrame->isEnabled()) || (!ui.RangeFrame->isEnabled())) {
+                // Refresh the editors and hope it works next time
+                UpdateFactList();
+                break;
+            }
+
+            // Process the provided Description
+            raw_fact.SetDescription(ui.DescriptionEditor->toPlainText().toStdString());
+
+            // Catch if the Range checkbox is ticked
+            if (ui.RangeCheckbox->isChecked()) {
+                // Check if a valid minimum and maximum value is provided
+                if ((ui.MinimumEditor->text().isEmpty()) || (ui.MaximumEditor->text().isEmpty())) {
+                    // Clear the range editors and untick the range checkbox
+                    ui.RangeContents->setEnabled(false);
+                    ui.MinimumEditor->setValidator(nullptr);
+                    ui.MinimumEditor->setText("");
+                    ui.MaximumEditor->setValidator(nullptr);
+                    ui.MaximumEditor->setText("");
+                    ui.InclusiveCheckbox->setChecked(false);
+                    ui.RangeCheckbox->setChecked(false);
+                } else {
+                    // Assign the new Range to the Fact
+                    bool min_local = (ui.MinimumEditor->text().compare("True") == 0);
+                    bool max_local = (ui.MaximumEditor->text().compare("True") == 0);
+                    raw_fact.SetRange(min_local, max_local, ui.InclusiveCheckbox->isChecked());
+                }
+            }
+
+            // Finished
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kInt: {
+            // Get a reference to the raw Fact
+            auto& raw_fact = std::get<expert_system::knowledge::facts::IntFact>(search_result.value().get().fact_);
+
+            // Catch the required editors being disabled
+            if ((!ui.DescriptionFrame->isEnabled()) || (!ui.RangeFrame->isEnabled())) {
+                // Refresh the editors and hope it works next time
+                UpdateFactList();
+                break;
+            }
+
+            // Process the provided Description
+            raw_fact.SetDescription(ui.DescriptionEditor->toPlainText().toStdString());
+
+            // Catch if the Range checkbox is ticked
+            if (ui.RangeCheckbox->isChecked()) {
+                // Check if a valid minimum and maximum value is provided
+                if ((ui.MinimumEditor->text().isEmpty()) || (ui.MaximumEditor->text().isEmpty())) {
+                    // Clear the range editors and untick the range checkbox
+                    ui.RangeContents->setEnabled(false);
+                    ui.MinimumEditor->setValidator(nullptr);
+                    ui.MinimumEditor->setText("");
+                    ui.MaximumEditor->setValidator(nullptr);
+                    ui.MaximumEditor->setText("");
+                    ui.InclusiveCheckbox->setChecked(false);
+                    ui.RangeCheckbox->setChecked(false);
+                } else {
+                    // Assign the newRange to the Fact
+                    int min_local = ui.MinimumEditor->text().toInt();
+                    int max_local = ui.MaximumEditor->text().toInt();
+                    raw_fact.SetRange(min_local, max_local, ui.InclusiveCheckbox->isChecked());
+                }
+            }
+
+            // Finished
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kFloat: {
+            // Get a reference to the raw Fact
+            auto& raw_fact = std::get<expert_system::knowledge::facts::FloatFact>(search_result.value().get().fact_);
+
+            // Catch the required editors being disabled
+            if ((!ui.DescriptionFrame->isEnabled()) || (!ui.RangeFrame->isEnabled())) {
+                // Refresh the editors and hope it works next time
+                UpdateFactList();
+                break;
+            }
+
+            // Process the provided Description
+            raw_fact.SetDescription(ui.DescriptionEditor->toPlainText().toStdString());
+
+            // Catch if the Range checkbox is ticked
+            if (ui.RangeCheckbox->isChecked()) {
+                // Check if a valid minimum and maximum value is provided
+                if ((ui.MinimumEditor->text().isEmpty()) || (ui.MaximumEditor->text().isEmpty())) {
+                    // Clear the range editors and untick the range checkbox
+                    ui.RangeContents->setEnabled(false);
+                    ui.MinimumEditor->setValidator(nullptr);
+                    ui.MinimumEditor->setText("");
+                    ui.MaximumEditor->setValidator(nullptr);
+                    ui.MaximumEditor->setText("");
+                    ui.InclusiveCheckbox->setChecked(false);
+                    ui.RangeCheckbox->setChecked(false);
+                } else {
+                    // Assign the newRange to the Fact
+                    float min_local = ui.MinimumEditor->text().toFloat();
+                    float max_local = ui.MaximumEditor->text().toFloat();
+                    raw_fact.SetRange(min_local, max_local, ui.InclusiveCheckbox->isChecked());
+                }
+            }
+
+            // Finished
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kEnum: {
+            // Get a reference to the raw Fact
+            auto& raw_fact = std::get<expert_system::knowledge::facts::EnumFact>(search_result.value().get().fact_);
+
+            // Catch the required editors being disabled
+            if ((!ui.DescriptionFrame->isEnabled()) || (!ui.RangeFrame->isEnabled())) {
+                // Refresh the editors and hope it works next time
+                UpdateFactList();
+                break;
+            }
+
+            // Process the provided Description
+            raw_fact.fact_.SetDescription(ui.DescriptionEditor->toPlainText().toStdString());
+
+            // Catch if the Range checkbox is ticked
+            if (ui.RangeCheckbox->isChecked()) {
+                // Check if a valid minimum and maximum value is provided
+                if ((ui.MinimumEditor->text().isEmpty()) || (ui.MaximumEditor->text().isEmpty())) {
+                    // Clear the range editors and untick the range checkbox
+                    ui.RangeContents->setEnabled(false);
+                    ui.MinimumEditor->setValidator(nullptr);
+                    ui.MinimumEditor->setText("");
+                    ui.MaximumEditor->setValidator(nullptr);
+                    ui.MaximumEditor->setText("");
+                    ui.InclusiveCheckbox->setChecked(false);
+                    ui.RangeCheckbox->setChecked(false);
+                } else {
+                    // Catch invalid parameters
+                    std::string min_local = ui.MinimumEditor->text().toStdString();
+                    std::string max_local = ui.MaximumEditor->text().toStdString();
+                    if ((!raw_fact.enum_.Has(min_local)) || (!raw_fact.enum_.Has(max_local))) {
+                        // Catch the error and indicate failure
+                        QMessageBox error_indication;
+                        error_indication.setText("Error: invalid range value(s)!");
+                        error_indication.exec();
+                        break;
+                    }
+
+                    // Assign the newRange to the Fact
+                    raw_fact.fact_.SetRange(raw_fact.enum_.At(min_local).value(),
+                                            raw_fact.enum_.At(max_local).value(),
+                                            ui.InclusiveCheckbox->isChecked());
+                }
+            }
+
+            // Finished
+            break;
+        }
+        default: {
+            // Clear the current selection and reset the editors
+            selectedFact = std::nullopt;
+            UpdateFactList();
+            break;
+        }
+    }
+
+    // Update the Fact editors to reflect the stored data
+    UpdateFactEditors();
+}
+
+void FactEditor::FactSelected() {
+    // Track the selected Fact's name
+    auto selection = ui.FactList->currentItem();
+    if (selection == nullptr) {
+        // Indicate no Fact is currently stored and stop
+        selectedFact = std::nullopt;
+        ClearFactEditors();
+        return;
+    }
+
+    // Gather the name of the Fact
+    selectedFact = selection->text().toStdString();
+    UpdateFactEditors();
+}
+
+void FactEditor::UpdateRangeLock() {
+    // Update the editor enabled flag
+    ui.RangeContents->setEnabled(ui.RangeCheckbox->isChecked());
+
+    // Clear the contents if the checkbox is disabled
+    if (!ui.RangeCheckbox->isChecked()) {
+        ui.MaximumEditor->setText("");
+        ui.MinimumEditor->setText("");
+        ui.InclusiveCheckbox->setChecked(false);
+    }
+
+    // Only enable the inclusive checkbox if it is not a bool fact
+    if (ui.TypeIndicator->text().compare("Boolean") != 0) {
+        ui.InclusiveCheckbox->setEnabled(ui.RangeCheckbox->isChecked());
+    } else {
+        // Guarantee the inclusive checkbox can't be disabled for boolean facts
+        ui.InclusiveCheckbox->setEnabled(false);
+        ui.InclusiveCheckbox->setChecked(ui.RangeCheckbox->isChecked());
+    }
+}
+
+void FactEditor::ClearFactEditors() {
+    // Clear the selected enum value
+    selectedEnum = std::nullopt;
+
+    // Clear and lock type editor
+    ui.TypeIndicator->setText("");
+    ui.Type->setEnabled(false);
+
+    // Clear and lock the description editor
+    ui.DescriptionEditor->setPlainText("");
+    ui.DescriptionFrame->setEnabled(false);
+
+    // Clear and lock the range editor
+    ui.RangeCheckbox->setChecked(false);
+    ui.InclusiveCheckbox->setChecked(false);
+    ui.MinimumEditor->setText("");
+    ui.MinimumEditor->setValidator(nullptr);
+    ui.MaximumEditor->setText("");
+    ui.MaximumEditor->setValidator(nullptr);
+    ui.RangeContents->setEnabled(false);
+    ui.RangeFrame->setEnabled(false);
+
+    // Clear and lock the enumeration editor
+    ui.EnumerationEditor->clear();
+    ui.EnumerationFrame->setEnabled(false);
+}
+
+void FactEditor::UpdateFactEditors() {
+    // Clear the Fact editors to ensure that no data may be left over
+    ClearFactEditors();
+
+    // Catch if the editors should be locked
+    if (selectedFact == std::nullopt) {
+        // Simply stop
+        return;
+    }
+
+    // Attempt to gather the Fact
+    auto& database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
+    auto search_result = database.Find(selectedFact.value());
+    if (search_result == std::nullopt) {
+        // Simply stop
+        return;
+    }
+
+    // Process each Fact by its type
+    auto& fact_reference = search_result.value().get();
+    switch (fact_reference.type_) {
+        case expert_system::utility::ExpertSystemTypes::kBool: {
+            // Display the Fact's type
+            ui.TypeIndicator->setText("Boolean");
+            ui.Type->setEnabled(true);
+
+            // Track the raw Fact
+            auto& fact_raw = std::get<expert_system::knowledge::facts::BoolFact>(fact_reference.fact_);
+
+            // Display the Fact's description
+            ui.DescriptionEditor->setPlainText(fact_raw.GetDescription().c_str());
+            ui.DescriptionFrame->setEnabled(true);
+
+            // Check if the Fact has a Range
+            if (fact_raw.GetRange() != std::nullopt) {
+                // Keep track of the Range
+                auto fact_range = fact_raw.GetRange();
+
+                // Assign the Range editor check
+                ui.RangeCheckbox->setChecked(true);
+
+                // Assign the minimum range value and validator
+                static QRegExp boolExpr("True|False");
+                ui.MinimumEditor->setValidator(new QRegExpValidator(boolExpr, this));
+                if (fact_range->min_) {
+                    ui.MinimumEditor->setText("True");
+                } else {
+                    ui.MinimumEditor->setText("False");
+                }
+
+                // Assign the maximum range value and validator
+                ui.MaximumEditor->setValidator(new QRegExpValidator(boolExpr, this));
+                if (fact_range->max_) {
+                    ui.MaximumEditor->setText("True");
+                } else {
+                    ui.MaximumEditor->setText("False");
+                }
+
+                // Assign the inclusive flag
+                ui.InclusiveCheckbox->setChecked(true);
+
+                // Enable the range contents
+                ui.RangeContents->setEnabled(true);
+                ui.InclusiveCheckbox->setEnabled(false);
+            }
+            ui.RangeFrame->setEnabled(true);
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kInt: {
+            // Display the Fact's type
+            ui.TypeIndicator->setText("Integer");
+            ui.Type->setEnabled(true);
+
+            // Track the raw Fact
+            auto& fact_raw = std::get<expert_system::knowledge::facts::IntFact>(fact_reference.fact_);
+
+            // Display the Fact's description
+            ui.DescriptionEditor->setPlainText(fact_raw.GetDescription().c_str());
+            ui.DescriptionFrame->setEnabled(true);
+
+            // Check if the Fact has a Range
+            if (fact_raw.GetRange() != std::nullopt) {
+                // Keep track of the Range
+                auto fact_range = fact_raw.GetRange();
+
+                // Assign the Range editor check
+                ui.RangeCheckbox->setChecked(true);
+
+                // Assign the minimum range value and validator
+                ui.MinimumEditor->setValidator(new QIntValidator(std::numeric_limits<int>::min(),
+                                                                 std::numeric_limits<int>::max(),
+                                                                 this));
+                ui.MinimumEditor->setText(QString::number(fact_range->min_));
+
+                // Assign the maximum range value and validator
+                ui.MaximumEditor->setValidator(new QIntValidator(std::numeric_limits<int>::min(),
+                                                                 std::numeric_limits<int>::max(),
+                                                                 this));
+                ui.MaximumEditor->setText(QString::number(fact_range->max_));
+
+                // Assign the inclusive flag
+                if (fact_range->bounds_inclusive_) {
+                    ui.InclusiveCheckbox->setChecked(true);
+                }
+
+                // Enable the range contents
+                ui.RangeContents->setEnabled(true);
+                ui.InclusiveCheckbox->setEnabled(true);
+            }
+            ui.RangeFrame->setEnabled(true);
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kFloat: {
+            // Display the Fact's type
+            ui.TypeIndicator->setText("Float");
+            ui.Type->setEnabled(true);
+
+            // Track the raw Fact
+            auto& fact_raw = std::get<expert_system::knowledge::facts::FloatFact>(fact_reference.fact_);
+
+            // Display the Fact's description
+            ui.DescriptionEditor->setPlainText(fact_raw.GetDescription().c_str());
+            ui.DescriptionFrame->setEnabled(true);
+
+            // Check if the Fact has a Range
+            if (fact_raw.GetRange() != std::nullopt) {
+                // Keep track of the Range
+                auto fact_range = fact_raw.GetRange();
+
+                // Assign the Range editor check
+                ui.RangeCheckbox->setChecked(true);
+
+                // Assign the minimum range value and validator
+                ui.MinimumEditor->setValidator(new QDoubleValidator((double) std::numeric_limits<float>::min(),
+                                                                    (double) std::numeric_limits<float>::max(),
+                                                                    std::numeric_limits<float>::digits, this));
+                ui.MinimumEditor->setText(QString::number(fact_range->min_));
+
+                // Assign the maximum range value and validator
+                ui.MaximumEditor->setValidator(new QDoubleValidator((double) std::numeric_limits<float>::min(),
+                                                                    (double) std::numeric_limits<float>::max(),
+                                                                    std::numeric_limits<float>::digits, this));
+                ui.MaximumEditor->setText(QString::number(fact_range->max_));
+
+                // Assign the inclusive flag
+                if (fact_range->bounds_inclusive_) {
+                    ui.InclusiveCheckbox->setChecked(true);
+                }
+
+                // Enable the range contents
+                ui.RangeContents->setEnabled(true);
+                ui.InclusiveCheckbox->setEnabled(true);
+            }
+            ui.RangeFrame->setEnabled(true);
+            break;
+        }
+        case expert_system::utility::ExpertSystemTypes::kEnum: {
+            // Display the Fact's type
+            ui.TypeIndicator->setText("Enumeration");
+            ui.Type->setEnabled(true);
+
+            // Track the raw Fact
+            auto& fact_raw = std::get<expert_system::knowledge::facts::EnumFact>(fact_reference.fact_);
+
+            // Display the Fact's description
+            ui.DescriptionEditor->setPlainText(fact_raw.fact_.GetDescription().c_str());
+            ui.DescriptionFrame->setEnabled(true);
+
+            // Gather the Fact's enumeration and create it's regular expression string
+            QString enumExprStr;
+            auto enum_list = fact_raw.enum_.List();
+            int element_counter = 0;
+            for (auto& current_enum: enum_list) {
+                // Append the current enum value to the string
+                enumExprStr += current_enum.c_str();
+
+                // Add the current enum value to the UI
+                ui.EnumerationEditor->addItem(current_enum.c_str());
+
+                // Prevent attaching the separator to the very end of the string
+                if (element_counter != (int) enum_list.size() - 1) {
+                    // Append the regex separator
+                    enumExprStr += "|";
+                }
+                element_counter++;
+            }
+            ui.EnumerationFrame->setEnabled(true);
+
+            // Check if the Fact has a Range
+            if (fact_raw.fact_.GetRange() != std::nullopt) {
+                // Keep track of the Range
+                auto fact_range = fact_raw.fact_.GetRange();
+
+                // Assign the Range editor check
+                ui.RangeCheckbox->setChecked(true);
+
+                // Create the regular expression for the Fact's enumeration
+                QRegExp enumExpr(enumExprStr);
+
+                // Assign the minimum range value and validator
+                ui.MinimumEditor->setValidator(new QRegExpValidator(enumExpr, this));
+                ui.MinimumEditor->setText(fact_raw.enum_.At(fact_range.value().min_).value().c_str());
+
+                // Assign the maximum range value and validator
+                ui.MaximumEditor->setValidator(new QRegExpValidator(enumExpr, this));
+                ui.MaximumEditor->setText(fact_raw.enum_.At(fact_range.value().max_).value().c_str());
+
+                // Assign the inclusive flag
+                if (fact_range->bounds_inclusive_) {
+                    ui.InclusiveCheckbox->setChecked(true);
+                }
+
+                // Enable the range contents
+                ui.RangeContents->setEnabled(true);
+                ui.InclusiveCheckbox->setEnabled(true);
+            }
+            ui.RangeFrame->setEnabled(true);
+            break;
+        }
+        default: {
+            // Simply stop
+            break;
+        }
+    }
+}
+
+void FactEditor::EnumSelected() {
+    // Track the selected Enum's name
+    auto selection = ui.EnumerationEditor->currentItem();
+    if (selection == nullptr) {
+        // Indicate no Fact is currently stored and stop
+        selectedEnum = std::nullopt;
+        ClearFactEditors();
+        return;
+    }
+
+    // Gather the name of the Enum
+    selectedEnum = selection->text().toStdString();
+}
+
+void FactEditor::NewEnum() {
+    // Get access to the database and check the Fact exists
+    auto& database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
+    if (database.Find(selectedFact.value()) == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit invalid Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Catch an invalid type
+    auto& fact_target = database.Find(selectedFact.value()).value().get();
+    if (fact_target.type_ != expert_system::utility::ExpertSystemTypes::kEnum) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit Enumeration on this type of Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Open the NewEnum dialog
+    auto& fact_enum = std::get<expert_system::knowledge::facts::EnumFact>(fact_target.fact_);
+    class NewEnum modal_dialog(this, fact_enum);
+    modal_dialog.exec();
+
+    // Update the Fact editors
+    UpdateFactEditors();
+}
+
+void FactEditor::DeleteEnum() {
+    // Find the selected list Enum
+    if (selectedFact == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit unselected Fact!");
+        error_indication.exec();
+        return;
+    }
+    if (selectedEnum == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot delete unselected Enum!");
+        error_indication.exec();
+        return;
+    }
+
+    // Catch if the current Fact is valid
+    auto& database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
+    auto target_fact = database.Find(selectedFact.value());
+    if (target_fact == std::nullopt) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit invalid Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Catch if the current Fact is the correct type
+    if (target_fact.value().get().type_ != expert_system::utility::ExpertSystemTypes::kEnum) {
+        // Catch the error and indicate failure
+        QMessageBox error_indication;
+        error_indication.setText("Error: cannot edit enumeration values of a non-Enum Fact!");
+        error_indication.exec();
+        return;
+    }
+
+    // Update the Fact
+    auto& raw_fact = std::get<expert_system::knowledge::facts::EnumFact>(target_fact.value().get().fact_);
+    raw_fact.fact_.ClearRange();
+    raw_fact.enum_.Remove(selectedEnum.value());
+    UpdateFactEditors();
+}
+
+void FactEditor::UpdateFactList() {
+    // Clear the FactList's contents
+    ui.FactList->clear();
+
+    // Gather the List of Fact names and iterate through it
+    auto fact_names = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get().List();
+    for (auto& current_name: fact_names) {
+        // Add the Fact name to the list
+        new QListWidgetItem(current_name.c_str(), ui.FactList);
+    }
+
+    // Reset the Fact editors
+    selectedFact = std::nullopt;
+    UpdateFactEditors();
+}

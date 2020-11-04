@@ -35,6 +35,7 @@ namespace expert_system::knowledge::rules {
         kInvalidFactIdentifier,
         kInvalidFactType,
         kUnknownFactValue,
+        kInsufficientConfidence,
         kComparisonSuccess,
         kComparisonFailure
     };
@@ -46,6 +47,7 @@ namespace expert_system::knowledge::rules {
                                 {TestOutcome::kInvalidFactIdentifier, "InvalidFactIdentifier"},
                                 {TestOutcome::kInvalidFactType, "InvalidFactType"},
                                 {TestOutcome::kUnknownFactValue, "UnknownFactValue"},
+                                {TestOutcome::kInsufficientConfidence, "InsufficientConfidence"},
                                 {TestOutcome::kComparisonSuccess, "ComparisonSuccess"},
                                 {TestOutcome::kComparisonFailure, "ComparisonFailed"}})
 
@@ -79,9 +81,9 @@ namespace expert_system::knowledge::rules {
              * @param [in] source The Fact Database to operate on.
              * @return A TestOutcome enum symbol indicating the test's result.
              */
-        std::pair<TestOutcome, utility::Confidence> Test(facts::FactDatabase& source) {
+        TestOutcome Test(facts::FactDatabase& source) {
             // Not compatible with non-specialized Fact types
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kUnknown, 0.0f);
+            return TestOutcome::kUnknown;
         };
 
             /// The identifying name of the target Fact.
@@ -99,30 +101,30 @@ namespace expert_system::knowledge::rules {
              */
         bool invert_;
 
-            /// The Condition's confidence factor.
+            /// The Condition's minimum required confidence factor to trigger.
         utility::Confidence confidence_factor_;
     };
 
         /// Boolean specialization overload of templated Condition::Test.
     template<>
-    std::pair<TestOutcome, utility::Confidence> Condition<bool>::Test(facts::FactDatabase& source) {
+    TestOutcome Condition<bool>::Test(facts::FactDatabase& source) {
         // Check that the specified condition is valid
         if (condition_ == ConditionType::kUnknown) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidCondition, 0.0f);
+            return TestOutcome::kInvalidCondition;
         }
 
         // Check the specified Fact exists
         auto find_result = source.Find(fact_);
         if (find_result != std::nullopt) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidFactIdentifier, 0.0f);
+            return TestOutcome::kInvalidFactIdentifier;
         }
 
         // Check that the specified Fact does not have a mismatching type
         if (find_result->get().type_ == utility::ExpertSystemTypes::kBool) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidFactType, 0.0f);
+            return TestOutcome::kInvalidFactType;
         }
 
         // Gather the raw Fact's Value
@@ -130,7 +132,13 @@ namespace expert_system::knowledge::rules {
         auto fact_value = raw_fact.GetValue();
         if (fact_value == std::nullopt) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kUnknownFactValue, 0.0f);
+            return TestOutcome::kUnknownFactValue;
+        }
+
+        // Catch if the Fact's Value does not have a sufficient confidence factor
+        if (fact_value.value().confidence_factor_ < confidence_factor_) {
+            // Catch and indicate failure
+            return TestOutcome::kInsufficientConfidence;
         }
 
         // Test the Antecedent
@@ -141,23 +149,19 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
@@ -167,23 +171,19 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
@@ -193,52 +193,48 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
             default:
                 // Catch and indicate failure
-                return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidCondition, 0.0f);
+                return TestOutcome::kInvalidCondition;
         }
     }
 
         /// Integer specialization overload of templated Antecedent::Test.
     template<>
-    std::pair<TestOutcome, utility::Confidence> Condition<int>::Test(facts::FactDatabase& source) {
+    TestOutcome Condition<int>::Test(facts::FactDatabase& source) {
         // Check that the specified condition is valid
         if (condition_ == ConditionType::kUnknown) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidCondition, 0.0f);
+            return TestOutcome::kInvalidCondition;
         }
 
         // Check the specified Fact exists
         auto find_result = source.Find(fact_);
         if (find_result != std::nullopt) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidFactIdentifier, 0.0f);
+            return TestOutcome::kInvalidFactIdentifier;
         }
 
         // Check that the specified Fact does not have a mismatching type
         if (find_result->get().type_ == utility::ExpertSystemTypes::kInt) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidFactType, 0.0f);
+            return TestOutcome::kInvalidFactType;
         }
 
         // Gather the raw Fact's Value
@@ -246,7 +242,7 @@ namespace expert_system::knowledge::rules {
         auto fact_value = raw_fact.GetValue();
         if (fact_value == std::nullopt) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kUnknownFactValue, 0.0f);
+            return TestOutcome::kUnknownFactValue;
         }
 
         // Test the Antecedent
@@ -257,23 +253,19 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
@@ -283,23 +275,19 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
@@ -309,52 +297,48 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
             default:
                 // Catch and indicate failure
-                return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidCondition, 0.0f);
+                return TestOutcome::kInvalidCondition;
         }
     }
 
         /// Float specialization overload of templated Antecedent::Test.
     template<>
-    std::pair<TestOutcome, utility::Confidence> Condition<float>::Test(facts::FactDatabase& source) {
+    TestOutcome Condition<float>::Test(facts::FactDatabase& source) {
         // Check that the specified condition is valid
         if (condition_ == ConditionType::kUnknown) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidCondition, 0.0f);
+            return TestOutcome::kInvalidCondition;
         }
 
         // Check the specified Fact exists
         auto find_result = source.Find(fact_);
         if (find_result != std::nullopt) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidFactIdentifier, 0.0f);
+            return TestOutcome::kInvalidFactIdentifier;
         }
 
         // Check that the specified Fact does not have a mismatching type
         if (find_result->get().type_ == utility::ExpertSystemTypes::kFloat) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidFactType, 0.0f);
+            return TestOutcome::kInvalidFactType;
         }
 
         // Gather the raw Fact's Value
@@ -362,7 +346,7 @@ namespace expert_system::knowledge::rules {
         auto fact_value = raw_fact.GetValue();
         if (fact_value == std::nullopt) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kUnknownFactValue, 0.0f);
+            return TestOutcome::kUnknownFactValue;
         }
 
         // Test the Antecedent
@@ -373,23 +357,19 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
@@ -399,23 +379,19 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
@@ -425,51 +401,47 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
             default:
                 // Catch and indicate failure
-                return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidCondition, 0.0f);
+                return TestOutcome::kInvalidCondition;
         }
     }
 
     template<>
-    std::pair<TestOutcome, utility::Confidence> Condition<std::string>::Test(facts::FactDatabase& source) {
+    TestOutcome Condition<std::string>::Test(facts::FactDatabase& source) {
         // Check that the specified condition is valid
         if (condition_ == ConditionType::kUnknown) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidCondition, 0.0f);
+            return TestOutcome::kInvalidCondition;
         }
 
         // Check the specified Fact exists
         auto find_result = source.Find(fact_);
         if (find_result != std::nullopt) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidFactIdentifier, 0.0f);
+            return TestOutcome::kInvalidFactIdentifier;
         }
 
         // Check that the specified Fact does not have a mismatching type
         if (find_result->get().type_ == utility::ExpertSystemTypes::kEnum) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidFactType, 0.0f);
+            return TestOutcome::kInvalidFactType;
         }
 
         // Gather the raw Fact's Value
@@ -477,7 +449,7 @@ namespace expert_system::knowledge::rules {
         auto fact_value = raw_fact.fact_.GetValue();
         if (fact_value == std::nullopt) {
             // Catch and indicate failure
-            return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kUnknownFactValue, 0.0f);
+            return TestOutcome::kUnknownFactValue;
         }
 
         // Test the Antecedent
@@ -489,23 +461,19 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
@@ -515,23 +483,19 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
@@ -541,29 +505,25 @@ namespace expert_system::knowledge::rules {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     } else {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     }
                 } else {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate successful test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonSuccess,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonSuccess;
                     } else {
                         // Indicate failed test, return test result
-                        return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kComparisonFailure,
-                                                                           confidence_factor_.Combine(fact_value->confidence_factor_));
+                        return TestOutcome::kComparisonFailure;
                     }
                 }
             }
             default:
                 // Catch and indicate failure
-                return std::pair<TestOutcome, utility::Confidence>(TestOutcome::kInvalidCondition, 0.0f);
+                return TestOutcome::kInvalidCondition;
         }
     }
 
