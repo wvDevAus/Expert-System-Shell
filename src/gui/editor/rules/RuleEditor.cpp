@@ -7,7 +7,6 @@
 #include "gui/editor/rules/NewAssignment.h"
 #include "gui/editor/rules/NewCondition.h"
 #include "gui/editor/rules/NewRule.h"
-#include "knowledge/rules/Antecedent.hpp"
 #include "knowledge/rules/RuleDatabase.hpp"
 #include "utility/Singleton.hpp"
 
@@ -548,32 +547,36 @@ void RuleEditor::SaveAssignment() {
             // Get the raw Assignment
             auto& raw_assignment = std::get<expert_system::knowledge::rules::BoolAssignment>(selected_assignment->assignment_);
 
-            // Store the value
+            // Store the values
             raw_assignment.value_ = (QString("True").compare(ui.ValueEditor->text()) == 0);
+            raw_assignment.confidence_factor_.Set((float) ui.OutcomeConfidenceEditor->value());
             break;
         }
         case expert_system::utility::ExpertSystemTypes::kInt: {
             // Get the raw Assignment
             auto& raw_assignment = std::get<expert_system::knowledge::rules::IntAssignment>(selected_assignment->assignment_);
 
-            // Store the value
+            // Store the values
             raw_assignment.value_ = ui.ValueEditor->text().toInt();
+            raw_assignment.confidence_factor_.Set((float) ui.OutcomeConfidenceEditor->value());
             break;
         }
         case expert_system::utility::ExpertSystemTypes::kFloat: {
             // Get the raw Assignment
             auto& raw_assignment = std::get<expert_system::knowledge::rules::FloatAssignment>(selected_assignment->assignment_);
 
-            // Store the value
+            // Store the values
             raw_assignment.value_ = ui.ValueEditor->text().toFloat();
+            raw_assignment.confidence_factor_.Set((float) ui.OutcomeConfidenceEditor->value());
             break;
         }
         case expert_system::utility::ExpertSystemTypes::kEnum: {
             // Get the raw Assignment
             auto& raw_assignment = std::get<expert_system::knowledge::rules::EnumAssignment>(selected_assignment->assignment_);
 
-            // Store the value
+            // Store the values
             raw_assignment.value_ = ui.ValueEditor->text().toStdString();
+            raw_assignment.confidence_factor_.Set((float) ui.OutcomeConfidenceEditor->value());
             break;
         }
         default: {
@@ -1139,6 +1142,9 @@ void RuleEditor::UpdateConsequentEditor() {
                 ui.TargetEditor->setText("False");
             }
 
+            // Update the outcome confidence value
+            ui.OutcomeConfidenceEditor->setValue((double) raw_assignment.confidence_factor_.Get());
+
             // Finished inserting data
             break;
         }
@@ -1156,6 +1162,9 @@ void RuleEditor::UpdateConsequentEditor() {
                                                             this));
             ui.TargetEditor->setText(QString::number(raw_assignment.value_));
 
+            // Update the outcome confidence value
+            ui.OutcomeConfidenceEditor->setValue((double) raw_assignment.confidence_factor_.Get());
+
             // Finished inserting data
             break;
         }
@@ -1172,6 +1181,9 @@ void RuleEditor::UpdateConsequentEditor() {
                                                                (double) std::numeric_limits<float>::max(),
                                                                std::numeric_limits<float>::digits, this));
             ui.TargetEditor->setText(QString::number(raw_assignment.value_));
+
+            // Update the outcome confidence value
+            ui.OutcomeConfidenceEditor->setValue((double) raw_assignment.confidence_factor_.Get());
 
             // Finished inserting data
             break;
@@ -1205,6 +1217,9 @@ void RuleEditor::UpdateConsequentEditor() {
             QRegExp enumExpr(enumExprStr);
             ui.TargetEditor->setValidator(new QRegExpValidator(enumExpr, this));
             ui.TargetEditor->setText(raw_assignment.value_.c_str());
+
+            // Update the outcome confidence value
+            ui.OutcomeConfidenceEditor->setValue((double) raw_assignment.confidence_factor_.Get());
 
             // Finished inserting data
             break;
@@ -1254,6 +1269,7 @@ void RuleEditor::ClearConsequentEditor() {
     ui.FactIndicatorAssignment->clear();
     ui.ValueEditor->clear();
     ui.ValueEditor->setValidator(nullptr);
+    ui.OutcomeConfidenceEditor->clear();
     ui.AssignmentList->clear();
     ui.AssignmentFrame->setEnabled(false);
 }
