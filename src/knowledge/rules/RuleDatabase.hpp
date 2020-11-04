@@ -1,11 +1,19 @@
 #pragma once
 
+#include <list>
 #include <map>
 #include <string>
 
 #include "knowledge/rules/Rule.hpp"
 
 namespace expert_system::knowledge::rules {
+
+        /// The symbolic representations for applicable Rule filters.
+    enum class RuleFilter {
+        kAll,
+        kHasRun,
+        kHasNotRun
+    };
 
         /**
          * @brief A basic database that manages an expert system's Rules.
@@ -20,6 +28,33 @@ namespace expert_system::knowledge::rules {
              * @param database The Fact Database to operate on.
              */
         void Run(facts::FactDatabase& database);
+
+            /**
+             * @brief Lists the stored Rules, with a specified filter.
+             * @param filter The identifier of the filter to apply.
+             * @return A list of the iterators to the filtered Rules.
+             */
+        std::list<std::map<std::string, Rule>::iterator> ListRules(
+                RuleFilter filter = RuleFilter::kAll);
+
+            /**
+             * @brief Lists all of the Facts that the stored Rules require to trigger their Antecedent.
+             * @param filter The identifier of the filter to apply.
+             * @return A list of the Fact names from the filtered Rules.
+             */
+        std::set<std::string> ListRuleAntedecentFacts(
+                RuleFilter filter = RuleFilter::kAll);
+
+            /**
+             * @brief Lists all of the Facts that the stored Rules would modify from their Consequent.
+             * @param filter The identifier of the filter to apply.
+             * @return A list of the Fact names from the filtered Rules.
+             */
+        std::set<std::string> ListRuleConsequentFacts(
+                RuleFilter filter = RuleFilter::kAll);
+
+            /// Reverts the "has_run_" flag on all stored Rules.
+        void ResetRules();
 
             /**
              * @brief The database's collection of Rules.

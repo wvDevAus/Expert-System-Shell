@@ -16,15 +16,15 @@ namespace expert_system::knowledge::rules {
     class Rule {
     public:
             /// Default constructor
-        Rule() = default;
+        Rule();
 
             /**
              * @brief Gathers the identifiers of the Facts required to trigger this Rule.
-             * @return A set of the Antecedent's target Fact names, or std::nullopt if the Rule's Antecedent is invalid.
+             * @return A set of the Antecedent's target Fact names, or an empty set if the Rule's Antecedent is invalid.
              * @note All of these Facts must have a known session value to trigger the Rule.
              * @warning No tests will be performed to check that these Fact names are valid!
              */
-        std::optional<std::set<std::string>> TriggerFacts();
+        std::set<std::string> TriggerFacts();
 
             /**
              * @brief Gathers the identifiers of the Facts that would be assigned a session value by this Rule.
@@ -37,12 +37,11 @@ namespace expert_system::knowledge::rules {
             /**
              * @brief Test's the Rule's Antecedent and runs its Consequent on a successful trigger.
              * @param [in] database The Fact Database to operate on.
-             * @param [in] rule_name The name of this Rule (stored externally).
              * @return A TestOutcome enum symbol indicating the test's result.
              * @note This will return an error symbol if a Condition could not be operated.
              * @warning A TestOutcome of KComparisonSuccess may hide Consequent operation failure!
              */
-        TestOutcome Run(facts::FactDatabase& database, std::string rule_name);
+        TestOutcome Run(facts::FactDatabase& database);
 
             /**
              * @brief Updates the Fact's description.
@@ -62,6 +61,9 @@ namespace expert_system::knowledge::rules {
 
             /// The response component of the expert system Rule.
         Consequent response_;
+
+            /// Tracks if the Rule has been used in inference yet.
+        bool already_applied_;
 
     private:
             /**

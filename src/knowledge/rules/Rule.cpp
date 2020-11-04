@@ -6,7 +6,9 @@
 
 namespace expert_system::knowledge::rules {
 
-    std::optional<std::set<std::string>> Rule::TriggerFacts() {
+    Rule::Rule() : already_applied_(false) {};
+
+    std::set<std::string> Rule::TriggerFacts() {
         // Keep track of the Fact names
         std::set<std::string> fact_names;
 
@@ -14,7 +16,7 @@ namespace expert_system::knowledge::rules {
         auto root_condition_fact = trigger_.root_condition_.Fact();
         if (!root_condition_fact.has_value()) {
             // Catch the invalid Condition and indicate the Antecedent is invalid
-            return std::nullopt;
+            return std::set<std::string>();
         }
 
         // Store the root Condition's target Fact name
@@ -27,8 +29,8 @@ namespace expert_system::knowledge::rules {
 
             // Check that the current Condition actually has an assigned target Fact
             if (!condition_fact_name.has_value()) {
-                // Catch the invalid Condition and indicate the Antecedent is invalid
-                return std::nullopt;
+                // Catch the invalid Condition and just return an empty set
+                return std::set<std::string>();
             }
 
             // Store the current Condition's target Fact name
@@ -78,7 +80,7 @@ namespace expert_system::knowledge::rules {
         return fact_names;
     }
 
-    TestOutcome Rule::Run(facts::FactDatabase& database, std::string rule_name) {
+    TestOutcome Rule::Run(facts::FactDatabase& database) {
         // Run the Antecedent to identify if the Consequent should be triggered
         auto result = trigger_.Test(database);
 
@@ -87,8 +89,6 @@ namespace expert_system::knowledge::rules {
             // Run the Consequent
             response_.Assign(database);
         }
-
-        // TODO: Log the generation of this session value.
 
         // Return the Antecedent's result
         return result;
