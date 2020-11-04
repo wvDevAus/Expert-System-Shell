@@ -38,7 +38,7 @@ namespace expert_system::knowledge::rules {
              * @note This will return an error symbol if a Condition could not be operated.
              * @warning No indication will be given for the source of the error!
              */
-        std::pair<TestOutcome, utility::Confidence> Test(facts::FactDatabase& source);
+        TestOutcome Test(facts::FactDatabase& source);
 
             /**
              * @brief The root Condition to begin the test upon.

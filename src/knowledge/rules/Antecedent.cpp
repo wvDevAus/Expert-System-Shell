@@ -4,13 +4,13 @@
 
 namespace expert_system::knowledge::rules {
 
-    std::pair<TestOutcome, utility::Confidence> Antecedent::Test(facts::FactDatabase& source) {
+    TestOutcome Antecedent::Test(facts::FactDatabase& source) {
         // Attempt to Test the root Condition and keep track of the outcomes
         auto combined_outcomes = root_condition_.Test(source);
 
         // Catch an error output
-        if ((combined_outcomes.first != TestOutcome::kComparisonSuccess)
-            && (combined_outcomes.first != TestOutcome::kComparisonFailure)) {
+        if ((combined_outcomes != TestOutcome::kComparisonSuccess)
+            && (combined_outcomes != TestOutcome::kComparisonFailure)) {
             // Stop and return the error output
             return combined_outcomes;
         }
@@ -21,8 +21,8 @@ namespace expert_system::knowledge::rules {
             auto local_outcome = current_pair.second.Test(source);
 
             // Catch an error output
-            if ((local_outcome.first != TestOutcome::kComparisonSuccess)
-                    && (local_outcome.first != TestOutcome::kComparisonFailure)) {
+            if ((local_outcome != TestOutcome::kComparisonSuccess)
+                    && (local_outcome != TestOutcome::kComparisonFailure)) {
                 // Stop and return the error output
                 return local_outcome;
             }
@@ -31,32 +31,36 @@ namespace expert_system::knowledge::rules {
             switch (current_pair.first) {
                 case ConnectorType::kAnd: {
                     // Both outcomes must be successful
-                    if ((local_outcome.first != TestOutcome::kComparisonSuccess)
-                        || (combined_outcomes.first != TestOutcome::kComparisonSuccess)) {
+                    if ((local_outcome == TestOutcome::kComparisonSuccess)
+                        && (combined_outcomes == TestOutcome::kComparisonSuccess)) {
+                        // Store success in the chained result
+                        combined_outcomes = TestOutcome::kComparisonSuccess;
+                    }
+                    else {
                         // Store failure in the chained result
-                        combined_outcomes.first = TestOutcome::kComparisonFailure;
-                        combined_outcomes.second = combined_outcomes.second.Combine(local_outcome.second);
+                        combined_outcomes = TestOutcome::kComparisonFailure;
                     }
                 }
                 case ConnectorType::kOr: {
                     // Either outcome must be successful
-                    if ((local_outcome.first == TestOutcome::kComparisonSuccess)
-                            || (combined_outcomes.first == TestOutcome::kComparisonSuccess)) {
+                    if ((local_outcome == TestOutcome::kComparisonSuccess)
+                            || (combined_outcomes == TestOutcome::kComparisonSuccess)) {
                         // Store success in the chained result
-                        combined_outcomes.first = TestOutcome::kComparisonFailure;
-                        combined_outcomes.second = combined_outcomes.second.Combine(local_outcome.second);
+                        combined_outcomes = TestOutcome::kComparisonSuccess;
+                    }
+                    else {
+                        // Store failure in the chained result
+                        combined_outcomes = TestOutcome::kComparisonFailure;
                     }
                 }
                 case ConnectorType::kXor: {
                     // The outcomes cannot be identical
-                    if (local_outcome.first == combined_outcomes.first) {
+                    if (local_outcome == combined_outcomes) {
                         // Store failure in the chained result
-                        combined_outcomes.first = TestOutcome::kComparisonFailure;
-                        combined_outcomes.second = combined_outcomes.second.Combine(local_outcome.second);
+                        combined_outcomes = TestOutcome::kComparisonFailure;
                     } else {
                         // Store success in the chained result
-                        combined_outcomes.first = TestOutcome::kComparisonSuccess;
-                        combined_outcomes.second = combined_outcomes.second.Combine(local_outcome.second);
+                        combined_outcomes = TestOutcome::kComparisonSuccess;
                     }
                 }
             }
