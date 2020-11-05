@@ -1,0 +1,76 @@
+{
+    "database_facts": {
+        "TestBoolean_NoRange": {
+            "description": "A test boolean Fact without a configured range.",
+            "range": null,
+            "type": "Boolean"
+        },
+        "TestBoolean_WithRange": {
+            "description": "A test boolean Fact that will only accept a session value of True.",
+            "range": {
+                "inclusive": true,
+                "max": true,
+                "min": true
+            },
+            "type": "Boolean"
+        },
+        "TestEnum_NoRange": {
+            "description": "A test enumeration Fact with no range other than its assigned enumerations.",
+            "enum": [
+                "EnumVal1",
+                "EnumVal2",
+                "EnumVal3",
+                "EnumVal4",
+                "EnumVal5"
+            ],
+            "range": null,
+            "type": "Enumeration"
+        },
+        "TestEnum_WithRange": {
+            "description": "A test enumeration Fact with an exclusive range of Second to Fifth.",
+            "enum": [
+                "First",
+                "Second",
+                "Third",
+                "Fourth",
+                "Fifth",
+                "Sixth"
+            ],
+            "range": {
+                "inclusive": false,
+                "max": "Fifth",
+                "min": "Second"
+            },
+            "type": "Enumeration"
+        },
+        "TestFloat_NoRange": {
+            "description": "A test float Fact without any configured range.",
+            "range": null,
+            "type": "Float"
+        },
+        "TestFloat_WithRange": {
+            "description": "A test float Fact that only stores a session value between the inclusive range of 0.0f and 1.0f.",
+            "range": {
+                "inclusive": true,
+                "max": 1.0,
+                "min": 0.0
+            },
+            "type": "Float"
+        },
+        "TestInteger_NoRange": {
+            "description": "A test integer Fact with no configured range.",
+            "range": null,
+            "type": "Integer"
+        },
+        "TestInteger_WithRange": {
+            "description": "A test Integer Fact that will only accept session values between the inclusive range of 0 and 100.",
+            "range": {
+                "inclusive": true,
+                "max": 100,
+                "min": 0
+            },
+            "type": "Integer"
+        }
+    },
+    "database_rules": {}
+}
