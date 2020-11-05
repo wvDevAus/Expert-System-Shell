@@ -11,6 +11,7 @@ target_sources(${ESS_TARGET_NAME}
 		# Fact Database
 		knowledge/facts/Facts.cpp
 		knowledge/facts/FactDatabase.cpp
+		knowledge/facts/Values.cpp
 
 		# Rule Database
 		knowledge/rules/Antecedent.cpp
@@ -19,6 +20,9 @@ target_sources(${ESS_TARGET_NAME}
 		knowledge/rules/Consequent.cpp
 		knowledge/rules/Rule.cpp
 		knowledge/rules/RuleDatabase.cpp
+
+		# Explanation Engine
+		engines/explanation/Log.cpp
 
 		# Main Menu
 		gui/menu/MainMenu.h

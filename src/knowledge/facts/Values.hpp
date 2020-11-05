@@ -26,7 +26,7 @@ namespace expert_system::knowledge::facts {
              * @param [in] ordered_names A list of enum names in ascending order.
              * @note Duplicate enum names will be discarded.
              */
-        explicit EnumValue(const utility::DynamicEnum& value_enum);
+        EnumValue(const utility::DynamicEnum& value_enum, IntValue value_data);
 
             /// The DynamicEnum for use in converting the Value data.
         utility::DynamicEnum enum_;
