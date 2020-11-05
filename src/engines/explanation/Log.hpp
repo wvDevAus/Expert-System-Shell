@@ -17,7 +17,7 @@ namespace expert_system::engines::explanation {
     struct Log {
             /**
              * @brief Default constructor.
-             * Sets cause_ to std::nullopt.
+             * Sets rule_ to std::nullopt.
              */
         Log();
 

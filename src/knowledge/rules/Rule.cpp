@@ -6,7 +6,7 @@
 
 namespace expert_system::knowledge::rules {
 
-    Rule::Rule() : already_applied_(false) {};
+    Rule::Rule() : successful_response_(false) {};
 
     std::set<std::string> Rule::TriggerFacts() {
         // Keep track of the Fact names

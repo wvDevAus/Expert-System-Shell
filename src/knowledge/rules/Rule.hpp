@@ -62,8 +62,8 @@ namespace expert_system::knowledge::rules {
             /// The response component of the expert system Rule.
         Consequent response_;
 
-            /// Tracks if the Rule has been used in inference yet.
-        bool already_applied_;
+            /// Tracks if the Rule's Consequent has been run.
+        bool successful_response_;
 
     private:
             /**

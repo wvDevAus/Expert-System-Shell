@@ -24,6 +24,9 @@ target_sources(${ESS_TARGET_NAME}
 		# Explanation Engine
 		engines/explanation/Log.cpp
 
+		# Inference Engine
+		engines/inference/Forward.cpp
+
 		# Main Menu
 		gui/menu/MainMenu.h
 		gui/menu/MainMenu.cpp

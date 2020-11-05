@@ -67,14 +67,37 @@ namespace expert_system::knowledge::facts {
         }
     }
 
-    std::list<std::string> FactDatabase::List() const {
+    std::set<std::string> FactDatabase::List(FactFilter filter) {
         // Create a temporary list to store the Fact names in
-        std::list<std::string> fact_names;
+        std::set<std::string> fact_names;
 
         // Iterate through the database's keys
         for (const auto& map_iterator: stored_facts_) {
-            // Append the name to the end of the list
-            fact_names.push_back(map_iterator.first);
+            // Split the logic based on the specified filter
+            switch (filter) {
+                case FactFilter::kAll: {
+                    // Append the name to the end of the list
+                    fact_names.insert(map_iterator.first);
+                }
+                case FactFilter::kHasValue: {
+                    // Check if the Fact has a value
+                    if (Known(map_iterator.first)) {
+                        // Append the name to the end of the list
+                        fact_names.insert(map_iterator.first);
+                    }
+                }
+                case FactFilter::kHasNoValue: {
+                    // Check if the Fact has no value
+                    if (!Known(map_iterator.first)) {
+                        // Append the name to the end of the list
+                        fact_names.insert(map_iterator.first);
+                    }
+                }
+                default : {
+                    // Skip this Fact
+                    break;
+                }
+            }
         }
 
         // Return the list of Fact names
