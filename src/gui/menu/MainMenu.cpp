@@ -125,16 +125,6 @@ void MainMenu::RulesDomainKnowledge() {
 }
 
 void MainMenu::FactsDomainKnowledge() {
-    // Prevent this window from being opened if Rules have been created.
-    auto& rule_database = expert_system::utility::Singleton<expert_system::knowledge::rules::RuleDatabase>::Get();
-    if ((int) rule_database.managed_rules_.size() != 0) {
-        // Report the error
-        QMessageBox error_indication;
-        error_indication.setText("Error: Facts cannot be edited while Rules exist!");
-        error_indication.exec();
-        return;
-    }
-
     // Open the FactEditor dialog
     FactEditor modal_dialog(this);
     modal_dialog.exec();

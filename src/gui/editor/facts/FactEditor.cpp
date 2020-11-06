@@ -15,6 +15,7 @@
 #include "gui/editor/facts/NewEnum.h"
 #include "knowledge/facts/Facts.hpp"
 #include "knowledge/facts/FactDatabase.hpp"
+#include "knowledge/rules/RuleDatabase.hpp"
 #include "utility/Singleton.hpp"
 
 FactEditor::FactEditor(QWidget *parent) : QDialog(parent) {
@@ -23,6 +24,14 @@ FactEditor::FactEditor(QWidget *parent) : QDialog(parent) {
 
     // Update the Fact list
     UpdateFactList();
+
+    // Catch if the editor should be locked into a read-only mode
+    auto& rule_database = expert_system::utility::Singleton<expert_system::knowledge::rules::RuleDatabase>::Get();
+    if ((int) rule_database.managed_rules_.size() != 0) {
+        // Disable all of the content that would enable editing
+        ui.EditorLocker->setEnabled(false);
+        this->setWindowTitle("Fact Editor - READ ONLY");
+    }
 }
 
 void FactEditor::NewFact() {
