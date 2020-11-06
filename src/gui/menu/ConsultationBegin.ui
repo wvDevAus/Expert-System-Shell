@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Consultation - Forward Inferencing</string>
+   <string>Consultation</string>
   </property>
   <widget class="QListWidget" name="FactList">
    <property name="geometry">
