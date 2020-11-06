@@ -54,13 +54,13 @@
      </font>
     </property>
     <property name="toolTip">
-     <string>Begin a consultation using backward inferrence.</string>
+     <string>Begin a consultation using backward inference.</string>
     </property>
     <property name="toolTipDuration">
      <number>-1</number>
     </property>
     <property name="text">
-     <string>Backwards Inferrencing</string>
+     <string>Backwards Inferencing</string>
     </property>
    </widget>
    <widget class="QPushButton" name="ConsultationForward">
@@ -91,13 +91,13 @@
      </font>
     </property>
     <property name="toolTip">
-     <string>Begin a consultation using forward inferrence.</string>
+     <string>Begin a consultation using forward inference.</string>
     </property>
     <property name="toolTipDuration">
      <number>-1</number>
     </property>
     <property name="text">
-     <string>Forward Inferrencing</string>
+     <string>Forward Inferencing</string>
     </property>
    </widget>
    <widget class="QPushButton" name="DomainKnowledgeFacts">

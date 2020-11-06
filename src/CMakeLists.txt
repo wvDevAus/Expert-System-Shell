@@ -66,4 +66,9 @@ target_sources(${ESS_TARGET_NAME}
 		gui/editor/rules/NewAssignment.h
 		gui/editor/rules/NewAssignment.cpp
 		gui/editor/rules/NewAssignment.ui
+
+		# Consultation Begin
+		gui/menu/ConsultationBegin.h
+		gui/menu/ConsultationBegin.cpp
+		gui/menu/ConsultationBegin.ui
 )
