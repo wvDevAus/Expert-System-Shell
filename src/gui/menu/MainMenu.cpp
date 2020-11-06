@@ -13,6 +13,7 @@
 #include "gui/editor/facts/FactEditor.h"
 #include "gui/editor/rules/RuleEditor.h"
 #include "gui/menu/ConsultationBegin.h"
+#include "gui/menu/AdditionalRequest.h"
 #include "knowledge/facts/FactDatabase.hpp"
 #include "knowledge/rules/RuleDatabase.hpp"
 #include "utility/Singleton.hpp"
@@ -181,12 +182,20 @@ void MainMenu::ForwardInferrencingConsult() {
                             rule_database);
 
             // Generate a dialog to request one of these missing fact session values
-            //todo: this
+            AdditionalRequest request_dialog(needed_fact_values,
+                                             logged_events,
+                                             this);
+
+            // Catch if the user wanted to finish the consultation
+            if (request_dialog.exec() == QDialog::Rejected) {
+                // Stop the consultation and show the results
+                break;
+            }
         }
     }
 
     // Display the consultation results
-    //TODO this
+
 
     // Make sure to clean up before finishing
     fact_database.Reset();
@@ -198,5 +207,4 @@ void MainMenu::BackwardInferrencingConsult() {
     QMessageBox error_indication;
     error_indication.setText("Backwards Inferencing is currently not supported.");
     error_indication.exec();
-    return;
 }
