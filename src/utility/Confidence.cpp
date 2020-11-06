@@ -31,7 +31,7 @@ namespace expert_system::utility {
         confidence_factor_ = value;
     }
 
-    float Confidence::Get() {
+    float Confidence::Get() const {
         // Return a copy of the stored value
         return confidence_factor_;
     }

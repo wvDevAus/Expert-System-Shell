@@ -76,4 +76,9 @@ target_sources(${ESS_TARGET_NAME}
 		gui/menu/AdditionalRequest.h
 		gui/menu/AdditionalRequest.cpp
 		gui/menu/AdditionalRequest.ui
+
+		# Consultation Report
+		gui/menu/ConsultationResult.h
+		gui/menu/ConsultationResult.cpp
+		gui/menu/ConsultationResult.ui
 )

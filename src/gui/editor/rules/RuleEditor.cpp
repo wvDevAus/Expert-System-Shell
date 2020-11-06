@@ -28,7 +28,7 @@ void RuleEditor::RuleSelected() {
         return;
     }
 
-    // Gather the name of the Fact and update the editors
+    // Gather the name of the Rule and update the editors
     current_rule_name_ = selection->text().toStdString();
     current_condition_index_ = std::nullopt;
     current_response_index_ = std::nullopt;

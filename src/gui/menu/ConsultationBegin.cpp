@@ -176,7 +176,7 @@ void ConsultationBegin::UpdateEditor() {
     auto& fact_reference = search_result.value().get();
     switch (fact_reference.type_) {
         case expert_system::utility::ExpertSystemTypes::kBool: {
-            // Track the raw Fact and indicate its type
+            // Track the raw Fact
             auto& fact_raw = std::get<expert_system::knowledge::facts::BoolFact>(fact_reference.fact_);
             ui.TypeIndicator->setText("Boolean");
 

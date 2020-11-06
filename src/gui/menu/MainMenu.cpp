@@ -195,7 +195,7 @@ void MainMenu::ForwardInferrencingConsult() {
     }
 
     // Display the consultation results
-
+    //todo THIS
 
     // Make sure to clean up before finishing
     fact_database.Reset();

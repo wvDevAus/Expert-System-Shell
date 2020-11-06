@@ -9,7 +9,7 @@
 #include "ui_AdditionalRequest.h"
 
     /**
-     * @brief Expert System Shell consultation initial data request.
+     * @brief Expert System Shell consultation additional data request.
      * Implemented through the Member Variable method.
      */
 class AdditionalRequest : public QDialog {

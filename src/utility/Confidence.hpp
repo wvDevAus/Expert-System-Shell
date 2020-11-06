@@ -34,7 +34,7 @@ namespace expert_system::utility {
              * @brief Provides a read-only access to the private confidence factor value.
              * @return A copy of the stored confidence factor value.
              */
-        float Get();
+        float Get() const;
 
             /**
              * @brief Creates a new confidence factor from combining this value with another.

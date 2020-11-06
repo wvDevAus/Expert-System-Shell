@@ -222,7 +222,7 @@
       <widget class="QPlainTextEdit" name="DescriptionEditor">
        <property name="minimumSize">
         <size>
-         <width>550</width>
+         <width>500</width>
          <height>40</height>
         </size>
        </property>
@@ -246,6 +246,9 @@
        </property>
        <property name="horizontalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="plainText">
+        <string>The description editor for Rules is currently unavailable.</string>
        </property>
       </widget>
      </item>
@@ -551,6 +554,9 @@
         <family>Calibri</family>
         <pointsize>10</pointsize>
        </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
       </property>
       <property name="acceptDrops">
        <bool>false</bool>
@@ -868,6 +874,9 @@
         <pointsize>10</pointsize>
        </font>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="acceptDrops">
        <bool>false</bool>
       </property>
@@ -1144,6 +1153,9 @@
         <pointsize>10</pointsize>
        </font>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="acceptDrops">
        <bool>false</bool>
       </property>
@@ -1271,6 +1283,9 @@
         <pointsize>10</pointsize>
        </font>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="acceptDrops">
        <bool>false</bool>
       </property>
@@ -1358,20 +1373,17 @@
   <tabstop>ConditionCreate</tabstop>
   <tabstop>ConditionDelete</tabstop>
   <tabstop>ConditionSave</tabstop>
-  <tabstop>TypeIndicatorCondition</tabstop>
-  <tabstop>FactIndicatorCondition</tabstop>
   <tabstop>OperationLabelInversion</tabstop>
   <tabstop>OperationSelection</tabstop>
   <tabstop>TargetEditor</tabstop>
   <tabstop>MinimumConfidenceEditor</tabstop>
   <tabstop>ConnectorSelection</tabstop>
   <tabstop>AssignmentList</tabstop>
-  <tabstop>TypeIndicatorAssignment</tabstop>
-  <tabstop>FactIndicatorAssignment</tabstop>
-  <tabstop>ValueEditor</tabstop>
   <tabstop>AssignmentCreate</tabstop>
   <tabstop>AssignmentDelete</tabstop>
   <tabstop>AssignmentSave</tabstop>
+  <tabstop>ValueEditor</tabstop>
+  <tabstop>OutcomeConfidenceEditor</tabstop>
   <tabstop>DescriptionEditor</tabstop>
  </tabstops>
  <resources/>
