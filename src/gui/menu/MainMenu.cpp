@@ -139,6 +139,14 @@ void MainMenu::ForwardInferrencingConsult() {
     auto& fact_database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
     auto& rule_database = expert_system::utility::Singleton<expert_system::knowledge::rules::RuleDatabase>::Get();
 
+    // Prevent this from being run if there are not stored Facts and Rules to inference
+    if ((fact_database.Count() <= 0) || (rule_database.managed_rules_.empty())) {
+        QMessageBox error_indication;
+        error_indication.setText("A consultation cannot begin if no Facts or Rules exist!");
+        error_indication.exec();
+        return;
+    }
+
     // Keep track of the events that occur while inferring
     std::vector<std::vector<expert_system::engines::explanation::Log>> logged_events;
 
