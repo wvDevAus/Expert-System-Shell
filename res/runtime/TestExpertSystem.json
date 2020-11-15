@@ -72,5 +72,94 @@
             "type": "Integer"
         }
     },
-    "database_rules": {}
+    "database_rules": {
+        "TestRule1": {
+            "antecedent": {
+                "chain": [],
+                "root": {
+                    "condition": "EqualTo",
+                    "confidence": 0.75,
+                    "fact": "TestBoolean_NoRange",
+                    "invert": false,
+                    "target_value": true,
+                    "type": "Boolean"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 1.0,
+                    "fact": "TestBoolean_WithRange",
+                    "target_value": true,
+                    "type": "Boolean"
+                }
+            ],
+            "description": ""
+        },
+        "TestRule2": {
+            "antecedent": {
+                "chain": [],
+                "root": {
+                    "condition": "EqualTo",
+                    "confidence": 0.75,
+                    "fact": "TestBoolean_WithRange",
+                    "invert": false,
+                    "target_value": true,
+                    "type": "Boolean"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 1.0,
+                    "fact": "TestFloat_NoRange",
+                    "target_value": 10.010000228881836,
+                    "type": "Float"
+                }
+            ],
+            "description": ""
+        },
+        "TestRule3": {
+            "antecedent": {
+                "chain": [],
+                "root": {
+                    "condition": "LessThan",
+                    "confidence": 0.75,
+                    "fact": "TestFloat_NoRange",
+                    "invert": false,
+                    "target_value": 10.0,
+                    "type": "Float"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 1.0,
+                    "fact": "TestInteger_NoRange",
+                    "target_value": 4,
+                    "type": "Integer"
+                }
+            ],
+            "description": ""
+        },
+        "TestRule4": {
+            "antecedent": {
+                "chain": [],
+                "root": {
+                    "condition": "GreaterThan",
+                    "confidence": 0.75,
+                    "fact": "TestInteger_NoRange",
+                    "invert": false,
+                    "target_value": 5,
+                    "type": "Integer"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 1.0,
+                    "fact": "TestEnum_WithRange",
+                    "target_value": "Fourth",
+                    "type": "Enumeration"
+                }
+            ],
+            "description": ""
+        }
+    }
 }

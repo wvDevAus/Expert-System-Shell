@@ -134,6 +134,9 @@ ConsultationResult::ConsultationResult(
             }
         }
 
+        // Ensure that the events of the step are shown
+        item_root->setExpanded(true);
+
         // Increment the step counter
         step_counter++;
     }

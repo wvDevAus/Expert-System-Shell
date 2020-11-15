@@ -92,9 +92,12 @@ namespace expert_system::engines::inference::forward {
         auto unused_rules = rule_database.ListRules(
                 knowledge::rules::RuleFilter::kHasNotRunConsequent);
         for (const auto& current_rule: unused_rules) {
-            // Check if the current Rule has been triggered
-            if (current_rule->second.trigger_.Test(fact_database)
-                == knowledge::rules::TestOutcome::kComparisonSuccess) {
+            // Test the current Rule
+            auto test_result = current_rule->second.trigger_.Test(fact_database);
+
+            // Check if the current Rule has successfully been triggered and run
+            if ((test_result == knowledge::rules::TestOutcome::kComparisonSuccess)
+             || (test_result == knowledge::rules::TestOutcome::kComparisonFailure)) {
                 // Store the current Rule for future reference
                 triggered_rules.emplace_back(current_rule);
             }
@@ -111,13 +114,13 @@ namespace expert_system::engines::inference::forward {
         std::vector<explanation::Log> trigger_log;
 
         // Iterate through the triggered rules
-        for (const auto& current_fact: triggered_rules) {
+        for (auto current_rule: triggered_rules) {
             // Attempt the Rule's assignment and track the results
-            auto assignment_outcomes = current_fact->second.response_.Assign(fact_database);
+            auto assignment_outcomes = current_rule->second.response_.Assign(fact_database);
 
             // Create a Log for this Rule's attempted assignment
             explanation::Log current_fact_log;
-            current_fact_log.rule_ = current_fact;
+            current_fact_log.rule_ = current_rule;
 
             // Iterate through the outcomes of the assignments
             for (auto& current_outcome: assignment_outcomes) {
@@ -127,6 +130,9 @@ namespace expert_system::engines::inference::forward {
                 // Add the assigned data to the Log
                 current_fact_log.assignments_.emplace(current_outcome.first, assignment_fact);
             }
+
+            // Update the Rule to keep track of it already being triggered
+            current_rule->second.successful_response_ = true;
 
             // Add this log to the collection
             trigger_log.push_back(current_fact_log);

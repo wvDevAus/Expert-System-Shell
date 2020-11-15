@@ -78,6 +78,7 @@ namespace expert_system::knowledge::facts {
                 case FactFilter::kAll: {
                     // Append the name to the end of the list
                     fact_names.insert(map_iterator.first);
+                    break;
                 }
                 case FactFilter::kHasValue: {
                     // Check if the Fact has a value
@@ -85,6 +86,7 @@ namespace expert_system::knowledge::facts {
                         // Append the name to the end of the list
                         fact_names.insert(map_iterator.first);
                     }
+                    break;
                 }
                 case FactFilter::kHasNoValue: {
                     // Check if the Fact has no value
@@ -92,6 +94,7 @@ namespace expert_system::knowledge::facts {
                         // Append the name to the end of the list
                         fact_names.insert(map_iterator.first);
                     }
+                    break;
                 }
                 default : {
                     // Skip this Fact

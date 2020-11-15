@@ -116,13 +116,13 @@ namespace expert_system::knowledge::rules {
 
         // Check the specified Fact exists
         auto find_result = source.Find(fact_);
-        if (find_result != std::nullopt) {
+        if (find_result == std::nullopt) {
             // Catch and indicate failure
             return TestOutcome::kInvalidFactIdentifier;
         }
 
         // Check that the specified Fact does not have a mismatching type
-        if (find_result->get().type_ == utility::ExpertSystemTypes::kBool) {
+        if (find_result->get().type_ != utility::ExpertSystemTypes::kBool) {
             // Catch and indicate failure
             return TestOutcome::kInvalidFactType;
         }
@@ -167,7 +167,7 @@ namespace expert_system::knowledge::rules {
             }
             case ConditionType::kLessThan: {
                 // Perform the test and return the result
-                if (fact_value->value_ < target_) {
+                if (target_ < fact_value->value_) {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
@@ -189,7 +189,7 @@ namespace expert_system::knowledge::rules {
             }
             case ConditionType::kGreaterThan: {
                 // Perform the test and return the result
-                if (target_ < fact_value->value_) {
+                if (fact_value->value_ < target_) {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
@@ -226,13 +226,13 @@ namespace expert_system::knowledge::rules {
 
         // Check the specified Fact exists
         auto find_result = source.Find(fact_);
-        if (find_result != std::nullopt) {
+        if (find_result == std::nullopt) {
             // Catch and indicate failure
             return TestOutcome::kInvalidFactIdentifier;
         }
 
         // Check that the specified Fact does not have a mismatching type
-        if (find_result->get().type_ == utility::ExpertSystemTypes::kInt) {
+        if (find_result->get().type_ != utility::ExpertSystemTypes::kInt) {
             // Catch and indicate failure
             return TestOutcome::kInvalidFactType;
         }
@@ -271,7 +271,7 @@ namespace expert_system::knowledge::rules {
             }
             case ConditionType::kLessThan: {
                 // Perform the test and return the result
-                if (fact_value->value_ < target_) {
+                if (target_ < fact_value->value_) {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
@@ -293,7 +293,7 @@ namespace expert_system::knowledge::rules {
             }
             case ConditionType::kGreaterThan: {
                 // Perform the test and return the result
-                if (target_ < fact_value->value_) {
+                if (fact_value->value_ < target_) {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
@@ -330,13 +330,13 @@ namespace expert_system::knowledge::rules {
 
         // Check the specified Fact exists
         auto find_result = source.Find(fact_);
-        if (find_result != std::nullopt) {
+        if (find_result == std::nullopt) {
             // Catch and indicate failure
             return TestOutcome::kInvalidFactIdentifier;
         }
 
         // Check that the specified Fact does not have a mismatching type
-        if (find_result->get().type_ == utility::ExpertSystemTypes::kFloat) {
+        if (find_result->get().type_ != utility::ExpertSystemTypes::kFloat) {
             // Catch and indicate failure
             return TestOutcome::kInvalidFactType;
         }
@@ -375,7 +375,7 @@ namespace expert_system::knowledge::rules {
             }
             case ConditionType::kLessThan: {
                 // Perform the test and return the result
-                if (fact_value->value_ < target_) {
+                if (target_ < fact_value->value_) {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
@@ -397,7 +397,7 @@ namespace expert_system::knowledge::rules {
             }
             case ConditionType::kGreaterThan: {
                 // Perform the test and return the result
-                if (target_ < fact_value->value_) {
+                if (fact_value->value_ < target_) {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
@@ -433,13 +433,13 @@ namespace expert_system::knowledge::rules {
 
         // Check the specified Fact exists
         auto find_result = source.Find(fact_);
-        if (find_result != std::nullopt) {
+        if (find_result == std::nullopt) {
             // Catch and indicate failure
             return TestOutcome::kInvalidFactIdentifier;
         }
 
         // Check that the specified Fact does not have a mismatching type
-        if (find_result->get().type_ == utility::ExpertSystemTypes::kEnum) {
+        if (find_result->get().type_ != utility::ExpertSystemTypes::kEnum) {
             // Catch and indicate failure
             return TestOutcome::kInvalidFactType;
         }
@@ -457,7 +457,7 @@ namespace expert_system::knowledge::rules {
         switch(condition_) {
             case ConditionType::kEqualTo: {
                 // Perform the test and return the result
-                if (fact_enum.At(fact_value->value_) == target_) {
+                if (fact_value->value_ == fact_enum.At(target_)) {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
@@ -479,7 +479,7 @@ namespace expert_system::knowledge::rules {
             }
             case ConditionType::kLessThan: {
                 // Perform the test and return the result
-                if (fact_enum.At(fact_value->value_) < target_) {
+                if (fact_enum.At(target_) < fact_value->value_) {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
@@ -501,7 +501,7 @@ namespace expert_system::knowledge::rules {
             }
             case ConditionType::kGreaterThan: {
                 // Perform the test and return the result
-                if (target_ < fact_enum.At(fact_value->value_)) {
+                if (fact_value->value_ < fact_enum.At(target_)) {
                     // Catch if the result should be inverted
                     if (invert_) {
                         // Indicate failed test, return test result
