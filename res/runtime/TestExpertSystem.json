@@ -91,13 +91,31 @@
                     "fact": "TestBoolean_WithRange",
                     "target_value": true,
                     "type": "Boolean"
+                },
+                {
+                    "confidence": 0.6499999761581421,
+                    "fact": "TestFloat_NoRange",
+                    "target_value": 100.0,
+                    "type": "Float"
                 }
             ],
             "description": ""
         },
         "TestRule2": {
             "antecedent": {
-                "chain": [],
+                "chain": [
+                    [
+                        "XOR",
+                        {
+                            "condition": "LessThan",
+                            "confidence": 0.75,
+                            "fact": "TestInteger_WithRange",
+                            "invert": false,
+                            "target_value": 96,
+                            "type": "Integer"
+                        }
+                    ]
+                ],
                 "root": {
                     "condition": "EqualTo",
                     "confidence": 0.75,
@@ -141,7 +159,19 @@
         },
         "TestRule4": {
             "antecedent": {
-                "chain": [],
+                "chain": [
+                    [
+                        "AND",
+                        {
+                            "condition": "EqualTo",
+                            "confidence": 0.75,
+                            "fact": "TestBoolean_WithRange",
+                            "invert": false,
+                            "target_value": false,
+                            "type": "Boolean"
+                        }
+                    ]
+                ],
                 "root": {
                     "condition": "GreaterThan",
                     "confidence": 0.75,
@@ -157,6 +187,40 @@
                     "fact": "TestEnum_WithRange",
                     "target_value": "Fourth",
                     "type": "Enumeration"
+                }
+            ],
+            "description": ""
+        },
+        "TestRule5": {
+            "antecedent": {
+                "chain": [
+                    [
+                        "OR",
+                        {
+                            "condition": "GreaterThan",
+                            "confidence": 0.75,
+                            "fact": "TestFloat_WithRange",
+                            "invert": false,
+                            "target_value": 0.8999999761581421,
+                            "type": "Float"
+                        }
+                    ]
+                ],
+                "root": {
+                    "condition": "EqualTo",
+                    "confidence": 0.75,
+                    "fact": "TestEnum_NoRange",
+                    "invert": false,
+                    "target_value": "EnumVal4",
+                    "type": "Enumeration"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 0.8999999761581421,
+                    "fact": "TestFloat_NoRange",
+                    "target_value": 11.0,
+                    "type": "Float"
                 }
             ],
             "description": ""

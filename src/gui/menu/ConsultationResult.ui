@@ -266,7 +266,7 @@
    </attribute>
    <column>
     <property name="text">
-     <string>What</string>
+     <string>Step/Source/Fact</string>
     </property>
     <property name="font">
      <font>
@@ -277,7 +277,7 @@
    </column>
    <column>
     <property name="text">
-     <string>Value</string>
+     <string>Value Assigned</string>
     </property>
     <property name="font">
      <font>
@@ -288,7 +288,7 @@
    </column>
    <column>
     <property name="text">
-     <string>Confidence</string>
+     <string>Value Confidence</string>
     </property>
    </column>
   </widget>

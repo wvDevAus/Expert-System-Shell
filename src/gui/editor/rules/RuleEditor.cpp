@@ -86,7 +86,8 @@ void RuleEditor::NewCondition() {
     class NewCondition condition_dialog(this, current_rule->second);
     condition_dialog.exec();
 
-    // Refresh only this editor
+    // Remove the user's selection and update the editor
+    current_condition_index_ = std::nullopt;
     UpdateAntecedentEditor();
 }
 
@@ -500,7 +501,8 @@ void RuleEditor::NewAssignment() {
     class NewAssignment assignment_dialog(this, current_rule->second);
     assignment_dialog.exec();
 
-    // Refresh only this editor
+    // Remove the user's selection and update the editor
+    current_response_index_ = std::nullopt;
     UpdateConsequentEditor();
 }
 
@@ -1031,8 +1033,8 @@ void RuleEditor::UpdateAntecedentEditor() {
                 // Update the Condition editor's operation
                 ui.OperationLabelInversion->setChecked(raw_condition.invert_);
                 ui.OperationSelection->insertItem(0, "Equal to (==)");
-                ui.OperationSelection->insertItem(1, "Less than (>)");
-                ui.OperationSelection->insertItem(2, "More than (<)");
+                ui.OperationSelection->insertItem(1, "Less than (<)");
+                ui.OperationSelection->insertItem(2, "More than (>)");
                 switch (raw_condition.condition_) {
                     case expert_system::knowledge::rules::ConditionType::kEqualTo:
                         ui.OperationSelection->setCurrentIndex(0);
