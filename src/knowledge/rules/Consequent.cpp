@@ -2,29 +2,48 @@
 
 namespace expert_system::knowledge::rules {
 
-    void Consequent::Assign(facts::FactDatabase& database) {
+    std::map<std::string, bool> Consequent::Assign(facts::FactDatabase& database) {
+        // Keep track of the assignment outcomes
+        std::map<std::string, bool> outcomes;
+
         // Iterate through the stored Assignments
         for (auto& current_assignment: assignments_) {
             // Process the specific type of stored Assignment
             switch (current_assignment.type_) {
                 case utility::ExpertSystemTypes::kBool: {
+                    // Get the raw assignment
                     auto& raw_assignment = std::get<BoolAssignment>(current_assignment.assignment_);
-                    raw_assignment.Assign(database);
+
+                    // Attempt the assignment and track the result
+                    outcomes.emplace(raw_assignment.fact_,
+                                     raw_assignment.Assign(database));
                     break;
                 }
                 case utility::ExpertSystemTypes::kInt: {
+                    // Get the raw assignment
                     auto& raw_assignment = std::get<IntAssignment>(current_assignment.assignment_);
-                    raw_assignment.Assign(database);
+
+                    // Attempt the assignment and track the result
+                    outcomes.emplace(raw_assignment.fact_,
+                                     raw_assignment.Assign(database));
                     break;
                 }
                 case utility::ExpertSystemTypes::kFloat: {
+                    // Get the raw assignment
                     auto& raw_assignment = std::get<FloatAssignment>(current_assignment.assignment_);
-                    raw_assignment.Assign(database);
+
+                    // Attempt the assignment and track the result
+                    outcomes.emplace(raw_assignment.fact_,
+                                     raw_assignment.Assign(database));
                     break;
                 }
                 case utility::ExpertSystemTypes::kEnum: {
+                    // Get the raw assignment
                     auto& raw_assignment = std::get<EnumAssignment>(current_assignment.assignment_);
-                    raw_assignment.Assign(database);
+
+                    // Attempt the assignment and track the result
+                    outcomes.emplace(raw_assignment.fact_,
+                                     raw_assignment.Assign(database));
                     break;
                 }
                 default: {
@@ -33,6 +52,9 @@ namespace expert_system::knowledge::rules {
                 }
             }
         }
+
+        // Return the outcomes
+        return outcomes;
     }
 
     void to_json(nlohmann::json& json_sys, const Consequent& target) {

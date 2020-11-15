@@ -309,7 +309,7 @@ namespace expert_system::knowledge::rules {
             case utility::ExpertSystemTypes::kBool: {
                 // Create and track an empty BoolCondition
                 target.condition_.emplace<BoolCondition>();
-                auto target_condition = std::get<BoolCondition>(target.condition_);
+                auto& target_condition = std::get<BoolCondition>(target.condition_);
 
                 // Attempt to find the target Fact
                 if (json_sys.find(utility::JSON_ID_FACT) != json_sys.end()) {
@@ -352,7 +352,7 @@ namespace expert_system::knowledge::rules {
                     // Attempt to gather the confidence factor
                     if (json_sys.at(utility::JSON_ID_CONFIDENCE).is_number_float()) {
                         // Store the confidence factor
-                        target_condition.invert_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<float>();
+                        target_condition.confidence_factor_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<utility::Confidence>();
                     }
                 }
 
@@ -362,7 +362,7 @@ namespace expert_system::knowledge::rules {
             case utility::ExpertSystemTypes::kInt: {
                 // Create and track an empty IntCondition
                 target.condition_.emplace<IntCondition>();
-                auto target_condition = std::get<IntCondition>(target.condition_);
+                auto& target_condition = std::get<IntCondition>(target.condition_);
 
                 // Attempt to find the target Fact
                 if (json_sys.find(utility::JSON_ID_FACT) != json_sys.end()) {
@@ -405,7 +405,7 @@ namespace expert_system::knowledge::rules {
                     // Attempt to gather the confidence factor
                     if (json_sys.at(utility::JSON_ID_CONFIDENCE).is_number_float()) {
                         // Store the confidence factor
-                        target_condition.invert_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<float>();
+                        target_condition.confidence_factor_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<utility::Confidence>();
                     }
                 }
 
@@ -415,7 +415,7 @@ namespace expert_system::knowledge::rules {
             case utility::ExpertSystemTypes::kFloat: {
                 // Create and track an empty FloatCondition
                 target.condition_.emplace<FloatCondition>();
-                auto target_condition = std::get<FloatCondition>(target.condition_);
+                auto& target_condition = std::get<FloatCondition>(target.condition_);
 
                 // Attempt to find the target Fact
                 if (json_sys.find(utility::JSON_ID_FACT) != json_sys.end()) {
@@ -458,7 +458,7 @@ namespace expert_system::knowledge::rules {
                     // Attempt to gather the confidence factor
                     if (json_sys.at(utility::JSON_ID_CONFIDENCE).is_number_float()) {
                         // Store the confidence factor
-                        target_condition.invert_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<float>();
+                        target_condition.confidence_factor_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<utility::Confidence>();
                     }
                 }
 
@@ -468,7 +468,7 @@ namespace expert_system::knowledge::rules {
             case utility::ExpertSystemTypes::kEnum: {
                 // Create and track an empty EnumCondition
                 target.condition_.emplace<EnumCondition>();
-                auto target_condition = std::get<EnumCondition>(target.condition_);
+                auto& target_condition = std::get<EnumCondition>(target.condition_);
 
                 // Attempt to find the target Fact
                 if (json_sys.find(utility::JSON_ID_FACT) != json_sys.end()) {
@@ -511,7 +511,7 @@ namespace expert_system::knowledge::rules {
                     // Attempt to gather the confidence factor
                     if (json_sys.at(utility::JSON_ID_CONFIDENCE).is_number_float()) {
                         // Store the confidence factor
-                        target_condition.invert_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<float>();
+                        target_condition.confidence_factor_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<utility::Confidence>();
                     }
                 }
 

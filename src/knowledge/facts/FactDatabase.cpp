@@ -44,22 +44,22 @@ namespace expert_system::knowledge::facts {
             case utility::ExpertSystemTypes::kBool: {
                 // Gather the raw data and check if the session value exists
                 auto raw_fact = std::get<BoolFact>(target_fact->get().fact_);
-                return (raw_fact.GetValue() != std::nullopt);
+                return (raw_fact.GetValue().has_value());
             }
             case utility::ExpertSystemTypes::kInt: {
                 // Gather the raw data and check if the session value exists
                 auto raw_fact = std::get<IntFact>(target_fact->get().fact_);
-                return (raw_fact.GetValue() != std::nullopt);
+                return (raw_fact.GetValue().has_value());
             }
             case utility::ExpertSystemTypes::kFloat: {
                 // Gather the raw data and check if the session value exists
                 auto raw_fact = std::get<FloatFact>(target_fact->get().fact_);
-                return (raw_fact.GetValue() != std::nullopt);
+                return (raw_fact.GetValue().has_value());
             }
             case utility::ExpertSystemTypes::kEnum: {
                 // Gather the raw data and check if the session value exists
                 auto raw_fact = std::get<EnumFact>(target_fact->get().fact_);
-                return (raw_fact.fact_.GetValue() != std::nullopt);
+                return (raw_fact.fact_.GetValue().has_value());
             }
             default:
                 // Indicate failure
@@ -67,14 +67,40 @@ namespace expert_system::knowledge::facts {
         }
     }
 
-    std::list<std::string> FactDatabase::List() const {
+    std::set<std::string> FactDatabase::List(FactFilter filter) {
         // Create a temporary list to store the Fact names in
-        std::list<std::string> fact_names;
+        std::set<std::string> fact_names;
 
         // Iterate through the database's keys
         for (const auto& map_iterator: stored_facts_) {
-            // Append the name to the end of the list
-            fact_names.push_back(map_iterator.first);
+            // Split the logic based on the specified filter
+            switch (filter) {
+                case FactFilter::kAll: {
+                    // Append the name to the end of the list
+                    fact_names.insert(map_iterator.first);
+                    break;
+                }
+                case FactFilter::kHasValue: {
+                    // Check if the Fact has a value
+                    if (Known(map_iterator.first)) {
+                        // Append the name to the end of the list
+                        fact_names.insert(map_iterator.first);
+                    }
+                    break;
+                }
+                case FactFilter::kHasNoValue: {
+                    // Check if the Fact has no value
+                    if (!Known(map_iterator.first)) {
+                        // Append the name to the end of the list
+                        fact_names.insert(map_iterator.first);
+                    }
+                    break;
+                }
+                default : {
+                    // Skip this Fact
+                    break;
+                }
+            }
         }
 
         // Return the list of Fact names

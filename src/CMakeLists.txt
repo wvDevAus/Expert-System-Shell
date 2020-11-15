@@ -11,6 +11,7 @@ target_sources(${ESS_TARGET_NAME}
 		# Fact Database
 		knowledge/facts/Facts.cpp
 		knowledge/facts/FactDatabase.cpp
+		knowledge/facts/Values.cpp
 
 		# Rule Database
 		knowledge/rules/Antecedent.cpp
@@ -19,6 +20,12 @@ target_sources(${ESS_TARGET_NAME}
 		knowledge/rules/Consequent.cpp
 		knowledge/rules/Rule.cpp
 		knowledge/rules/RuleDatabase.cpp
+
+		# Explanation Engine
+		engines/explanation/Log.cpp
+
+		# Inference Engine
+		engines/inference/Forward.cpp
 
 		# Main Menu
 		gui/menu/MainMenu.h
@@ -59,4 +66,19 @@ target_sources(${ESS_TARGET_NAME}
 		gui/editor/rules/NewAssignment.h
 		gui/editor/rules/NewAssignment.cpp
 		gui/editor/rules/NewAssignment.ui
+
+		# Consultation Begin
+		gui/menu/ConsultationBegin.h
+		gui/menu/ConsultationBegin.cpp
+		gui/menu/ConsultationBegin.ui
+
+		# Additional Request
+		gui/menu/AdditionalRequest.h
+		gui/menu/AdditionalRequest.cpp
+		gui/menu/AdditionalRequest.ui
+
+		# Consultation Report
+		gui/menu/ConsultationResult.h
+		gui/menu/ConsultationResult.cpp
+		gui/menu/ConsultationResult.ui
 )

@@ -11,8 +11,8 @@ namespace expert_system::knowledge::rules {
         /// The symbolic representations for applicable Rule filters.
     enum class RuleFilter {
         kAll,
-        kHasRun,
-        kHasNotRun
+        kHasRunConsequent,
+        kHasNotRunConsequent
     };
 
         /**

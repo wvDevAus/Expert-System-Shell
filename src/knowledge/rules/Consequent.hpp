@@ -21,9 +21,9 @@ namespace expert_system::knowledge::rules {
             /**
              * @brief Attempts to perform the stored Assignments.
              * @param [in] database The Fact Database to operate on.
-             * @warning Assignments may fail, and will do so silently!
+             * @return The outcomes for each attempt to assign a value, mapped to the Fact's name.
              */
-        void Assign(facts::FactDatabase& database);
+        std::map<std::string, bool> Assign(facts::FactDatabase& database);
 
             /**
              * @brief The list of Assignments to activate.

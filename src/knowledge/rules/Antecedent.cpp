@@ -40,6 +40,7 @@ namespace expert_system::knowledge::rules {
                         // Store failure in the chained result
                         combined_outcomes = TestOutcome::kComparisonFailure;
                     }
+                    break;
                 }
                 case ConnectorType::kOr: {
                     // Either outcome must be successful
@@ -52,6 +53,7 @@ namespace expert_system::knowledge::rules {
                         // Store failure in the chained result
                         combined_outcomes = TestOutcome::kComparisonFailure;
                     }
+                    break;
                 }
                 case ConnectorType::kXor: {
                     // The outcomes cannot be identical
@@ -62,6 +64,7 @@ namespace expert_system::knowledge::rules {
                         // Store success in the chained result
                         combined_outcomes = TestOutcome::kComparisonSuccess;
                     }
+                    break;
                 }
             }
         }
@@ -83,12 +86,21 @@ namespace expert_system::knowledge::rules {
         target.root_condition_ = VariantCondition();
         target.condition_chain_.clear();
 
+        // Confirm the description is actually stored
+        if (json_sys.find(utility::JSON_ID_DESCRIPTION) != json_sys.end()) {
+            // Attempt to gather the description
+            if (!json_sys.at(utility::JSON_ID_DESCRIPTION).empty()) {
+                // Store the description
+                target.root_condition_ = json_sys.at(utility::JSON_ID_DESCRIPTION).get<VariantCondition>();
+            }
+        }
+
         // Confirm the root condition is actually stored
         if (json_sys.find(utility::JSON_ID_ROOT) != json_sys.end()) {
             // Attempt to gather the root condition
-            if (!json_sys.at(utility::JSON_ID_DESCRIPTION).empty()) {
+            if (!json_sys.at(utility::JSON_ID_ROOT).empty()) {
                 // Store the root condition
-                target.root_condition_ = json_sys.at(utility::JSON_ID_DESCRIPTION).get<VariantCondition>();
+                target.root_condition_ = json_sys.at(utility::JSON_ID_ROOT).get<VariantCondition>();
             }
         }
 

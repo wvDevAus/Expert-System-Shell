@@ -54,6 +54,9 @@ namespace expert_system::knowledge::rules {
                 // Export the target value
                 json_sys[utility::JSON_ID_TARGET_VALUE] = assignment_raw.value_;
 
+                // Export the confidence factor
+                json_sys[utility::JSON_ID_CONFIDENCE] = assignment_raw.confidence_factor_;
+
                 // Done
                 break;
             }
@@ -66,6 +69,9 @@ namespace expert_system::knowledge::rules {
 
                 // Export the target value
                 json_sys[utility::JSON_ID_TARGET_VALUE] = assignment_raw.value_;
+
+                // Export the confidence factor
+                json_sys[utility::JSON_ID_CONFIDENCE] = assignment_raw.confidence_factor_;
 
                 // Done
                 break;
@@ -80,6 +86,9 @@ namespace expert_system::knowledge::rules {
                 // Export the target value
                 json_sys[utility::JSON_ID_TARGET_VALUE] = assignment_raw.value_;
 
+                // Export the confidence factor
+                json_sys[utility::JSON_ID_CONFIDENCE] = assignment_raw.confidence_factor_;
+
                 // Done
                 break;
             }
@@ -92,6 +101,9 @@ namespace expert_system::knowledge::rules {
 
                 // Export the target value
                 json_sys[utility::JSON_ID_TARGET_VALUE] = assignment_raw.value_;
+
+                // Export the confidence factor
+                json_sys[utility::JSON_ID_CONFIDENCE] = assignment_raw.confidence_factor_;
 
                 // Done
                 break;
@@ -142,6 +154,15 @@ namespace expert_system::knowledge::rules {
                     }
                 }
 
+                // Attempt to find the confidence factor
+                if (json_sys.find(utility::JSON_ID_CONFIDENCE) != json_sys.end()) {
+                    // Attempt to gather the confidence factor
+                    if (json_sys.at(utility::JSON_ID_CONFIDENCE).is_number_float()) {
+                        // Store the confidence factor
+                        target_assignment.confidence_factor_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<utility::Confidence>();
+                    }
+                }
+
                 // Finished
                 break;
             }
@@ -165,6 +186,15 @@ namespace expert_system::knowledge::rules {
                     if (json_sys.at(utility::JSON_ID_TARGET_VALUE).is_number_integer()) {
                         // Store the target value
                         target_assignment.value_ = json_sys.at(utility::JSON_ID_TARGET_VALUE).get<int>();
+                    }
+                }
+
+                // Attempt to find the confidence factor
+                if (json_sys.find(utility::JSON_ID_CONFIDENCE) != json_sys.end()) {
+                    // Attempt to gather the confidence factor
+                    if (json_sys.at(utility::JSON_ID_CONFIDENCE).is_number_float()) {
+                        // Store the confidence factor
+                        target_assignment.confidence_factor_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<utility::Confidence>();
                     }
                 }
 
@@ -194,6 +224,15 @@ namespace expert_system::knowledge::rules {
                     }
                 }
 
+                // Attempt to find the confidence factor
+                if (json_sys.find(utility::JSON_ID_CONFIDENCE) != json_sys.end()) {
+                    // Attempt to gather the confidence factor
+                    if (json_sys.at(utility::JSON_ID_CONFIDENCE).is_number_float()) {
+                        // Store the confidence factor
+                        target_assignment.confidence_factor_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<utility::Confidence>();
+                    }
+                }
+
                 // Finished
                 break;
             }
@@ -217,6 +256,15 @@ namespace expert_system::knowledge::rules {
                     if (json_sys.at(utility::JSON_ID_TARGET_VALUE).is_string()) {
                         // Store the target value
                         target_assignment.value_ = json_sys.at(utility::JSON_ID_TARGET_VALUE).get<std::string>();
+                    }
+                }
+
+                // Attempt to find the confidence factor
+                if (json_sys.find(utility::JSON_ID_CONFIDENCE) != json_sys.end()) {
+                    // Attempt to gather the confidence factor
+                    if (json_sys.at(utility::JSON_ID_CONFIDENCE).is_number_float()) {
+                        // Store the confidence factor
+                        target_assignment.confidence_factor_ = json_sys.at(utility::JSON_ID_CONFIDENCE).get<utility::Confidence>();
                     }
                 }
 

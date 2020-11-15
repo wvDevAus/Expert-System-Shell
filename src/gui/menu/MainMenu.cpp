@@ -9,8 +9,12 @@
 
 #include "nlohmann/json.hpp"
 
+#include "engines/inference/Forward.hpp"
 #include "gui/editor/facts/FactEditor.h"
 #include "gui/editor/rules/RuleEditor.h"
+#include "gui/menu/ConsultationBegin.h"
+#include "gui/menu/ConsultationResult.h"
+#include "gui/menu/AdditionalRequest.h"
 #include "knowledge/facts/FactDatabase.hpp"
 #include "knowledge/rules/RuleDatabase.hpp"
 #include "utility/Singleton.hpp"
@@ -125,27 +129,92 @@ void MainMenu::RulesDomainKnowledge() {
 }
 
 void MainMenu::FactsDomainKnowledge() {
-    // Prevent this window from being opened if Rules have been created.
-    auto& rule_database = expert_system::utility::Singleton<expert_system::knowledge::rules::RuleDatabase>::Get();
-    if ((int) rule_database.managed_rules_.size() != 0) {
-        // Report the error
-        QMessageBox error_indication;
-        error_indication.setText("Error: Facts cannot be edited while Rules exist!");
-        error_indication.exec();
-        return;
-    }
-
     // Open the FactEditor dialog
     FactEditor modal_dialog(this);
     modal_dialog.exec();
 }
 
 void MainMenu::ForwardInferrencingConsult() {
-    // Open the ConsultForwardsChain dialog
-    // TODO: Create the ConsultForwardsChain dialog
+    // Keep track of the two databases
+    auto& fact_database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
+    auto& rule_database = expert_system::utility::Singleton<expert_system::knowledge::rules::RuleDatabase>::Get();
+
+    // Prevent this from being run if there are not stored Facts and Rules to inference
+    if ((fact_database.Count() <= 0) || (rule_database.managed_rules_.empty())) {
+        QMessageBox error_indication;
+        error_indication.setText("A consultation cannot begin if no Facts or Rules exist!");
+        error_indication.exec();
+        return;
+    }
+
+    // Keep track of the events that occur while inferring
+    std::vector<std::vector<expert_system::engines::explanation::Log>> logged_events;
+
+    // Begin the consultation by gathering a set of existing values from the user
+    ConsultationBegin initial_dialog(this);
+    initial_dialog.exec();
+    std::vector<expert_system::engines::explanation::Log> initial_user_input_log;
+    initial_user_input_log.push_back(expert_system::engines::inference::forward::LogExisting(fact_database));
+    logged_events.push_back(initial_user_input_log);
+
+    // Continue to loop through the inference process
+    while (true) {
+        // Catch if any facts do not have a session value
+        if (fact_database.List(expert_system::knowledge::facts::FactFilter::kHasNoValue).empty()) {
+            // Stop the consultation and show the results
+            break;
+        }
+
+        // Catch if any rules have not yet been triggered
+        if (rule_database.ListRules(expert_system::knowledge::rules::RuleFilter::kHasNotRunConsequent).empty()) {
+            // Stop the consultation and show the results
+            break;
+        }
+
+        // Find the triggered Rules
+        auto trigger_list = expert_system::engines::inference::forward::FindTriggered(
+                fact_database,
+                rule_database);
+
+        // Catch if any rules were actually triggered
+        if (!trigger_list.empty()) {
+            // Run the triggered Rule's Consequents and log the outcomes
+            logged_events.push_back(expert_system::engines::inference::forward::RunTriggered(
+                    trigger_list,
+                    fact_database));
+        }
+        else {
+            // Identify the Fact session values needed to trigger the remaining rules
+            auto needed_fact_values =
+                    expert_system::engines::inference::forward::IdentifyFactRequests(
+                            fact_database,
+                            rule_database);
+
+            // Generate a dialog to request one of these missing fact session values
+            AdditionalRequest request_dialog(needed_fact_values,
+                                             logged_events,
+                                             this);
+
+            // Catch if the user wanted to finish the consultation
+            if (request_dialog.exec() == QDialog::Rejected) {
+                // Stop the consultation and show the results
+                break;
+            }
+        }
+    }
+
+    // Display the consultation results
+    ConsultationResult result_dialog(logged_events, this);
+    result_dialog.exec();
+
+    // Make sure to clean up before finishing
+    fact_database.Reset();
+    rule_database.ResetRules();
 }
 
 void MainMenu::BackwardInferrencingConsult() {
-    // Open the ConsultBackwardsChain dialog
-    // TODO: Create the ConsultBackwardsChain dialog
+    // Indicate this is currently not supported
+    QMessageBox error_indication;
+    error_indication.setText("Backwards Inferencing is currently not supported.");
+    error_indication.exec();
 }

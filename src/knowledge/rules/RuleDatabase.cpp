@@ -10,8 +10,7 @@ namespace expert_system::knowledge::rules {
         }
     }
 
-    std::list<std::map<std::string, Rule>::iterator> RuleDatabase::ListRules(
-            RuleFilter filter) {
+    std::list<std::map<std::string, Rule>::iterator> RuleDatabase::ListRules(RuleFilter filter) {
         // Keep track of the iterators
         std::list<std::map<std::string, Rule>::iterator> filtered_rules;
 
@@ -22,20 +21,27 @@ namespace expert_system::knowledge::rules {
                 case RuleFilter::kAll: {
                     // Just add the iterator to the list
                     filtered_rules.emplace_back(current_rule);
+                    break;
                 }
-                case RuleFilter::kHasNotRun: {
+                case RuleFilter::kHasNotRunConsequent: {
                     // Check the Rule's flag member
-                    if (!current_rule->second.already_applied_) {
+                    if (!current_rule->second.successful_response_) {
                         // Add the iterator to the list
                         filtered_rules.emplace_back(current_rule);
                     }
+                    break;
                 }
-                case RuleFilter::kHasRun: {
+                case RuleFilter::kHasRunConsequent: {
                     // Check the Rule's flag member
-                    if (current_rule->second.already_applied_) {
+                    if (current_rule->second.successful_response_) {
                         // Add the iterator to the list
                         filtered_rules.emplace_back(current_rule);
                     }
+                    break;
+                }
+                default: {
+                    // Do nothing
+                    break;
                 }
             }
         }
@@ -56,20 +62,23 @@ namespace expert_system::knowledge::rules {
                 case RuleFilter::kAll: {
                     // Just add the iterator to the list
                     fact_names.merge(current_rule->second.TriggerFacts());
+                    break;
                 }
-                case RuleFilter::kHasNotRun: {
+                case RuleFilter::kHasNotRunConsequent: {
                     // Check the Rule's flag member
-                    if (!current_rule->second.already_applied_) {
+                    if (!current_rule->second.successful_response_) {
                         // Add the iterator to the list
                         fact_names.merge(current_rule->second.TriggerFacts());
                     }
+                    break;
                 }
-                case RuleFilter::kHasRun: {
+                case RuleFilter::kHasRunConsequent: {
                     // Check the Rule's flag member
-                    if (current_rule->second.already_applied_) {
+                    if (current_rule->second.successful_response_) {
                         // Add the iterator to the list
                         fact_names.merge(current_rule->second.TriggerFacts());
                     }
+                    break;
                 }
             }
         }
@@ -91,16 +100,16 @@ namespace expert_system::knowledge::rules {
                     // Just add the iterator to the list
                     fact_names.merge(current_rule->second.ResponseFacts());
                 }
-                case RuleFilter::kHasNotRun: {
+                case RuleFilter::kHasNotRunConsequent: {
                     // Check the Rule's flag member
-                    if (!current_rule->second.already_applied_) {
+                    if (!current_rule->second.successful_response_) {
                         // Add the iterator to the list
                         fact_names.merge(current_rule->second.ResponseFacts());
                     }
                 }
-                case RuleFilter::kHasRun: {
+                case RuleFilter::kHasRunConsequent: {
                     // Check the Rule's flag member
-                    if (current_rule->second.already_applied_) {
+                    if (current_rule->second.successful_response_) {
                         // Add the iterator to the list
                         fact_names.merge(current_rule->second.ResponseFacts());
                     }
@@ -116,7 +125,7 @@ namespace expert_system::knowledge::rules {
         // Iterate through all of the Rules
         for (auto current_rule: managed_rules_) {
             // Just set the flag to false
-            current_rule.second.already_applied_ = false;
+            current_rule.second.successful_response_ = false;
         }
     }
 

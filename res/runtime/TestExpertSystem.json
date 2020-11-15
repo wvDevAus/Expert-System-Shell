@@ -1,0 +1,229 @@
+{
+    "database_facts": {
+        "TestBoolean_NoRange": {
+            "description": "A test boolean Fact without a configured range.",
+            "range": null,
+            "type": "Boolean"
+        },
+        "TestBoolean_WithRange": {
+            "description": "A test boolean Fact that will only accept a session value of True.",
+            "range": {
+                "inclusive": true,
+                "max": true,
+                "min": true
+            },
+            "type": "Boolean"
+        },
+        "TestEnum_NoRange": {
+            "description": "A test enumeration Fact with no range other than its assigned enumerations.",
+            "enum": [
+                "EnumVal1",
+                "EnumVal2",
+                "EnumVal3",
+                "EnumVal4",
+                "EnumVal5"
+            ],
+            "range": null,
+            "type": "Enumeration"
+        },
+        "TestEnum_WithRange": {
+            "description": "A test enumeration Fact with an exclusive range of Second to Fifth.",
+            "enum": [
+                "First",
+                "Second",
+                "Third",
+                "Fourth",
+                "Fifth",
+                "Sixth"
+            ],
+            "range": {
+                "inclusive": false,
+                "max": "Fifth",
+                "min": "Second"
+            },
+            "type": "Enumeration"
+        },
+        "TestFloat_NoRange": {
+            "description": "A test float Fact without any configured range.",
+            "range": null,
+            "type": "Float"
+        },
+        "TestFloat_WithRange": {
+            "description": "A test float Fact that only stores a session value between the inclusive range of 0.0f and 1.0f.",
+            "range": {
+                "inclusive": true,
+                "max": 1.0,
+                "min": 0.0
+            },
+            "type": "Float"
+        },
+        "TestInteger_NoRange": {
+            "description": "A test integer Fact with no configured range.",
+            "range": null,
+            "type": "Integer"
+        },
+        "TestInteger_WithRange": {
+            "description": "A test Integer Fact that will only accept session values between the inclusive range of 0 and 100.",
+            "range": {
+                "inclusive": true,
+                "max": 100,
+                "min": 0
+            },
+            "type": "Integer"
+        }
+    },
+    "database_rules": {
+        "TestRule1": {
+            "antecedent": {
+                "chain": [],
+                "root": {
+                    "condition": "EqualTo",
+                    "confidence": 0.75,
+                    "fact": "TestBoolean_NoRange",
+                    "invert": false,
+                    "target_value": true,
+                    "type": "Boolean"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 1.0,
+                    "fact": "TestBoolean_WithRange",
+                    "target_value": true,
+                    "type": "Boolean"
+                },
+                {
+                    "confidence": 0.6499999761581421,
+                    "fact": "TestFloat_NoRange",
+                    "target_value": 100.0,
+                    "type": "Float"
+                }
+            ],
+            "description": ""
+        },
+        "TestRule2": {
+            "antecedent": {
+                "chain": [
+                    [
+                        "XOR",
+                        {
+                            "condition": "LessThan",
+                            "confidence": 0.75,
+                            "fact": "TestInteger_WithRange",
+                            "invert": false,
+                            "target_value": 96,
+                            "type": "Integer"
+                        }
+                    ]
+                ],
+                "root": {
+                    "condition": "EqualTo",
+                    "confidence": 0.75,
+                    "fact": "TestBoolean_WithRange",
+                    "invert": false,
+                    "target_value": true,
+                    "type": "Boolean"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 1.0,
+                    "fact": "TestFloat_NoRange",
+                    "target_value": 10.010000228881836,
+                    "type": "Float"
+                }
+            ],
+            "description": ""
+        },
+        "TestRule3": {
+            "antecedent": {
+                "chain": [],
+                "root": {
+                    "condition": "LessThan",
+                    "confidence": 0.75,
+                    "fact": "TestFloat_NoRange",
+                    "invert": false,
+                    "target_value": 10.0,
+                    "type": "Float"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 1.0,
+                    "fact": "TestInteger_NoRange",
+                    "target_value": 4,
+                    "type": "Integer"
+                }
+            ],
+            "description": ""
+        },
+        "TestRule4": {
+            "antecedent": {
+                "chain": [
+                    [
+                        "AND",
+                        {
+                            "condition": "EqualTo",
+                            "confidence": 0.75,
+                            "fact": "TestBoolean_WithRange",
+                            "invert": false,
+                            "target_value": false,
+                            "type": "Boolean"
+                        }
+                    ]
+                ],
+                "root": {
+                    "condition": "GreaterThan",
+                    "confidence": 0.75,
+                    "fact": "TestInteger_NoRange",
+                    "invert": false,
+                    "target_value": 5,
+                    "type": "Integer"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 1.0,
+                    "fact": "TestEnum_WithRange",
+                    "target_value": "Fourth",
+                    "type": "Enumeration"
+                }
+            ],
+            "description": ""
+        },
+        "TestRule5": {
+            "antecedent": {
+                "chain": [
+                    [
+                        "OR",
+                        {
+                            "condition": "GreaterThan",
+                            "confidence": 0.75,
+                            "fact": "TestFloat_WithRange",
+                            "invert": false,
+                            "target_value": 0.8999999761581421,
+                            "type": "Float"
+                        }
+                    ]
+                ],
+                "root": {
+                    "condition": "EqualTo",
+                    "confidence": 0.75,
+                    "fact": "TestEnum_NoRange",
+                    "invert": false,
+                    "target_value": "EnumVal4",
+                    "type": "Enumeration"
+                }
+            },
+            "consequent": [
+                {
+                    "confidence": 0.8999999761581421,
+                    "fact": "TestFloat_NoRange",
+                    "target_value": 11.0,
+                    "type": "Float"
+                }
+            ],
+            "description": ""
+        }
+    }
+}

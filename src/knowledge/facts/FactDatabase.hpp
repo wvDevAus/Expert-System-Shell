@@ -1,8 +1,8 @@
 #pragma once
 
 #include <functional>
-#include <list>
 #include <optional>
+#include <set>
 #include <string>
 #include <unordered_map>
 #include <variant>
@@ -13,6 +13,13 @@
 #include "utility/Types.hpp"
 
 namespace expert_system::knowledge::facts {
+
+        /// The symbolic representations for applicable Fact filters.
+    enum class FactFilter {
+        kAll,
+        kHasValue,
+        kHasNoValue
+    };
 
         /**
          * @brief Type definition for the functions that can be used to iterate through the FactDatabase.
@@ -51,10 +58,11 @@ namespace expert_system::knowledge::facts {
 
             /**
              * @brief Gathers a list of the stored Fact names.
-             * @return A list of Fact name strings, in ascending order.
+             * @param [in] filter The identifier of the filter to apply.
+             * @return A list of Fact name strings.
              * @note If no Facts are stored, this will return an empty list.
              */
-        [[nodiscard]] std::list<std::string> List() const;
+        [[nodiscard]] std::set<std::string> List(FactFilter filter = FactFilter::kAll);
 
             /**
              * @brief Gathers the amount of the stored Facts.

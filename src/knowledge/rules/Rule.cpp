@@ -6,7 +6,7 @@
 
 namespace expert_system::knowledge::rules {
 
-    Rule::Rule() : already_applied_(false) {};
+    Rule::Rule() : successful_response_(false) {};
 
     std::set<std::string> Rule::TriggerFacts() {
         // Keep track of the Fact names
@@ -133,18 +133,18 @@ namespace expert_system::knowledge::rules {
 
         // Attempt to find the Rule's trigger
         if (json_sys.find(utility::JSON_ID_ANTECEDENT) != json_sys.end()) {
-            // Attempt to gather the description
+            // Attempt to gather the trigger
             if (json_sys.at(utility::JSON_ID_ANTECEDENT).is_object()) {
-                // Store the description
+                // Store the trigger
                 target.trigger_ = json_sys.at(utility::JSON_ID_ANTECEDENT).get<Antecedent>();
             }
         }
 
         // Attempt to find the Rule's response
         if (json_sys.find(utility::JSON_ID_CONSEQUENT) != json_sys.end()) {
-            // Attempt to gather the description
-            if (json_sys.at(utility::JSON_ID_CONSEQUENT).is_object()) {
-                // Store the description
+            // Attempt to gather the response
+            if (json_sys.at(utility::JSON_ID_CONSEQUENT).is_array()) {
+                // Store the response
                 target.response_ = json_sys.at(utility::JSON_ID_CONSEQUENT).get<Consequent>();
             }
         }
