@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef _WIN32
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#endif
+
 #include <optional>
 #include <string>
 #include <utility>
