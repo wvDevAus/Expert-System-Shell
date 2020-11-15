@@ -44,22 +44,22 @@ namespace expert_system::knowledge::facts {
             case utility::ExpertSystemTypes::kBool: {
                 // Gather the raw data and check if the session value exists
                 auto raw_fact = std::get<BoolFact>(target_fact->get().fact_);
-                return (raw_fact.GetValue() != std::nullopt);
+                return (raw_fact.GetValue().has_value());
             }
             case utility::ExpertSystemTypes::kInt: {
                 // Gather the raw data and check if the session value exists
                 auto raw_fact = std::get<IntFact>(target_fact->get().fact_);
-                return (raw_fact.GetValue() != std::nullopt);
+                return (raw_fact.GetValue().has_value());
             }
             case utility::ExpertSystemTypes::kFloat: {
                 // Gather the raw data and check if the session value exists
                 auto raw_fact = std::get<FloatFact>(target_fact->get().fact_);
-                return (raw_fact.GetValue() != std::nullopt);
+                return (raw_fact.GetValue().has_value());
             }
             case utility::ExpertSystemTypes::kEnum: {
                 // Gather the raw data and check if the session value exists
                 auto raw_fact = std::get<EnumFact>(target_fact->get().fact_);
-                return (raw_fact.fact_.GetValue() != std::nullopt);
+                return (raw_fact.fact_.GetValue().has_value());
             }
             default:
                 // Indicate failure
