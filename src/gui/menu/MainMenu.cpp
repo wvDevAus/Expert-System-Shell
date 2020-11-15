@@ -13,6 +13,7 @@
 #include "gui/editor/facts/FactEditor.h"
 #include "gui/editor/rules/RuleEditor.h"
 #include "gui/menu/ConsultationBegin.h"
+#include "gui/menu/ConsultationResult.h"
 #include "gui/menu/AdditionalRequest.h"
 #include "knowledge/facts/FactDatabase.hpp"
 #include "knowledge/rules/RuleDatabase.hpp"
@@ -195,7 +196,8 @@ void MainMenu::ForwardInferrencingConsult() {
     }
 
     // Display the consultation results
-    //todo THIS
+    ConsultationResult result_dialog(logged_events, this);
+    result_dialog.exec();
 
     // Make sure to clean up before finishing
     fact_database.Reset();

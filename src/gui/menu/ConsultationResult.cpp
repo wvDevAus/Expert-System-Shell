@@ -171,8 +171,8 @@ void ConsultationResult::FactSelected() {
             }
             else {
                 // Just indicate the error
-                ui.FactValue->setText("Error");
-                ui.Confidence->setText("Error");
+                ui.FactValue->clear();
+                ui.Confidence->clear();
             }
             break;
         }
@@ -191,8 +191,8 @@ void ConsultationResult::FactSelected() {
             }
             else {
                 // Just indicate the error
-                ui.FactValue->setText("Error");
-                ui.Confidence->setText("Error");
+                ui.FactValue->clear();
+                ui.Confidence->clear();
             }
             break;
         }
@@ -211,8 +211,8 @@ void ConsultationResult::FactSelected() {
             }
             else {
                 // Just indicate the error
-                ui.FactValue->setText("Error");
-                ui.Confidence->setText("Error");
+                ui.FactValue->clear();
+                ui.Confidence->clear();
             }
             break;
         }
@@ -231,8 +231,8 @@ void ConsultationResult::FactSelected() {
             }
             else {
                 // Just indicate the error
-                ui.FactValue->setText("Error");
-                ui.Confidence->setText("Error");
+                ui.FactValue->clear();
+                ui.Confidence->clear();
             }
             break;
         }

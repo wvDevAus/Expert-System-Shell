@@ -1201,7 +1201,7 @@ void RuleEditor::UpdateConsequentEditor() {
 
             // Update the Assignment value
             auto& fact_database = expert_system::utility::Singleton<expert_system::knowledge::facts::FactDatabase>::Get();
-            auto& target_fact = fact_database.Find(raw_assignment.value_).value().get();
+            auto& target_fact = fact_database.Find(raw_assignment.fact_).value().get();
             auto& raw_fact = std::get<expert_system::knowledge::facts::EnumFact>(target_fact.fact_);
             int element_counter = 0;
             QString enumExprStr;
